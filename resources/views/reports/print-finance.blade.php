@@ -1,83 +1,103 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Keuangan - Print</title>
-    <style>
-        body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; color: #1e293b; line-height: 1.5; margin: 0; padding: 20px; }
-        .print-header { text-align: center; border-bottom: 2px solid #1E3A5F; padding-bottom: 10px; margin-bottom: 20px; }
-        .print-header h1 { margin: 0; font-size: 20px; font-weight: 700; color: #1E3A5F; }
-        .print-header p { margin: 5px 0 0; color: #64748b; font-size: 13px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 12px; }
-        th, td { border: 1px solid #e2e8f0; padding: 10px 12px; text-align: left; }
-        th { background-color: #f8fafc; font-weight: 600; font-size: 11px; }
-        .text-right { text-align: right; font-variant-numeric: tabular-nums; }
-        .text-success { color: #2e7d32; }
-        .text-danger { color: #c62828; }
-        .print-footer { text-align: right; font-size: 10px; color: #94a3b8; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
-        
-        @media print {
-            body { padding: 0; margin: 0; }
-            th, td { border: 1px solid #cbd5e1; }
-            th { background-color: transparent !important; }
-            /* Force colors in print */
-            .text-success { color: #2e7d32 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .text-danger { color: #c62828 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        }
-    </style>
-</head>
-<body onload="window.print()">
+@extends('layouts.print-document')
 
-    <div class="print-header">
-        <h1>Laporan Keuangan - Kopi Hiku Himu</h1>
-        <p>Tahun: {{ request('year', date('Y')) }}</p>
-    </div>
+@section('document-title', 'Laporan Keuangan Toko - Kopi Hiku Himu')
+@section('page-orientation', 'portrait')
 
-    <table>
-        <thead>
-            <tr>
-                <th>Toko mitra</th>
-                <th>Periode</th>
-                <th class="text-right">Pemasukan</th>
-                <th class="text-right">Pengeluaran</th>
-                <th class="text-right">Laba / rugi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($financeData ?? [] as $data)
-                <tr>
-                    <td>{{ $data->toko }}</td>
-                    <td>{{ $data->periode }}</td>
-                    <td class="text-right">Rp {{ number_format($data->pemasukan, 0, ',', '.') }}</td>
-                    <td class="text-right">Rp {{ number_format($data->pengeluaran, 0, ',', '.') }}</td>
-                    <td class="text-right fw-bold {{ $data->laba >= 0 ? 'text-success' : 'text-danger' }}">
-                        Rp {{ number_format($data->laba, 0, ',', '.') }}
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="5" style="text-align: center; padding: 20px;">Data tidak tersedia</td>
-                </tr>
-            @endforelse
-        </tbody>
-        @if(isset($financeTotal))
-        <tfoot>
-            <tr>
-                <th colspan="2" class="text-right">TOTAL KESELURUHAN</th>
-                <th class="text-right">Rp {{ number_format($financeTotal->pemasukan, 0, ',', '.') }}</th>
-                <th class="text-right">Rp {{ number_format($financeTotal->pengeluaran, 0, ',', '.') }}</th>
-                <th class="text-right {{ $financeTotal->laba >= 0 ? 'text-success' : 'text-danger' }}">
-                    Rp {{ number_format($financeTotal->laba, 0, ',', '.') }}
-                </th>
-            </tr>
-        </tfoot>
-        @endif
+@section('document-content')
+@php
+    $metaStore = request('store') ? 'Cabang ' . request('store') : 'Semua Toko Mitra';
+    $metaPeriod = 'Tahun ' . request('year', date('Y'));
+    $sigRoleLeft = 'Penyusun pembukuan,';
+    $sigTitleLeft = 'Staf Keuangan';
+    $sigRoleRight = 'Mengetahui & menyetujui,';
+    $sigNameRight = 'Kopi Hiku Himu';
+    $sigTitleRight = 'Pemilik Usaha';
+    $docFootnote = 'Laporan pembukuan keuangan toko ini mencatat realisasi arus pemasukan, pengeluaran, dan laba operasional mitra Kopi Hiku Himu.';
+@endphp
+
+<div class="doc-title-block">
+    <h2 class="doc-title">Laporan Keuangan Toko</h2>
+</div>
+
+@include('reports.partials.identity')
+
+<table class="doc-table">
+    <thead>
+        <tr>
+            <th class="text-center" style="width: 36px;">No</th>
+            <th>Toko mitra</th>
+            <th>Periode</th>
+            <th class="text-right" style="width: 140px;">Pemasukan (Rp)</th>
+            <th class="text-right" style="width: 140px;">Pengeluaran (Rp)</th>
+            <th class="text-right" style="width: 140px;">Laba operasional (Rp)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse($financeData ?? [] as $idx => $data)
+        <tr>
+            <td class="text-center">{{ $idx + 1 }}</td>
+            <td class="fw-semibold">{{ $data->toko }}</td>
+            <td>{{ $data->periode }}</td>
+            <td class="text-right">{{ $data->pemasukan > 0 ? number_format($data->pemasukan, 0, ',', '.') : '-' }}</td>
+            <td class="text-right text-muted">{{ $data->pengeluaran > 0 ? number_format($data->pengeluaran, 0, ',', '.') : '-' }}</td>
+            <td class="text-right fw-semibold {{ $data->laba < 0 ? 'num-neg' : ($data->laba > 0 ? 'num-pos' : '') }}">
+                @if($data->laba < 0)
+                    ({{ number_format(abs($data->laba), 0, ',', '.') }})
+                @elseif($data->laba > 0)
+                    {{ number_format($data->laba, 0, ',', '.') }}
+                @else
+                    -
+                @endif
+            </td>
+        </tr>
+        @empty
+        <tr>
+            <td colspan="6" class="text-center" style="padding: 24px; color: #6B7280;">Tidak ada catatan data keuangan pada periode ini.</td>
+        </tr>
+        @endforelse
+    </tbody>
+    @if(isset($financeTotal))
+    <tfoot>
+        <tr class="row-total">
+            <td colspan="3" class="text-left">Total keseluruhan</td>
+            <td class="text-right">{{ number_format($financeTotal->pemasukan ?? 0, 0, ',', '.') }}</td>
+            <td class="text-right">{{ number_format($financeTotal->pengeluaran ?? 0, 0, ',', '.') }}</td>
+            <td class="text-right {{ ($financeTotal->laba ?? 0) < 0 ? 'num-neg' : (($financeTotal->laba ?? 0) > 0 ? 'num-pos' : '') }}">
+                @if(($financeTotal->laba ?? 0) < 0)
+                    ({{ number_format(abs($financeTotal->laba), 0, ',', '.') }})
+                @elseif(($financeTotal->laba ?? 0) > 0)
+                    {{ number_format($financeTotal->laba, 0, ',', '.') }}
+                @else
+                    -
+                @endif
+            </td>
+        </tr>
+    </tfoot>
+    @endif
+</table>
+
+@if(isset($financeTotal))
+<div class="doc-summary-box">
+    <table class="doc-summary-table">
+        <tr>
+            <td class="sum-label">Total realisasi pemasukan</td>
+            <td class="sum-val">Rp {{ number_format($financeTotal->pemasukan ?? 0, 0, ',', '.') }}</td>
+        </tr>
+        <tr>
+            <td class="sum-label">Total realisasi pengeluaran</td>
+            <td class="sum-val">Rp {{ number_format($financeTotal->pengeluaran ?? 0, 0, ',', '.') }}</td>
+        </tr>
+        <tr class="sum-total">
+            <td class="sum-label">Laba bersih operasional</td>
+            <td class="sum-val {{ ($financeTotal->laba ?? 0) < 0 ? 'num-neg' : (($financeTotal->laba ?? 0) > 0 ? 'num-pos' : '') }}">
+                @if(($financeTotal->laba ?? 0) < 0)
+                    -Rp {{ number_format(abs($financeTotal->laba), 0, ',', '.') }}
+                @else
+                    Rp {{ number_format($financeTotal->laba ?? 0, 0, ',', '.') }}
+                @endif
+            </td>
+        </tr>
     </table>
-
-    <div class="print-footer">
-        Dicetak pada: {{ \Carbon\Carbon::now()->format('d/m/Y H:i:s') }} oleh {{ auth()->user()->name ?? 'Administrator' }}
-    </div>
-
-</body>
-</html>
+</div>
+@endif
+@endsection

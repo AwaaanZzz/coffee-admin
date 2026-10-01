@@ -46,9 +46,9 @@
                         <tr>
                             <th>Toko mitra</th>
                             <th style="min-width: 170px;">Periode</th>
-                            <th class="text-end" style="min-width: 120px;">Pemasukan</th>
-                            <th class="text-end" style="min-width: 120px;">Pengeluaran</th>
-                            <th class="text-end" style="min-width: 130px;">Laba / rugi</th>
+                            <th class="text-end" style="min-width: 130px;">Pemasukan (Rp)</th>
+                            <th class="text-end" style="min-width: 130px;">Pengeluaran (Rp)</th>
+                            <th class="text-end" style="min-width: 140px;">Laba / rugi (Rp)</th>
                             <th>Catatan</th>
                             <th class="text-end" style="min-width: 80px;">Aksi</th>
                         </tr>
@@ -89,9 +89,9 @@
                     </tbody>
                     @if($reports->count() > 0)
                     <tfoot>
-                        <tr class="fw-bold" style="background: var(--bg-input, #FBF7F0); border-top: 2px solid var(--border-color, #E8DFD5);">
-                            <td colspan="2" class="text-end">Total keseluruhan:</td>
-                            <td class="text-end" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($reports->sum('pemasukan'), 0, ',', '.') }}</td>
+                        <tr class="fw-bold" style="border-top: 1px solid var(--border-color); border-bottom: 3px double var(--navy);">
+                            <td colspan="2" class="text-end text-main">Total keseluruhan:</td>
+                            <td class="text-end text-main" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($reports->sum('pemasukan'), 0, ',', '.') }}</td>
                             <td class="text-end text-muted" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($reports->sum('pengeluaran'), 0, ',', '.') }}</td>
                             @php $totalLaba = $reports->sum('laba'); @endphp
                             <td class="text-end {{ $totalLaba >= 0 ? 'text-success' : 'text-danger' }}" style="font-variant-numeric: tabular-nums;">

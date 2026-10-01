@@ -64,38 +64,33 @@
         </div>
     </div>
 
-    <!-- KPI Cards (Maksimal 4) -->
-    <div class="row g-3 mb-4">
-        <div class="col-6 col-lg-3">
-            <div class="stat-card">
-                <div class="stat-info">
-                    <div class="stat-label">Total pendapatan</div>
-                    <div class="stat-value" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($totalRevenue ?? 0, 0, ',', '.') }}</div>
-                </div>
-            </div>
+    <!-- Ringkasan Eksekutif (Tabel Dua Kolom Utilitarian) -->
+    <div class="card-modern mb-4">
+        <div class="card-header-modern">
+            <h5 class="card-title-modern m-0">Ringkasan penjualan</h5>
         </div>
-        <div class="col-6 col-lg-3">
-            <div class="stat-card">
-                <div class="stat-info">
-                    <div class="stat-label">Unit terjual</div>
-                    <div class="stat-value" style="font-variant-numeric: tabular-nums;">{{ number_format($totalUnits ?? 0, 0, ',', '.') }} pcs</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-lg-3">
-            <div class="stat-card">
-                <div class="stat-info">
-                    <div class="stat-label">Rata-rata transaksi</div>
-                    <div class="stat-value" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($avgPerTransaction ?? 0, 0, ',', '.') }}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-lg-3">
-            <div class="stat-card">
-                <div class="stat-info">
-                    <div class="stat-label">Total transaksi</div>
-                    <div class="stat-value" style="font-variant-numeric: tabular-nums;">{{ number_format($sales->count(), 0, ',', '.') }}</div>
-                </div>
+        <div class="card-body-modern p-0">
+            <div class="table-responsive">
+                <table class="table-modern w-100 m-0" style="max-width: 560px;">
+                    <tbody>
+                        <tr>
+                            <td class="text-muted" style="width: 55%;">Total pendapatan</td>
+                            <td class="text-end fw-bold text-main" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($totalRevenue ?? 0, 0, ',', '.') }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Volume penjualan</td>
+                            <td class="text-end fw-semibold text-main" style="font-variant-numeric: tabular-nums;">{{ number_format($totalUnits ?? 0, 0, ',', '.') }} pcs</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Rata-rata per transaksi</td>
+                            <td class="text-end fw-semibold text-main" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($avgPerTransaction ?? 0, 0, ',', '.') }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Total transaksi</td>
+                            <td class="text-end fw-semibold text-main" style="font-variant-numeric: tabular-nums;">{{ number_format($sales->count(), 0, ',', '.') }} transaksi</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -129,8 +124,8 @@
                                     <th style="min-width: 100px;">Tanggal</th>
                                     <th>Toko mitra</th>
                                     <th>Varian kopi</th>
-                                    <th class="text-end" style="min-width: 80px;">Jumlah</th>
-                                    <th class="text-end" style="min-width: 120px;">Total</th>
+                                    <th class="text-end" style="min-width: 90px;">Jumlah (pcs)</th>
+                                    <th class="text-end" style="min-width: 130px;">Total (Rp)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -148,6 +143,15 @@
                                     </tr>
                                 @endforelse
                             </tbody>
+                            @if($sales->count() > 0)
+                            <tfoot>
+                                <tr style="border-top: 1px solid var(--border-color); border-bottom: 3px double var(--navy); font-weight: bold;">
+                                    <td colspan="3" class="text-main">Total</td>
+                                    <td class="text-end" style="font-variant-numeric: tabular-nums;">{{ number_format($totalUnits ?? 0, 0, ',', '.') }}</td>
+                                    <td class="text-end" style="font-variant-numeric: tabular-nums; color: var(--text-main);">Rp {{ number_format($totalRevenue ?? 0, 0, ',', '.') }}</td>
+                                </tr>
+                            </tfoot>
+                            @endif
                         </table>
                     </div>
                 </div>
