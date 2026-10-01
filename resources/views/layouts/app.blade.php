@@ -63,7 +63,7 @@
             <div class="nav-section-title">Menu Utama</div>
             <a href="{{ route('dashboard') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <i data-lucide="layout-dashboard"></i>
-                <span>Dashboard</span>
+                <span>Beranda</span>
             </a>
             <a href="{{ route('stores.index') }}" class="nav-item {{ request()->routeIs('stores.*') ? 'active' : '' }}">
                 <i data-lucide="store"></i>
@@ -79,14 +79,14 @@
             </a>
             <a href="{{ route('stock.index') }}" class="nav-item {{ request()->routeIs('stock.*') ? 'active' : '' }}">
                 <i data-lucide="package"></i>
-                <span>Stock</span>
+                <span>Stok</span>
                 @if($expiringStock > 0)
                 <span class="nav-badge">{{ $expiringStock }}</span>
                 @endif
             </a>
             <a href="{{ route('stock-opname.index') }}" class="nav-item {{ request()->routeIs('stock-opname.*') ? 'active' : '' }}">
                 <i data-lucide="clipboard-check"></i>
-                <span>Stok Opname Mitra</span>
+                <span>Stok Opname</span>
             </a>
             <a href="{{ route('scanner.index') }}" class="nav-item {{ request()->routeIs('scanner.*') ? 'active' : '' }}">
                 <i data-lucide="scan-barcode"></i>
@@ -105,7 +105,7 @@
             </a>
             <a href="{{ route('finance.index') }}" class="nav-item {{ request()->routeIs('finance.*') ? 'active' : '' }}">
                 <i data-lucide="wallet"></i>
-                <span>Keuangan Toko</span>
+                <span>Keuangan</span>
             </a>
             <a href="{{ route('exports.index') }}" class="nav-item {{ request()->routeIs('exports.*') || request()->routeIs('export.*') ? 'active' : '' }}">
                 <i data-lucide="file-spreadsheet"></i>
@@ -113,10 +113,10 @@
             </a>
         </div>
         <div class="nav-section">
-            <div class="nav-section-title">Tools</div>
+            <div class="nav-section-title">Alat</div>
             <a href="{{ route('calendar.index') }}" class="nav-item {{ request()->routeIs('calendar.*') ? 'active' : '' }}">
                 <i data-lucide="calendar"></i>
-                <span>Calendar</span>
+                <span>Kalender</span>
             </a>
             <a href="{{ route('activity-log.index') }}" class="nav-item {{ request()->routeIs('activity-log.*') ? 'active' : '' }}">
                 <i data-lucide="history"></i>
@@ -145,13 +145,13 @@
                 <span id="currentDate"></span>
             </div>
             
-            <button class="topbar-btn d-flex align-items-center gap-2 px-2" id="searchBtn" title="Spotlight Command Palette (Ctrl+K)" style="width: auto; border-radius: 20px;">
+            <button class="topbar-btn d-flex align-items-center gap-2 px-2" id="searchBtn" title="Spotlight Command Palette (Ctrl+K)" style="width: auto;">
                 <i data-lucide="search" style="width:16px;height:16px;"></i>
                 <span class="d-none d-md-inline text-muted small me-1">Cari...</span>
                 <kbd class="d-none d-md-inline" style="font-size:0.65rem; padding: 2px 6px; border-radius: 4px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">Ctrl K</kbd>
             </button>
             
-            <button class="topbar-btn" id="themeToggleBtn" title="Toggle Dark Mode">
+            <button class="topbar-btn" id="themeToggleBtn" title="Ganti Mode Gelap / Terang">
                 <i data-lucide="moon" id="themeIcon"></i>
             </button>
             
@@ -164,37 +164,37 @@
                         <span class="notification-badge" id="topbarNotifBadge">{{ $unreadNotifications > 99 ? '99+' : $unreadNotifications }}</span>
                     @endif
                 </button>
-                <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0 shadow-lg border" style="width: 340px; border-radius: 14px;">
-                    <div class="p-3 border-bottom d-flex align-items-center justify-content-between bg-light" style="border-top-left-radius: 14px; border-top-right-radius: 14px;">
-                        <span class="fw-bold text-dark small m-0">Peringatan Operasional</span>
+                <div class="dropdown-menu dropdown-menu-end notification-dropdown p-0 border" style="width: 320px;">
+                    <div class="p-3 border-bottom d-flex align-items-center justify-content-between">
+                        <span class="fw-semibold text-dark small m-0">Peringatan Operasional</span>
                         @if($unreadNotifications > 0)
                             <button type="button" class="btn btn-link p-0 text-muted small text-decoration-none" id="btnMarkAllReadTopbar" style="font-size:0.72rem;">
                                 Tandai Dibaca
                             </button>
                         @endif
                     </div>
-                    <div class="notification-list" style="max-height: 290px; overflow-y: auto;">
+                    <div class="notification-list" style="max-height: 280px; overflow-y: auto;">
                         @forelse($topNotifications as $notif)
-                            <a href="{{ route('notifications.go', $notif->id) }}" class="p-2.5 px-3 border-bottom d-block text-decoration-none hover-bg {{ $notif->is_read ? 'opacity-75 bg-white' : 'bg-light' }}" style="transition: background 0.15s;">
+                            <a href="{{ route('notifications.go', $notif->id) }}" class="p-2.5 px-3 border-bottom d-block text-decoration-none {{ $notif->is_read ? 'opacity-75' : '' }}">
                                 <div class="d-flex align-items-center justify-content-between mb-0.5">
                                     <div class="d-flex align-items-center gap-1.5 overflow-hidden">
                                         @if(!$notif->is_read)
-                                            <span style="width:6px; height:6px; border-radius:50%; background-color:#2563eb; display:inline-block; flex-shrink:0;"></span>
+                                            <span style="width:6px; height:6px; border-radius:50%; background-color:var(--accent); display:inline-block; flex-shrink:0;"></span>
                                         @endif
-                                        <strong class="text-dark small text-truncate" style="max-width: 210px;">{{ $notif->title }}</strong>
+                                        <strong class="text-dark small text-truncate" style="max-width: 200px;">{{ $notif->title }}</strong>
                                     </div>
-                                    <small class="text-muted font-monospace" style="font-size: 0.65rem;">{{ $notif->created_at->diffForHumans(null, true) }}</small>
+                                    <small class="text-muted tabular-nums" style="font-size: 0.65rem;">{{ $notif->created_at->diffForHumans(null, true) }}</small>
                                 </div>
                                 <p class="text-muted mb-0 small text-truncate" style="font-size: 0.76rem;">{{ $notif->message }}</p>
                             </a>
                         @empty
                             <div class="text-center py-4 px-3 text-muted">
-                                <small>Semua operasional roastery aman & terkendali.</small>
+                                <small>Semua operasional roastery aman dan terkendali.</small>
                             </div>
                         @endforelse
                     </div>
-                    <div class="p-2 border-top bg-light text-center" style="border-bottom-left-radius: 14px; border-bottom-right-radius: 14px;">
-                        <a href="{{ route('notifications.index') }}" class="small fw-bold text-primary text-decoration-none" style="font-size:0.75rem;">
+                    <div class="p-2 border-top text-center">
+                        <a href="{{ route('notifications.index') }}" class="small fw-semibold text-secondary text-decoration-none" style="font-size:0.75rem;">
                             Buka Semua Notifikasi &rarr;
                         </a>
                     </div>
@@ -217,14 +217,14 @@
                     <i data-lucide="chevron-down"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('profile.index') }}"><i data-lucide="user" class="icon-sm"></i> Profile</a></li>
+                    <li><a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('profile.index') }}"><i data-lucide="user" class="icon-sm"></i> Profil</a></li>
 
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <form method="POST" action="{{ route('logout') ?? '/logout' }}">
                             @csrf
                             <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2">
-                                <i data-lucide="log-out" class="icon-sm"></i> Logout
+                                <i data-lucide="log-out" class="icon-sm"></i> Keluar
                             </button>
                         </form>
                     </li>
