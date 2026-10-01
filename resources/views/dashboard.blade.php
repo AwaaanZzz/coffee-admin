@@ -1,107 +1,68 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Beranda')
 
 @section('breadcrumbs')
-    <a href="{{ route('dashboard') }}">Home</a>
-    <i data-lucide="chevron-right"></i>
-    <span>Dashboard</span>
+    <a href="{{ route('dashboard') }}">Beranda</a>
 @endsection
 
 @section('content')
-    {{-- Header Banner --}}
-    <div class="card-modern mb-4">
-        <div class="card-body-modern p-4">
-            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-                <div>
-                    <h1 class="greeting-text mb-0" style="color: #1A202C; background: none; -webkit-text-fill-color: initial;">
-                        <span id="realtimeGreeting">{{ $greeting ?? 'Selamat Datang' }}</span>, {{ auth()->user()->name ?? 'Admin' }}!
-                    </h1>
-                    <p class="greeting-subtitle mt-1 mb-0 text-muted" style="font-size: 0.88rem;">
-                        <span id="realtimeDateSubtitle">{{ \Carbon\Carbon::now('Asia/Jakarta')->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</span> &bull; Ringkasan Operasional & Distribusi Mitra
-                    </p>
-                    <script>
-                        (function() {
-                            try {
-                                var now = new Date();
-                                var h = now.getHours();
-                                var g = 'Selamat Malam';
-                                if (h >= 4 && h < 11) g = 'Selamat Pagi';
-                                else if (h >= 11 && h < 15) g = 'Selamat Siang';
-                                else if (h >= 15 && h < 18) g = 'Selamat Sore';
-                                var el = document.getElementById('realtimeGreeting');
-                                if (el) el.textContent = g;
-                                var dt = document.getElementById('realtimeDateSubtitle');
-                                if (dt) dt.textContent = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-                            } catch(e) {}
-                        })();
-                    </script>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                    <a href="{{ route('stock.index') }}" class="btn btn-sm btn-outline-modern">
-                        <i data-lucide="printer" style="width:15px;height:15px;"></i> Cetak Barcode
-                    </a>
-                    <button class="btn btn-sm btn-accent" onclick="window.location.reload()">
-                        <i data-lucide="refresh-cw" style="width:15px;height:15px;"></i> Refresh Data
-                    </button>
-                </div>
-            </div>
+    {{-- Page Header --}}
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Beranda Operasional</h1>
+            <p class="page-subtitle">Ringkasan stok kopi, penjualan mitra, dan pergerakan persediaan.</p>
+            <span id="realtimeGreeting" class="d-none"></span>
+            <span id="realtimeDateSubtitle" class="d-none"></span>
+        </div>
+        <div class="page-actions">
+            <a href="{{ route('sales.create') }}" class="btn btn-accent">
+                <i data-lucide="plus"></i> Catat Penjualan
+            </a>
+            <a href="{{ route('stock.index') }}" class="btn btn-outline-modern">
+                <i data-lucide="printer"></i> Cetak Barcode
+            </a>
+            <button type="button" class="btn btn-outline-modern" onclick="window.location.reload()">
+                <i data-lucide="refresh-cw"></i> Segarkan Data
+            </button>
         </div>
     </div>
 
-    {{-- Stats Row --}}
+    {{-- Stats Row (Maksimal 4 KPI untuk Keputusan Operasional) --}}
     <div class="row g-3 mb-4">
-        <div class="col-6 col-md-4 col-xl-2">
+        <div class="col-12 col-sm-6 col-xl-3">
             <div class="stat-card">
-                <div class="stat-icon stat-icon-store"><i data-lucide="store"></i></div>
+                <div class="stat-icon"><i data-lucide="store"></i></div>
                 <div class="stat-info">
-                    <div class="stat-value">{{ $totalToko ?? 0 }}</div>
-                    <div class="stat-label">Total Toko</div>
+                    <div class="stat-value tabular-nums">{{ $totalToko ?? 0 }}</div>
+                    <div class="stat-label">Toko mitra aktif</div>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-md-4 col-xl-2">
+        <div class="col-12 col-sm-6 col-xl-3">
             <div class="stat-card">
-                <div class="stat-icon stat-icon-stock"><i data-lucide="package"></i></div>
+                <div class="stat-icon"><i data-lucide="package"></i></div>
                 <div class="stat-info">
-                    <div class="stat-value">{{ $totalStock ?? 0 }}</div>
-                    <div class="stat-label">Total Stock</div>
+                    <div class="stat-value tabular-nums">{{ number_format($totalStock ?? 0) }}</div>
+                    <div class="stat-label">Total stok tersedia (pcs)</div>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-md-4 col-xl-2">
+        <div class="col-12 col-sm-6 col-xl-3">
             <div class="stat-card">
-                <div class="stat-icon stat-icon-sold"><i data-lucide="shopping-cart"></i></div>
+                <div class="stat-icon"><i data-lucide="shopping-cart"></i></div>
                 <div class="stat-info">
-                    <div class="stat-value">{{ $totalLaku ?? 0 }}</div>
-                    <div class="stat-label">Total Laku</div>
+                    <div class="stat-value tabular-nums">{{ number_format($totalLaku ?? 0) }}</div>
+                    <div class="stat-label">Total produk terjual (pcs)</div>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-md-4 col-xl-2">
+        <div class="col-12 col-sm-6 col-xl-3">
             <div class="stat-card">
-                <div class="stat-icon stat-icon-exp"><i data-lucide="alert-triangle"></i></div>
+                <div class="stat-icon"><i data-lucide="alert-triangle"></i></div>
                 <div class="stat-info">
-                    <div class="stat-value">{{ $expiringSoon ?? 0 }}</div>
-                    <div class="stat-label">Mendekati Exp</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-xl-2">
-            <div class="stat-card">
-                <div class="stat-icon stat-icon-revenue"><i data-lucide="wallet"></i></div>
-                <div class="stat-info">
-                    <div class="stat-value" style="font-size:0.95rem">Rp {{ number_format($totalRevenue ?? 0, 0, ',', '.') }}</div>
-                    <div class="stat-label">Total Revenue</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-4 col-xl-2">
-            <div class="stat-card">
-                <div class="stat-icon stat-icon-growth"><i data-lucide="{{ ($revenueGrowth ?? 0) >= 0 ? 'trending-up' : 'trending-down' }}"></i></div>
-                <div class="stat-info">
-                    <div class="stat-value">{{ number_format($revenueGrowth ?? 0, 0) }}%</div>
-                    <div class="stat-label">Growth</div>
+                    <div class="stat-value tabular-nums {{ ($expiringSoon ?? 0) > 0 ? 'text-danger' : '' }}">{{ $expiringSoon ?? 0 }}</div>
+                    <div class="stat-label">Stok mendekati kedaluwarsa</div>
                 </div>
             </div>
         </div>
@@ -111,16 +72,16 @@
     <div class="card-modern mb-4">
         <div class="card-header-modern d-flex flex-wrap justify-content-between align-items-center gap-3">
             <div>
-                <h5 class="card-title-modern m-0">Analisis Produk Paling Laku Tiap Toko</h5>
-                <p class="text-muted small m-0 mt-1">Grafik performa dan peringkat kopi terlaris di setiap toko mitra</p>
+                <h5 class="card-title-modern m-0">Analisis Produk Terlaris Tiap Toko</h5>
+                <p class="text-muted small m-0 mt-1">Performa dan peringkat varian kopi di setiap toko mitra</p>
             </div>
             <div class="d-flex align-items-center gap-2 flex-wrap">
                 <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-sm btn-accent active" id="btnMetricQty">
+                    <button type="button" class="btn btn-sm btn-outline-modern active" id="btnMetricQty">
                         Unit Terjual (Pcs)
                     </button>
                     <button type="button" class="btn btn-sm btn-outline-modern" id="btnMetricRev">
-                        Omset (Rp)
+                        Omzet (Rp)
                     </button>
                 </div>
             </div>
@@ -131,47 +92,47 @@
             <div class="row g-3 mb-4">
                 @foreach($storeAnalytics ?? [] as $sid => $sa)
                     <div class="col-md-6 col-xl-4">
-                        <div class="p-3 rounded-3 border h-100 position-relative" style="background: var(--bg-card); border-color: var(--border); box-shadow: var(--shadow-sm);">
+                        <div class="p-3 border h-100 position-relative" style="background: var(--bg-card); border-color: var(--border); border-radius: var(--radius-sm);">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <div>
-                                    <h6 class="fw-bold m-0 text-dark">{{ $sa['store_name'] }}</h6>
-                                    <small class="text-muted" style="font-size: 0.72rem;">PJ: {{ $sa['penanggung_jawab'] ?? '-' }}</small>
+                                    <h6 class="fw-semibold m-0 text-dark">{{ $sa['store_name'] }}</h6>
+                                    <small class="text-muted" style="font-size: 0.75rem;">Penanggung jawab: {{ $sa['penanggung_jawab'] ?: 'Belum diisi' }}</small>
                                 </div>
-                                <span class="badge bg-warning text-dark fw-semibold" style="font-size:0.7rem;">
-                                    Best Seller Toko
+                                <span class="badge badge-secondary" style="font-size:0.7rem;">
+                                    Terlaris
                                 </span>
                             </div>
 
                             @if($sa['top_product'])
                                 <div class="mt-2 pt-2 border-top">
                                     <div class="d-flex justify-content-between align-items-baseline">
-                                        <div class="fw-bold fs-5 text-primary">{{ $sa['top_product']['name'] }}</div>
-                                        <span class="badge-modern {{ $sa['top_product']['category'] === 'robusta' ? 'badge-info' : 'badge-warning' }}">
+                                        <div class="fw-semibold text-dark" style="font-size: 0.95rem;">{{ $sa['top_product']['name'] }}</div>
+                                        <span class="badge badge-secondary">
                                             {{ ucfirst($sa['top_product']['category']) }}
                                         </span>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-2 small">
-                                        <span class="text-muted">Terjual: <strong class="text-success">{{ $sa['top_product']['qty'] }} pcs</strong></span>
-                                        <span class="text-muted">Omset: <strong class="text-dark">Rp {{ number_format($sa['top_product']['revenue'], 0, ',', '.') }}</strong></span>
+                                        <span class="text-muted">Terjual: <strong class="text-dark tabular-nums">{{ $sa['top_product']['qty'] }} pcs</strong></span>
+                                        <span class="text-muted">Omzet: <strong class="text-dark tabular-nums">Rp {{ number_format($sa['top_product']['revenue'], 0, ',', '.') }}</strong></span>
                                     </div>
-                                    <div class="progress mt-2" style="height: 6px;">
+                                    <div class="progress mt-2" style="height: 4px; background: var(--border); border-radius: 2px;">
                                         <div class="progress-bar bg-accent" role="progressbar" style="width: {{ $sa['top_product']['share_pct'] }}%;" aria-valuenow="{{ $sa['top_product']['share_pct'] }}" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                     <div class="d-flex justify-content-between mt-1" style="font-size:0.7rem; color:var(--text-muted);">
                                         <span>Pangsa penjualan toko</span>
-                                        <span>{{ $sa['top_product']['share_pct'] }}%</span>
+                                        <span class="tabular-nums">{{ $sa['top_product']['share_pct'] }}%</span>
                                     </div>
                                 </div>
                             @else
                                 <div class="mt-2 pt-2 border-top text-center py-3 text-muted">
-                                    <small>Belum ada transaksi penjualan tercatat di toko ini.</small>
+                                    <small class="text-empty">Belum ada transaksi penjualan tercatat di toko ini.</small>
                                 </div>
                             @endif
 
                             <div class="mt-3 pt-2 border-top d-flex justify-content-between align-items-center">
-                                <small class="text-muted">Total Penjualan: <strong>{{ $sa['total_qty'] }} pcs</strong></small>
-                                <button type="button" class="btn btn-sm btn-link p-0 text-decoration-none fw-bold text-accent switch-store-chart" data-store-id="{{ $sid }}" style="font-size:0.75rem;">
-                                    Tampilkan di Grafik &rarr;
+                                <small class="text-muted">Total penjualan: <strong class="tabular-nums">{{ $sa['total_qty'] }} pcs</strong></small>
+                                <button type="button" class="btn btn-sm btn-link p-0 text-decoration-none fw-semibold text-secondary switch-store-chart" data-store-id="{{ $sid }}" style="font-size:0.75rem;">
+                                    Tampilkan di grafik &rarr;
                                 </button>
                             </div>
                         </div>
@@ -276,55 +237,55 @@
                         <a href="{{ route('coffee-types.modal') }}" class="btn btn-sm btn-outline-accent d-inline-flex align-items-center gap-1" style="font-size:0.75rem;">
                             <i data-lucide="coins" style="width:13px;height:13px;"></i> Kelola Modal HPP &rarr;
                         </a>
-                        <span class="badge bg-success text-white px-2 py-1" style="font-size:0.75rem;">
-                            <i data-lucide="check" style="width:12px;height:12px;display:inline-block;vertical-align:-1px;"></i> Data Balance
+                        <span class="badge badge-success px-2 py-1">
+                            <i data-lucide="check" style="width:12px;height:12px;display:inline-block;vertical-align:-1px;"></i> Data seimbang
                         </span>
                     </div>
                 </div>
 
-                <div class="card-body-modern p-4">
+                <div class="card-body-modern p-3">
                     {{-- 4 Financial KPI Cards --}}
                     <div class="row g-3 mb-4">
                         <div class="col-sm-6 col-xl-3">
-                            <div class="p-3 rounded-3 border" style="background: rgba(46, 134, 171, 0.06); border-color: rgba(46, 134, 171, 0.25) !important;">
-                                <div class="text-muted small fw-semibold mb-1">Total Pemasukan</div>
-                                <div class="fs-5 fw-bold text-info">Rp {{ number_format($financeSummary['total_pemasukan'] ?? 0, 0, ',', '.') }}</div>
-                                <small class="text-muted" style="font-size:0.72rem;">Omset kotor toko mitra</small>
+                            <div class="p-3 border" style="background: var(--bg-card); border-color: var(--border); border-radius: var(--radius-sm);">
+                                <div class="text-secondary small fw-medium mb-1">Total pemasukan</div>
+                                <div class="fs-5 fw-semibold text-dark tabular-nums">Rp {{ number_format($financeSummary['total_pemasukan'] ?? 0, 0, ',', '.') }}</div>
+                                <small class="text-muted" style="font-size:0.75rem;">Omzet kotor mitra</small>
                             </div>
                         </div>
                         <div class="col-sm-6 col-xl-3">
-                            <div class="p-3 rounded-3 border" style="background: rgba(192, 57, 43, 0.06); border-color: rgba(192, 57, 43, 0.25) !important;">
-                                <div class="text-muted small fw-semibold mb-1">Total Pengeluaran</div>
-                                <div class="fs-5 fw-bold text-danger">Rp {{ number_format($financeSummary['total_pengeluaran'] ?? 0, 0, ',', '.') }}</div>
-                                <small class="text-muted" style="font-size:0.72rem;">Beban HPP & kemasan</small>
+                            <div class="p-3 border" style="background: var(--bg-card); border-color: var(--border); border-radius: var(--radius-sm);">
+                                <div class="text-secondary small fw-medium mb-1">Total pengeluaran</div>
+                                <div class="fs-5 fw-semibold text-danger tabular-nums">Rp {{ number_format($financeSummary['total_pengeluaran'] ?? 0, 0, ',', '.') }}</div>
+                                <small class="text-muted" style="font-size:0.75rem;">Beban HPP & kemasan</small>
                             </div>
                         </div>
                         <div class="col-sm-6 col-xl-3">
-                            <div class="p-3 rounded-3 border" style="background: rgba(74, 124, 89, 0.08); border-color: rgba(74, 124, 89, 0.25) !important;">
-                                <div class="text-muted small fw-semibold mb-1">Laba Bersih</div>
-                                <div class="fs-5 fw-bold text-success">Rp {{ number_format($financeSummary['total_laba'] ?? 0, 0, ',', '.') }}</div>
-                                <small class="text-muted" style="font-size:0.72rem;">Pemasukan - Pengeluaran</small>
+                            <div class="p-3 border" style="background: var(--bg-card); border-color: var(--border); border-radius: var(--radius-sm);">
+                                <div class="text-secondary small fw-medium mb-1">Laba bersih</div>
+                                <div class="fs-5 fw-semibold text-success tabular-nums">Rp {{ number_format($financeSummary['total_laba'] ?? 0, 0, ',', '.') }}</div>
+                                <small class="text-muted" style="font-size:0.75rem;">Pemasukan - beban</small>
                             </div>
                         </div>
                         <div class="col-sm-6 col-xl-3">
-                            <div class="p-3 rounded-3 border" style="background: rgba(200, 138, 78, 0.08); border-color: rgba(200, 138, 78, 0.25) !important;">
-                                <div class="text-muted small fw-semibold mb-1">Margin Keuntungan</div>
-                                <div class="fs-5 fw-bold text-warning">{{ number_format($financeSummary['average_margin'] ?? 0, 1) }}%</div>
-                                <small class="text-muted" style="font-size:0.72rem;">Rata-rata profit margin</small>
+                            <div class="p-3 border" style="background: var(--bg-card); border-color: var(--border); border-radius: var(--radius-sm);">
+                                <div class="text-secondary small fw-medium mb-1">Margin keuntungan</div>
+                                <div class="fs-5 fw-semibold text-dark tabular-nums">{{ number_format($financeSummary['average_margin'] ?? 0, 1) }}%</div>
+                                <small class="text-muted" style="font-size:0.75rem;">Rata-rata profit margin</small>
                             </div>
                         </div>
                     </div>
 
                     {{-- Financial Table per Store --}}
-                    <div class="table-responsive rounded-3 border">
-                        <table class="table table-hover align-middle mb-0" style="font-size: 0.88rem;">
-                            <thead class="table-light">
-                                <tr class="text-muted">
-                                    <th>Toko Mitra</th>
+                    <div class="table-responsive border" style="border-radius: var(--radius-sm);">
+                        <table class="table-modern mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Toko mitra</th>
                                     <th>Periode</th>
                                     <th class="text-end">Pemasukan</th>
                                     <th class="text-end">Pengeluaran</th>
-                                    <th class="text-end">Laba Bersih</th>
+                                    <th class="text-end">Laba bersih</th>
                                     <th class="text-center">Margin</th>
                                     <th class="text-center">Status</th>
                                 </tr>
