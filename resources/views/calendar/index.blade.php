@@ -3,38 +3,42 @@
 @section('title', 'Kalender')
 
 @section('breadcrumbs')
-    <a href="{{ route('dashboard') }}">Home</a>
+    <a href="{{ route('dashboard') }}">Beranda</a>
     <i data-lucide="chevron-right"></i>
     <span>Kalender</span>
 @endsection
 
 @section('content')
 <div class="page-content">
-    <div class="page-header">
+    <div class="page-header d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
-            <h1 class="page-title">Kalender</h1>
-            <p class="page-subtitle">Jadwal stok, keuangan, dan penjualan</p>
+            <h1 class="page-title m-0">Kalender</h1>
+            <p class="page-subtitle mt-1 mb-0">Jadwal stok, keuangan, dan penjualan toko</p>
         </div>
-        <div class="page-actions d-flex align-items-center gap-3">
-            <button class="btn btn-outline-modern" id="prevMonth"><i data-lucide="chevron-left"></i></button>
-            <h4 class="m-0 fw-bold" id="monthYearTitle">Bulan Tahun</h4>
-            <button class="btn btn-outline-modern" id="nextMonth"><i data-lucide="chevron-right"></i></button>
+        <div class="page-actions d-flex align-items-center gap-2">
+            <button class="btn btn-outline-modern btn-sm" id="prevMonth" title="Bulan sebelumnya">
+                <i data-lucide="chevron-left" style="width: 16px; height: 16px;"></i>
+            </button>
+            <h4 class="m-0 fw-semibold text-main px-2" id="monthYearTitle" style="font-size: 1.05rem; min-width: 170px; text-align: center;">Bulan Tahun</h4>
+            <button class="btn btn-outline-modern btn-sm" id="nextMonth" title="Bulan berikutnya">
+                <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+            </button>
         </div>
     </div>
 
     <div class="card card-modern">
         <div class="card-body card-body-modern p-0">
             <div class="table-responsive">
-                <table class="table table-bordered mb-0 calendar-table" style="table-layout: fixed; min-width: 800px;">
-                    <thead class="bg-light">
+                <table class="table table-bordered mb-0 calendar-table" style="table-layout: fixed; min-width: 800px; border-color: var(--border-color, #e2e8f0);">
+                    <thead style="background: var(--bg-secondary, #faf7f2);">
                         <tr>
-                            <th class="text-center py-3">Minggu</th>
-                            <th class="text-center py-3">Senin</th>
-                            <th class="text-center py-3">Selasa</th>
-                            <th class="text-center py-3">Rabu</th>
-                            <th class="text-center py-3">Kamis</th>
-                            <th class="text-center py-3">Jumat</th>
-                            <th class="text-center py-3">Sabtu</th>
+                            <th class="text-center py-2 text-muted fw-semibold" style="font-size: 0.8125rem;">Minggu</th>
+                            <th class="text-center py-2 text-muted fw-semibold" style="font-size: 0.8125rem;">Senin</th>
+                            <th class="text-center py-2 text-muted fw-semibold" style="font-size: 0.8125rem;">Selasa</th>
+                            <th class="text-center py-2 text-muted fw-semibold" style="font-size: 0.8125rem;">Rabu</th>
+                            <th class="text-center py-2 text-muted fw-semibold" style="font-size: 0.8125rem;">Kamis</th>
+                            <th class="text-center py-2 text-muted fw-semibold" style="font-size: 0.8125rem;">Jumat</th>
+                            <th class="text-center py-2 text-muted fw-semibold" style="font-size: 0.8125rem;">Sabtu</th>
                         </tr>
                     </thead>
                     <tbody id="calendarBody">
@@ -47,12 +51,12 @@
 
 <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header border-bottom">
-        <h5 class="modal-title" id="eventModalLabel">Detail Kegiatan</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-content" style="border-radius: var(--radius-sm, 8px); border: 1px solid var(--border-color, #e2e8f0);">
+      <div class="modal-header border-bottom py-3 px-4">
+        <h5 class="modal-title fw-semibold text-main" id="eventModalLabel" style="font-size: 1rem;">Detail kegiatan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
       </div>
-      <div class="modal-body" id="eventModalBody">
+      <div class="modal-body p-4" id="eventModalBody">
       </div>
     </div>
   </div>
@@ -61,18 +65,18 @@
 
 @section('scripts')
 <style>
-    .calendar-table td { height: 120px; vertical-align: top; padding: 10px; }
-    .calendar-day-number { font-weight: 600; margin-bottom: 5px; text-align: right; color: var(--text-secondary); }
-    .calendar-day.today .calendar-day-number { color: var(--accent); font-weight: 800; font-size: 1.1rem; }
-    .calendar-day.today { background-color: var(--accent-light); }
+    .calendar-table td { height: 110px; vertical-align: top; padding: 8px; border-color: var(--border-color, #e2e8f0); }
+    .calendar-day-number { font-weight: 600; margin-bottom: 4px; text-align: right; color: var(--text-muted, #64748b); font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
+    .calendar-day.today .calendar-day-number { color: var(--accent, #C88A4E); font-weight: 700; font-size: 0.95rem; }
+    .calendar-day.today { background-color: var(--accent-subtle, rgba(200, 138, 78, 0.08)); }
     .calendar-event { 
-        padding: 4px 8px; margin-bottom: 4px; border-radius: 4px; font-size: 0.8rem; cursor: pointer;
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        padding: 3px 6px; margin-bottom: 4px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500;
     }
-    .event-danger { background-color: var(--danger-light); color: var(--danger); border-left: 3px solid var(--danger); }
-    .event-info { background-color: var(--info-light); color: var(--info); border-left: 3px solid var(--info); }
-    .event-success { background-color: var(--success-light); color: var(--success); border-left: 3px solid var(--success); }
-    .calendar-day.other-month { opacity: 0.4; background-color: #f8fafc; }
+    .event-danger { background-color: var(--danger-subtle, #fef2f2); color: var(--danger, #dc2626); border-left: 3px solid var(--danger, #dc2626); }
+    .event-info { background-color: var(--info-subtle, #eff6ff); color: var(--info, #2563eb); border-left: 3px solid var(--info, #2563eb); }
+    .event-success { background-color: var(--success-subtle, #f0fdf4); color: var(--success, #16a34a); border-left: 3px solid var(--success, #16a34a); }
+    .calendar-day.other-month { opacity: 0.45; background-color: var(--bg-secondary, #faf7f2); }
     [data-theme="dark"] .calendar-day.other-month { background-color: #0f172a; }
 </style>
 <script>
@@ -161,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const desc = this.getAttribute('data-desc');
                     const type = this.getAttribute('data-type');
                     document.getElementById('eventModalLabel').textContent = title;
-                    document.getElementById('eventModalBody').innerHTML = `<div class="alert alert-${type === 'danger' ? 'danger' : (type === 'success' ? 'success' : 'info')}">${desc}</div>`;
+                    document.getElementById('eventModalBody').innerHTML = `<div class="alert alert-${type === 'danger' ? 'danger' : (type === 'success' ? 'success' : 'info')} mb-0" style="border-radius: var(--radius-sm, 8px);">${desc}</div>`;
                     new bootstrap.Modal(document.getElementById('eventModal')).show();
                 });
             });
