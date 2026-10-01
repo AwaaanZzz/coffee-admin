@@ -44,7 +44,7 @@
 
                 <div class="form-actions mt-4 pt-3 border-top d-flex gap-2">
                     <button type="submit" class="btn btn-accent">
-                        <i data-lucide="save"></i> Simpan
+                        <i data-lucide="save"></i> Simpan jenis kopi
                     </button>
                     <a href="{{ route('coffee-types.index') }}" class="btn btn-outline-modern">Batal</a>
                 </div>

@@ -302,8 +302,8 @@
         @csrf
         <div class="card-modern mb-5" style="margin-bottom: 7.5rem !important;">
             <div class="card-header-modern d-flex justify-content-between align-items-center">
-                <h5 class="card-title-modern m-0">Daftar Batch Stok Konsinyasi Toko</h5>
-                <span class="badge bg-light text-muted border">{{ count($auditItems) }} Batch Aktif</span>
+                <h5 class="card-title-modern m-0">Daftar batch stok konsinyasi toko</h5>
+                <span class="badge-modern badge-neutral">{{ count($auditItems) }} batch aktif</span>
             </div>
             <div class="card-body-modern p-0">
                 <div class="table-responsive">
@@ -311,14 +311,14 @@
                         <thead>
                             <tr>
                                 <th style="width: 45px; padding-left: 20px;" class="text-center">#</th>
-                                <th style="min-width: 140px;">Barcode & Batch</th>
-                                <th>Varian Kopi</th>
-                                <th class="text-center">Exp Date</th>
-                                <th class="text-center">Stok Sistem</th>
-                                <th class="text-center" style="min-width: 175px;">Fisik Ditemukan di Rak</th>
-                                <th class="text-center">Terjual Otomatis</th>
-                                <th class="text-end">Harga Satuan</th>
-                                <th class="text-end" style="padding-right: 20px;">Subtotal Laku</th>
+                                <th style="min-width: 140px;">Barcode & batch</th>
+                                <th>Jenis kopi</th>
+                                <th class="text-center">Tgl. kedaluwarsa</th>
+                                <th class="text-end">Stok sistem</th>
+                                <th class="text-center" style="min-width: 175px;">Fisik ditemukan di rak</th>
+                                <th class="text-end">Terjual otomatis</th>
+                                <th class="text-end">Harga satuan</th>
+                                <th class="text-end" style="padding-right: 20px;">Subtotal laku</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -333,25 +333,25 @@
                                     <div class="font-monospace text-muted small" style="font-size: 0.74rem;">{{ $item['kode_produksi'] }}</div>
                                 </td>
                                 <td>
-                                    <div class="fw-bold" style="color: var(--text-primary, #1E3A5F); font-family: 'Manrope', sans-serif; font-size: 0.95rem;">
+                                    <div class="fw-bold text-dark">
                                         {{ $item['coffee_name'] }}
                                     </div>
-                                    <span class="badge rounded-pill bg-light text-muted border text-uppercase" style="font-size: 0.65rem;">
-                                        {{ $item['category'] }}
+                                    <span class="badge-modern badge-neutral" style="font-size: 0.65rem;">
+                                        {{ ucfirst($item['category']) }}
                                     </span>
                                 </td>
                                 <td class="text-center">
-                                    <span class="font-monospace small {{ $item['is_expired'] ? 'text-danger fw-bold' : ($item['is_expiring_soon'] ? 'text-warning fw-bold' : 'text-muted') }}">
+                                    <span class="tabular-nums small {{ $item['is_expired'] ? 'text-danger fw-bold' : ($item['is_expiring_soon'] ? 'text-warning fw-bold' : 'text-muted') }}">
                                         {{ $item['tgl_exp'] }}
                                     </span>
                                     @if($item['is_expired'])
-                                        <div><span class="badge bg-danger text-white" style="font-size: 0.65rem;">Expired</span></div>
+                                        <div><span class="badge-modern badge-danger" style="font-size: 0.65rem;">Kedaluwarsa</span></div>
                                     @elseif($item['is_expiring_soon'])
-                                        <div><span class="badge bg-warning text-dark" style="font-size: 0.65rem;">Hampir Exp</span></div>
+                                        <div><span class="badge-modern badge-warning" style="font-size: 0.65rem;">Segera kedaluwarsa</span></div>
                                     @endif
                                 </td>
-                                <td class="text-center">
-                                    <span class="badge bg-light text-dark border px-2.5 py-1.5 font-monospace fs-6" id="stok-sistem-{{ $item['batch_id'] }}">
+                                <td class="text-end tabular-nums">
+                                    <span class="badge-modern badge-neutral px-2.5 py-1.5 font-monospace" id="stok-sistem-{{ $item['batch_id'] }}">
                                         {{ $item['stok_sistem'] }}
                                     </span>
                                 </td>
@@ -363,7 +363,7 @@
                                         <input type="number" 
                                                name="items[{{ $index }}][fisik_terhitung]" 
                                                id="fisik-input-{{ $item['batch_id'] }}" 
-                                               class="stepper-input-modern form-control form-control-sm" 
+                                               class="stepper-input-modern form-control form-control-sm text-center tabular-nums" 
                                                value="0" 
                                                min="0" 
                                                data-sistem="{{ $item['stok_sistem'] }}"
@@ -374,15 +374,15 @@
                                         </button>
                                     </div>
                                 </td>
-                                <td class="text-center">
-                                    <span class="badge font-monospace px-2.5 py-1 fs-6" id="selisih-badge-{{ $item['batch_id'] }}">
+                                <td class="text-end tabular-nums">
+                                    <span class="badge-modern badge-neutral px-2.5 py-1" id="selisih-badge-{{ $item['batch_id'] }}">
                                         0 pcs
                                     </span>
                                 </td>
-                                <td class="text-end font-monospace text-muted">
+                                <td class="text-end tabular-nums font-monospace text-muted">
                                     Rp {{ number_format($item['harga_satuan'], 0, ',', '.') }}
                                 </td>
-                                <td class="text-end font-monospace fw-bold" style="color: var(--success, #4A7C59); padding-right: 20px;" id="subtotal-{{ $item['batch_id'] }}">
+                                <td class="text-end tabular-nums font-monospace fw-semibold" style="padding-right: 20px;" id="subtotal-{{ $item['batch_id'] }}">
                                     Rp 0
                                 </td>
                             </tr>
@@ -406,41 +406,41 @@
             <div class="row align-items-center g-3">
                 <div class="col-12 col-md-3">
                     <div class="d-flex align-items-center gap-2">
-                        <div class="stat-icon" style="background: rgba(46,134,171,0.12); color: #2E86AB; width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                        <div class="stat-icon">
                             <i data-lucide="boxes" style="width:18px;height:18px;"></i>
                         </div>
                         <div>
-                            <div class="text-muted small fw-semibold text-uppercase" style="font-size:0.7rem; letter-spacing:0.5px;">Total Fisik di Rak</div>
-                            <div class="fs-5 fw-bold" style="color: #2E86AB;"><span id="sumTotalFisik">0</span> <small class="text-muted fw-normal fs-6">pcs</small></div>
+                            <div class="stat-label">Total fisik di rak</div>
+                            <div class="fs-5 fw-bold text-dark"><span id="sumTotalFisik" class="tabular-nums">0</span> <small class="text-muted fw-normal fs-6">pcs</small></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
                     <div class="d-flex align-items-center gap-2">
-                        <div class="stat-icon" style="background: rgba(200,138,78,0.12); color: #C88A4E; width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                        <div class="stat-icon">
                             <i data-lucide="shopping-cart" style="width:18px;height:18px;"></i>
                         </div>
                         <div>
-                            <div class="text-muted small fw-semibold text-uppercase" style="font-size:0.7rem; letter-spacing:0.5px;">Terjual Otomatis</div>
-                            <div class="fs-5 fw-bold" style="color: #C88A4E;"><span id="sumTotalTerjual">0</span> <small class="text-muted fw-normal fs-6">pcs</small></div>
+                            <div class="stat-label">Terjual otomatis</div>
+                            <div class="fs-5 fw-bold text-dark"><span id="sumTotalTerjual" class="tabular-nums">0</span> <small class="text-muted fw-normal fs-6">pcs</small></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
                     <div>
-                        <div class="text-muted small fw-semibold text-uppercase" style="font-size:0.7rem; letter-spacing:0.5px;">Total Setoran Toko</div>
-                        <div class="fs-4 fw-bold font-monospace" style="color: var(--success, #4A7C59);" id="sumTotalNilai">Rp 0</div>
+                        <div class="stat-label">Total setoran toko</div>
+                        <div class="fs-4 fw-bold font-monospace text-dark tabular-nums" id="sumTotalNilai">Rp 0</div>
                     </div>
                 </div>
                 <div class="col-12 col-md-3 text-md-end">
                     @if(count($auditItems) > 0)
-                    <button type="button" class="btn btn-accent btn-lg w-100 shadow-sm fw-bold d-flex align-items-center justify-content-center gap-2" onclick="confirmFinishAudit()">
+                    <button type="button" class="btn btn-accent btn-lg w-100 fw-semibold d-flex align-items-center justify-content-center gap-2" onclick="confirmFinishAudit()">
                         <i data-lucide="check-circle" style="width: 18px; height: 18px;"></i>
-                        <span>Selesaikan Audit &rarr;</span>
+                        <span>Selesaikan audit</span>
                     </button>
                     @else
-                    <button type="button" class="btn btn-secondary btn-lg w-100 fw-bold disabled" disabled>
-                        <span>Tidak Ada Item</span>
+                    <button type="button" class="btn btn-outline-modern btn-lg w-100 fw-semibold disabled" disabled>
+                        <span>Tidak ada item</span>
                     </button>
                     @endif
                 </div>

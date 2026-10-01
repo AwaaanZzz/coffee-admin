@@ -13,17 +13,18 @@
 @section('content')
 <div class="page-header d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
     <div>
-        <h1 class="page-title m-0">Modal & HPP Tiap Jenis Kopi</h1>
+        <h3 class="page-title m-0">Modal & HPP Tiap Jenis Kopi</h3>
+        <p class="page-subtitle">Kelola harga pokok produksi untuk evaluasi margin roastery.</p>
     </div>
     <div class="d-flex gap-2 flex-wrap">
         <a href="{{ route('exports.index') }}" class="btn btn-sm btn-outline-modern">
-            Ekspor Excel & PDF
+            Ekspor data
         </a>
         <a href="{{ route('coffee-types.index') }}" class="btn btn-sm btn-outline-modern">
-            Kelola Varian Kopi
+            Kelola jenis kopi
         </a>
-        <a href="{{ route('dashboard') }}" class="btn btn-sm btn-outline-accent">
-            Lihat Dashboard Keuangan
+        <a href="{{ route('dashboard') }}" class="btn btn-sm btn-outline-modern">
+            Dashboard
         </a>
     </div>
 </div>
@@ -31,42 +32,52 @@
 {{-- Top 4 KPI Cards --}}
 <div class="row g-3 mb-4">
     <div class="col-sm-6 col-xl-3">
-        <div class="card-modern p-3">
-            <div>
-                <div class="text-muted small fw-semibold">Varian Kopi Terdaftar</div>
-                <div class="fs-4 fw-bold text-dark mt-1">{{ $kpis['total_varian'] }} <span style="font-size:0.85rem; font-weight:normal;" class="text-muted">Varian</span></div>
-                <small class="text-success" style="font-size:0.72rem;">
-                    {{ $kpis['configured_count'] }} varian telah diset modal
-                </small>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i data-lucide="coffee"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-label">Varian terdaftar</div>
+                <div class="stat-value fs-5 tabular-nums">{{ $kpis['total_varian'] }} <span style="font-size:0.85rem; font-weight:normal;" class="text-muted">varian</span></div>
+                <small class="text-muted" style="font-size:0.72rem;">{{ $kpis['configured_count'] }} varian telah diset</small>
             </div>
         </div>
     </div>
 
     <div class="col-sm-6 col-xl-3">
-        <div class="card-modern p-3">
-            <div>
-                <div class="text-muted small fw-semibold">Rata-rata Modal (HPP)</div>
-                <div class="fs-4 fw-bold text-danger mt-1">Rp {{ number_format($kpis['avg_modal'], 0, ',', '.') }}</div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i data-lucide="calculator"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-label">Rata-rata modal (HPP)</div>
+                <div class="stat-value fs-5 tabular-nums">Rp {{ number_format($kpis['avg_modal'], 0, ',', '.') }}</div>
                 <small class="text-muted" style="font-size:0.72rem;">Biaya roastery per pack</small>
             </div>
         </div>
     </div>
 
     <div class="col-sm-6 col-xl-3">
-        <div class="card-modern p-3">
-            <div>
-                <div class="text-muted small fw-semibold">Rata-rata Harga Jual</div>
-                <div class="fs-4 fw-bold text-info mt-1">Rp {{ number_format($kpis['avg_price'], 0, ',', '.') }}</div>
-                <small class="text-muted" style="font-size:0.72rem;">Harga titip jual toko mitra</small>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i data-lucide="tag"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-label">Rata-rata harga jual</div>
+                <div class="stat-value fs-5 tabular-nums">Rp {{ number_format($kpis['avg_price'], 0, ',', '.') }}</div>
+                <small class="text-muted" style="font-size:0.72rem;">Harga titip jual mitra</small>
             </div>
         </div>
     </div>
 
     <div class="col-sm-6 col-xl-3">
-        <div class="card-modern p-3">
-            <div>
-                <div class="text-muted small fw-semibold">Estimasi Margin Roastery</div>
-                <div class="fs-4 fw-bold {{ $kpis['avg_margin'] >= 30 ? 'text-success' : 'text-warning' }} mt-1">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i data-lucide="percent"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-label">Estimasi margin roastery</div>
+                <div class="stat-value fs-5 tabular-nums {{ $kpis['avg_margin'] >= 30 ? 'text-success' : 'text-warning' }}">
                     {{ $kpis['avg_margin'] }}%
                 </div>
                 <small class="text-muted" style="font-size:0.72rem;">Margin laba kotor rata-rata</small>
@@ -96,14 +107,14 @@
                     <thead>
                         <tr>
                             <th style="width: 40px; padding-left: 20px;">#</th>
-                            <th style="min-width: 180px;">Jenis Kopi</th>
+                            <th style="min-width: 180px;">Nama jenis kopi</th>
                             <th style="min-width: 110px;">Kategori</th>
-                            <th style="min-width: 190px;" class="text-end">Modal Roastery (HPP)</th>
-                            <th style="min-width: 140px;" class="text-end">Harga Jual Mitra</th>
-                            <th style="min-width: 140px;" class="text-end">Laba / Pack</th>
+                            <th style="min-width: 190px;" class="text-end">Modal roastery (HPP)</th>
+                            <th style="min-width: 140px;" class="text-end">Harga jual mitra</th>
+                            <th style="min-width: 140px;" class="text-end">Laba per pack</th>
                             <th style="min-width: 110px;" class="text-center">Margin</th>
                             <th style="min-width: 110px;" class="text-center">Terjual</th>
-                            <th style="min-width: 150px; padding-right: 20px;" class="text-end">Beban HPP Riil</th>
+                            <th style="min-width: 150px; padding-right: 20px;" class="text-end">Beban HPP riil</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -118,7 +129,7 @@
                             <tr id="row-coffee-{{ $coffee->id }}" data-price="{{ $avgPrice }}" data-sold="{{ $coffee->total_laku }}">
                                 <td class="text-muted small" style="padding-left: 20px;">{{ $index + 1 }}</td>
                                 <td>
-                                    <div class="fw-bold text-dark" style="font-family:'Manrope', sans-serif; font-size:1.02rem;">
+                                    <div class="fw-bold text-dark">
                                         {{ $coffee->name }}
                                     </div>
                                     @if($coffee->stores_count > 0)
@@ -126,13 +137,13 @@
                                             Tersedia di {{ $coffee->stores_count }} toko mitra
                                         </small>
                                     @else
-                                        <small class="text-warning" style="font-size:0.72rem;">
+                                        <small class="text-muted" style="font-size:0.72rem;">
                                             Belum ditentukan harga di toko
                                         </small>
                                     @endif
                                 </td>
                                 <td>
-                                    <span class="badge-modern {{ $coffee->category === 'robusta' ? 'badge-info' : 'badge-warning' }}" style="font-size:0.72rem; text-transform:capitalize;">
+                                    <span class="badge-modern badge-neutral" style="text-transform:capitalize;">
                                         {{ $coffee->category }}
                                     </span>
                                 </td>
@@ -205,11 +216,11 @@
                     <span>Data modal yang Anda simpan akan seketika mengubah nilai <strong>Total Pengeluaran (Beban HPP Pokok)</strong> dan <strong>Laba Bersih</strong> pada laporan keuangan Dashboard.</span>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <button type="reset" class="btn btn-sm btn-outline-secondary">
+                    <button type="reset" class="btn btn-sm btn-outline-modern">
                         Reset
                     </button>
-                    <button type="submit" class="btn btn-accent btn-sm px-4 shadow-sm fw-bold">
-                        Simpan Semua Modal
+                    <button type="submit" class="btn btn-sm btn-outline-modern">
+                        Simpan perubahan
                     </button>
                 </div>
             </div>

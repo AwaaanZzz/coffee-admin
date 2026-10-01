@@ -17,7 +17,7 @@
         </div>
         <div class="page-actions">
             <a href="{{ route('coffee-types.create') }}" class="btn btn-accent">
-                <i data-lucide="plus"></i> Tambah Jenis Kopi
+                <i data-lucide="plus"></i> Tambah jenis kopi
             </a>
         </div>
     </div>
@@ -28,8 +28,8 @@
                 <table class="table-modern w-100">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Nama Kopi</th>
+                            <th style="width: 40px;">#</th>
+                            <th>Nama jenis kopi</th>
                             <th>Kategori</th>
                             <th class="text-end">Aksi</th>
                         </tr>
@@ -40,13 +40,13 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td class="fw-bold">{{ $coffee->name }}</td>
                                 <td>
-                                    <span class="badge-modern {{ $coffee->category === 'robusta' ? 'bg-dark text-white' : 'bg-warning text-dark' }}">
+                                    <span class="badge-modern badge-neutral">
                                         {{ ucfirst($coffee->category) }}
                                     </span>
                                 </td>
                                 <td class="text-end">
                                     <div class="d-flex justify-content-end gap-2">
-                                        <a href="{{ route('coffee-types.edit', $coffee) }}" class="btn btn-table-action text-warning" title="Edit">
+                                        <a href="{{ route('coffee-types.edit', $coffee) }}" class="btn btn-table-action" title="Edit">
                                             <i data-lucide="edit"></i>
                                         </a>
                                         <form action="{{ route('coffee-types.destroy', $coffee) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus jenis kopi ini?')">

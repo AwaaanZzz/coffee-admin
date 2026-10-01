@@ -18,21 +18,21 @@
             <p class="page-subtitle mt-1 mb-0">Pantau ketersediaan stock, cetak label barcode kemasan, dan atur distribusi ke setiap toko.</p>
         </div>
         <div class="page-actions d-flex gap-2 flex-wrap">
-            <a href="{{ route('exports.index') }}" class="btn btn-outline-success d-flex align-items-center gap-1.5" title="Ekspor laporan stok ke Excel/PDF">
-                <i data-lucide="file-spreadsheet"></i> Ekspor Excel & PDF
+            <a href="{{ route('exports.index') }}" class="btn btn-outline-modern d-flex align-items-center gap-1.5" title="Ekspor laporan stok ke Excel/PDF">
+                <i data-lucide="file-spreadsheet"></i> Ekspor data
             </a>
             <a href="{{ route('stock.print-labels') }}{{ request('store_id') ? '?store_id='.request('store_id') : '' }}" target="_blank" class="btn btn-outline-modern" title="Cetak label barcode kemasan">
-                <i data-lucide="printer"></i> Cetak Semua Barcode
+                <i data-lucide="printer"></i> Cetak semua barcode
             </a>
             <a href="{{ route('stock.create') }}" class="btn btn-accent">
-                <i data-lucide="plus"></i> Tambah Stock
+                <i data-lucide="plus"></i> Tambah stok
             </a>
         </div>
     </div>
 
 
     {{-- Unified Control Toolbar (Compact & Professional) --}}
-    <div class="card-modern mb-4 p-3" style="background: #ffffff; border: 1px solid rgba(44, 30, 20, 0.08);">
+    <div class="card-modern mb-4 p-3" style="background: var(--bg-card); border: 1px solid var(--border);">
         <form method="GET" class="row g-2 align-items-center">
             {{-- Filter Toko --}}
             <div class="col-lg-3 col-md-4">
@@ -41,7 +41,7 @@
                         <i data-lucide="store" style="width:14px;height:14px;"></i>
                     </span>
                     <select name="store_id" class="form-select form-select-sm border-start-0 ps-0" onchange="this.form.submit()">
-                        <option value="">Semua Toko Mitra</option>
+                        <option value="">Semua toko mitra</option>
                         @foreach ($stores as $s)
                             <option value="{{ $s->id }}" {{ request('store_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                         @endforeach
@@ -52,13 +52,13 @@
             {{-- Search Bar --}}
             <div class="col-lg-9 col-md-8">
                 <div class="input-group input-group-sm">
-                    <input type="text" name="search" id="stockBarcodeInput" class="form-control form-control-sm" placeholder="Cari..." value="{{ request('search') }}" autocomplete="off">
+                    <input type="text" name="search" id="stockBarcodeInput" class="form-control form-control-sm" placeholder="Cari barcode, kode produksi, nama kopi..." value="{{ request('search') }}" autocomplete="off">
                     @if(request('search'))
-                        <a href="{{ route('stock.index', request('store_id') ? ['store_id' => request('store_id')] : []) }}" class="btn btn-sm btn-outline-secondary" title="Reset pencarian">
+                        <a href="{{ route('stock.index', request('store_id') ? ['store_id' => request('store_id')] : []) }}" class="btn btn-sm btn-outline-modern" title="Reset pencarian">
                             <i data-lucide="x" style="width:12px;height:12px;"></i>
                         </a>
                     @endif
-                    <button class="btn btn-sm btn-accent px-3" type="submit">
+                    <button class="btn btn-sm btn-outline-modern px-3" type="submit">
                         <i data-lucide="search" style="width:12px;height:12px;"></i> Cari
                     </button>
                 </div>
@@ -73,15 +73,15 @@
                 <table class="table-modern w-100 m-0 align-middle">
                     <thead>
                         <tr>
-                            <th style="min-width: 140px; padding-left: 18px;">Barcode & Batch</th>
-                            <th style="min-width: 130px;">Toko Mitra</th>
-                            <th style="min-width: 130px;">Kopi & Varian</th>
-                            <th style="min-width: 95px;">Tgl Masuk</th>
-                            <th style="min-width: 95px;">Tgl Exp</th>
-                            <th class="text-center" style="width: 55px;">Awal</th>
-                            <th class="text-center" style="width: 55px;">Laku</th>
-                            <th class="text-center" style="width: 55px;">Sisa</th>
-                            <th class="text-end" style="min-width: 105px;">Total Nilai</th>
+                            <th style="min-width: 140px; padding-left: 18px;">Barcode & batch</th>
+                            <th style="min-width: 130px;">Toko mitra</th>
+                            <th style="min-width: 130px;">Jenis kopi</th>
+                            <th style="min-width: 95px;">Tgl. masuk</th>
+                            <th style="min-width: 95px;">Tgl. kedaluwarsa</th>
+                            <th class="text-end" style="width: 55px;">Awal</th>
+                            <th class="text-end" style="width: 55px;">Laku</th>
+                            <th class="text-end" style="width: 55px;">Sisa</th>
+                            <th class="text-end" style="min-width: 105px;">Total nilai</th>
                             <th class="text-center" style="width: 80px;">Status</th>
                             <th class="text-end" style="min-width: 155px; padding-right: 18px;">Aksi</th>
                         </tr>
@@ -103,7 +103,7 @@
                                             </button>
                                         </div>
                                         <div class="d-flex align-items-center gap-1" title="Kode Produksi">
-                                            <span class="badge bg-light text-muted border font-monospace text-truncate" style="font-size:0.68rem; max-width: 135px;">
+                                            <span class="badge-modern badge-neutral font-monospace text-truncate" style="font-size:0.68rem; max-width: 135px;">
                                                 <i data-lucide="tag" style="width:9px;height:9px;" class="me-0.5"></i>{{ $batch->kode_produksi }}
                                             </span>
                                         </div>
@@ -112,44 +112,42 @@
                                 <td>
                                     <div class="d-flex flex-column justify-content-center" style="min-width: 110px;">
                                         <div class="fw-bold text-dark d-flex align-items-center gap-1">
-                                            <i data-lucide="store" style="width:14px;height:14px;color:var(--accent);flex-shrink:0;"></i>
-                                            <span class="text-nowrap" style="font-size:0.88rem;">{{ $batch->store->name ?? '-' }}</span>
+                                            <i data-lucide="store" style="width:14px;height:14px;color:var(--text-muted);flex-shrink:0;"></i>
+                                            <span class="text-nowrap" style="font-size:0.88rem;">{{ $batch->store->name ?? 'Belum diisi' }}</span>
                                         </div>
-                                        <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">PJ: {{ $batch->store->penanggung_jawab ?? '-' }}</small>
+                                        <small class="text-muted d-block mt-1" style="font-size: 0.72rem;">PJ: {{ $batch->store->penanggung_jawab ?: 'Belum diisi' }}</small>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="fw-semibold text-dark">{{ $batch->coffeeType->name }}</div>
-                                    <span class="badge-modern {{ $batch->coffeeType->category === 'robusta' ? 'badge-info' : 'badge-warning' }}" style="font-size: 0.65rem;">
+                                    <span class="badge-modern badge-neutral" style="font-size: 0.65rem;">
                                         {{ ucfirst($batch->coffeeType->category) }}
                                     </span>
                                 </td>
-                                <td class="tabular-nums font-monospace" style="font-size:0.82rem;">{{ $batch->tgl_stock->format('d/m/Y') }}</td>
+                                <td class="tabular-nums" style="font-size:0.82rem;">{{ $batch->tgl_stock->format('d/m/Y') }}</td>
                                 <td>
-                                    <span class="tabular-nums font-monospace" style="font-size:0.82rem;">{{ $batch->tgl_exp->format('d/m/Y') }}</span>
+                                    <span class="tabular-nums" style="font-size:0.82rem;">{{ $batch->tgl_exp->format('d/m/Y') }}</span>
                                     @if ($batch->is_expired)
-                                        <div class="mt-1"><span class="badge bg-danger text-white" style="font-size:0.65rem;">Expired</span></div>
+                                        <div class="mt-1"><span class="badge-modern badge-danger" style="font-size:0.65rem;">Kedaluwarsa</span></div>
                                     @elseif ($batch->is_expiring_soon)
-                                        <div class="mt-1"><span class="badge bg-warning text-dark" style="font-size:0.65rem;">Segera Exp</span></div>
+                                        <div class="mt-1"><span class="badge-modern badge-warning" style="font-size:0.65rem;">Segera kedaluwarsa</span></div>
                                     @endif
                                 </td>
-                                <td class="tabular-nums font-monospace text-center">{{ $batch->jumlah_stock }}</td>
-                                <td class="tabular-nums font-monospace text-center">
-                                    <span class="badge bg-light text-dark border px-2 py-1">{{ $batch->laku }}</span>
-                                </td>
-                                <td class="tabular-nums font-monospace text-center fw-bold {{ $batch->sisa > 0 ? 'text-success' : 'text-danger' }}">
+                                <td class="tabular-nums text-end">{{ $batch->jumlah_stock }}</td>
+                                <td class="tabular-nums text-end">{{ $batch->laku }}</td>
+                                <td class="tabular-nums text-end fw-bold {{ $batch->sisa > 0 ? 'text-success' : 'text-danger' }}">
                                     {{ $batch->sisa }}
                                 </td>
-                                <td class="tabular-nums font-monospace text-end fw-semibold">
+                                <td class="tabular-nums text-end fw-semibold">
                                     Rp {{ number_format($batch->total, 0, ',', '.') }}
                                 </td>
                                 <td class="text-center">
                                     @if ($batch->status === 'normal')
-                                        <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1" style="font-size:0.72rem;">Normal</span>
+                                        <span class="badge-modern badge-success" style="font-size:0.72rem;">Normal</span>
                                     @elseif ($batch->status === 'tarik')
-                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1" style="font-size:0.72rem;">Ditarik</span>
+                                        <span class="badge-modern badge-danger" style="font-size:0.72rem;">Ditarik</span>
                                     @else
-                                        <span class="badge bg-secondary-subtle text-secondary border px-2 py-1" style="font-size:0.72rem;">Diganti</span>
+                                        <span class="badge-modern badge-neutral" style="font-size:0.72rem;">Diganti</span>
                                     @endif
                                 </td>
                                 <td class="text-end">

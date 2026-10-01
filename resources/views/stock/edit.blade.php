@@ -13,21 +13,21 @@
 <div class="page-header d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
     <div>
         <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
-            <span class="badge" style="background: rgba(200,138,78,0.15); color: var(--accent, #C88A4E); font-weight: 700; font-size: 0.75rem;">
-                Edit Batch Produksi
+            <span class="badge-modern badge-neutral">
+                Edit batch produksi
             </span>
-            <span class="badge bg-light text-muted border font-monospace" style="font-size: 0.8rem;">
+            <span class="badge-modern badge-neutral font-monospace">
                 {{ $batch->kode_produksi }}
             </span>
         </div>
-        <h2 class="page-title m-0">Edit Data Stock & Tanggal Kadaluarsa</h2>
+        <h3 class="page-title m-0">Edit Data Stok & Tanggal Kedaluwarsa</h3>
         <p class="page-subtitle mt-1 mb-0 text-muted">
-            Perbarui tanggal masuk, tanggal expired, stok, atau status distribusi untuk batch ini.
+            Perbarui tanggal masuk, tanggal kedaluwarsa, stok, atau status distribusi untuk batch ini.
         </p>
     </div>
     <div class="d-flex gap-2">
         <a href="{{ route('stock.index') }}" class="btn btn-outline-modern">
-            <i data-lucide="arrow-left"></i> Kembali ke Data Stock
+            <i data-lucide="arrow-left"></i> Kembali ke data stok
         </a>
     </div>
 </div>
@@ -37,12 +37,12 @@
         <div class="card-modern shadow-sm">
             <div class="card-header-modern d-flex justify-content-between align-items-center py-3 px-4 border-bottom">
                 <div class="d-flex align-items-center gap-2">
-                    <i data-lucide="edit" class="text-accent" style="width: 18px; height: 18px;"></i>
-                    <h5 class="card-title-modern m-0">Edit Batch Stok #{{ $batch->kode_produksi }}</h5>
+                    <i data-lucide="edit" class="text-secondary" style="width: 18px; height: 18px;"></i>
+                    <h5 class="card-title-modern m-0">Edit batch stok #{{ $batch->kode_produksi }}</h5>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <span class="badge bg-light text-dark border">{{ $batch->store->name }}</span>
-                    <span class="badge bg-secondary-subtle text-secondary border">{{ $batch->coffeeType->name }}</span>
+                    <span class="badge-modern badge-neutral">{{ $batch->store->name }}</span>
+                    <span class="badge-modern badge-neutral">{{ $batch->coffeeType->name }}</span>
                 </div>
             </div>
             
@@ -54,7 +54,7 @@
                     <!-- Baris 1: Kode Produksi & Barcode Retail -->
                     <div class="row g-3 mb-3">
                         <div class="col-md-6 form-group-modern">
-                            <label class="form-label-modern fw-semibold mb-1">Kode Produksi <span class="text-danger">*</span></label>
+                            <label class="form-label-modern fw-semibold mb-1">Kode produksi <span class="text-danger">*</span></label>
                             <input type="text" 
                                    name="kode_produksi" 
                                    id="inputKodeProduksi" 
@@ -68,8 +68,8 @@
 
                         <div class="col-md-6 form-group-modern">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <label class="form-label-modern fw-semibold mb-0">Barcode Retail <span class="text-danger">*</span></label>
-                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" id="btnGenBarcode" title="Acak Barcode" style="font-size: 0.72rem;">
+                                <label class="form-label-modern fw-semibold mb-0">Barcode retail <span class="text-danger">*</span></label>
+                                <button type="button" class="btn btn-sm btn-outline-modern py-0 px-2" id="btnGenBarcode" title="Acak Barcode" style="font-size: 0.72rem;">
                                     <i data-lucide="refresh-cw" style="width: 11px; height: 11px;"></i> Acak
                                 </button>
                             </div>
@@ -88,7 +88,7 @@
                     <!-- Baris 2: Stok Awal, Laku, Sisa Fisik -->
                     <div class="row g-3 mb-3">
                         <div class="col-md-4 form-group-modern">
-                            <label class="form-label-modern fw-semibold mb-1">Stok Awal <span class="text-danger">*</span></label>
+                            <label class="form-label-modern fw-semibold mb-1">Stok awal <span class="text-danger">*</span></label>
                             <input type="number" 
                                    name="jumlah_stock" 
                                    id="inputJumlahStock"
@@ -101,7 +101,7 @@
                         </div>
 
                         <div class="col-md-4 form-group-modern">
-                            <label class="form-label-modern fw-semibold mb-1">Laku (Terjual) <span class="text-danger">*</span></label>
+                            <label class="form-label-modern fw-semibold mb-1">Laku (terjual) <span class="text-danger">*</span></label>
                             <input type="number" 
                                    name="laku" 
                                    id="inputLaku"
@@ -114,10 +114,10 @@
                         </div>
 
                         <div class="col-md-4 form-group-modern">
-                            <label class="form-label-modern fw-semibold mb-1">Sisa Stok Fisik</label>
+                            <label class="form-label-modern fw-semibold mb-1">Sisa stok fisik</label>
                             <input type="text" 
                                    id="displaySisa" 
-                                   class="form-control form-control-modern bg-light font-monospace fw-bold text-accent" 
+                                   class="form-control form-control-modern bg-light font-monospace fw-bold" 
                                    value="{{ $batch->sisa }}" 
                                    readonly>
                         </div>
@@ -126,7 +126,7 @@
                     <!-- Baris 3: Tanggal Masuk & Expired -->
                     <div class="row g-3 mb-3">
                         <div class="col-md-6 form-group-modern">
-                            <label class="form-label-modern fw-semibold mb-1">Tanggal Masuk Stok <span class="text-danger">*</span></label>
+                            <label class="form-label-modern fw-semibold mb-1">Tanggal masuk stok <span class="text-danger">*</span></label>
                             <input type="date" 
                                    name="tgl_stock" 
                                    id="inputTglStock"
@@ -137,7 +137,7 @@
                         </div>
 
                         <div class="col-md-6 form-group-modern">
-                            <label class="form-label-modern fw-semibold mb-1">Tanggal Kadaluarsa (Exp) <span class="text-danger">*</span></label>
+                            <label class="form-label-modern fw-semibold mb-1">Tanggal kedaluwarsa <span class="text-danger">*</span></label>
                             <input type="date" 
                                    name="tgl_exp" 
                                    id="inputTglExp"
@@ -151,17 +151,17 @@
                     <!-- Baris 4: Status Distribusi & Catatan -->
                     <div class="row g-3 mb-4">
                         <div class="col-md-6 form-group-modern">
-                            <label class="form-label-modern fw-semibold mb-1">Status Distribusi <span class="text-danger">*</span></label>
+                            <label class="form-label-modern fw-semibold mb-1">Status distribusi <span class="text-danger">*</span></label>
                             <select name="status" class="form-select form-control-modern @error('status') is-invalid @enderror" required>
-                                <option value="normal" {{ old('status', $batch->status) === 'normal' ? 'selected' : '' }}>Normal (Aktif di Toko)</option>
-                                <option value="tarik" {{ old('status', $batch->status) === 'tarik' ? 'selected' : '' }}>Tarik (Ditarik dari Toko)</option>
-                                <option value="ganti" {{ old('status', $batch->status) === 'ganti' ? 'selected' : '' }}>Ganti (Retur / Ganti Batch)</option>
+                                <option value="normal" {{ old('status', $batch->status) === 'normal' ? 'selected' : '' }}>Normal (Aktif di toko)</option>
+                                <option value="tarik" {{ old('status', $batch->status) === 'tarik' ? 'selected' : '' }}>Tarik (Ditarik dari toko)</option>
+                                <option value="ganti" {{ old('status', $batch->status) === 'ganti' ? 'selected' : '' }}>Ganti (Retur / ganti batch)</option>
                             </select>
                             @error('status') <small class="text-danger mt-1 d-block">{{ $message }}</small> @enderror
                         </div>
 
                         <div class="col-md-6 form-group-modern">
-                            <label class="form-label-modern fw-semibold mb-1">Catatan (Opsional)</label>
+                            <label class="form-label-modern fw-semibold mb-1">Catatan (opsional)</label>
                             <input type="text" 
                                    name="keterangan" 
                                    class="form-control form-control-modern" 
@@ -173,7 +173,7 @@
                     <!-- Pratinjau Barcode SVG Box -->
                     <div class="p-3 mb-4 rounded-3 border bg-white text-center shadow-xs" style="max-width: 440px; margin: 0 auto;">
                         <div class="d-flex align-items-center justify-content-center mb-2 px-1">
-                            <span class="text-uppercase fw-bold text-muted" style="font-size: 0.68rem; letter-spacing: 0.08em;">Pratinjau Stiker Barcode</span>
+                            <span class="fw-semibold text-muted" style="font-size: 0.75rem;">Pratinjau label barcode</span>
                         </div>
                         <div style="min-height: 50px; display: flex; align-items: center; justify-content: center;">
                             <svg id="editLiveBarcodeSvg" style="max-width: 100%; height: 50px; display: block; margin: 0 auto;"></svg>
@@ -182,9 +182,9 @@
 
                     <!-- Form Actions -->
                     <div class="form-actions pt-3 border-top d-flex justify-content-end gap-2">
-                        <a href="{{ route('stock.index') }}" class="btn btn-outline-secondary px-3">Batal</a>
+                        <a href="{{ route('stock.index') }}" class="btn btn-outline-modern px-3">Batal</a>
                         <button type="submit" class="btn btn-accent px-4 d-inline-flex align-items-center gap-1.5">
-                            <i data-lucide="save" style="width: 16px; height: 16px;"></i> Simpan Perubahan
+                            <i data-lucide="save" style="width: 16px; height: 16px;"></i> Simpan perubahan
                         </button>
                     </div>
                 </form>

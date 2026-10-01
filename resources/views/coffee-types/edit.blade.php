@@ -27,7 +27,7 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-4 form-group-modern">
-                        <label class="form-label-modern">Nama Kopi <span class="text-danger">*</span></label>
+                        <label class="form-label-modern">Nama jenis kopi <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control-modern w-100" value="{{ old('name', $coffeeType->name) }}" required>
                         @error('name') <small class="text-danger mt-1 d-block">{{ $message }}</small> @enderror
                     </div>
@@ -44,7 +44,7 @@
 
                 <div class="form-actions mt-4 pt-3 border-top d-flex gap-2">
                     <button type="submit" class="btn btn-accent">
-                        <i data-lucide="save"></i> Update
+                        <i data-lucide="save"></i> Simpan perubahan
                     </button>
                     <a href="{{ route('coffee-types.index') }}" class="btn btn-outline-modern">Batal</a>
                 </div>

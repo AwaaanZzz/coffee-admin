@@ -31,9 +31,9 @@
                     <table class="table-modern w-100">
                         <thead>
                             <tr>
-                                <th>Nama Kopi</th>
+                                <th>Nama kopi</th>
                                 <th>Kategori</th>
-                                <th style="width: 300px;">Harga (Rp)</th>
+                                <th style="width: 260px;" class="text-end">Harga jual (Rp)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,7 +41,7 @@
                                 <tr>
                                     <td class="fw-bold">{{ $coffee->name }}</td>
                                     <td>
-                                        <span class="badge-modern {{ $coffee->category === 'robusta' ? 'bg-dark text-white' : 'bg-warning text-dark' }}">
+                                        <span class="badge-modern badge-neutral">
                                             {{ ucfirst($coffee->category) }}
                                         </span>
                                     </td>
@@ -49,7 +49,7 @@
                                         <div class="form-group-modern m-0">
                                             <input type="number" step="0.01" min="0"
                                                 name="prices[{{ $coffee->id }}]"
-                                                class="form-control-modern w-100"
+                                                class="form-control-modern w-100 text-end tabular-nums"
                                                 value="{{ $existingPrices[$coffee->id]->price ?? '' }}"
                                                 placeholder="0">
                                         </div>
@@ -62,7 +62,7 @@
 
                 <div class="form-actions border-top pt-3 d-flex gap-2">
                     <button type="submit" class="btn btn-accent">
-                        <i data-lucide="save"></i> Simpan Harga
+                        <i data-lucide="save"></i> Simpan harga
                     </button>
                     <a href="{{ route('stores.show', $store) }}" class="btn btn-outline-modern">Batal</a>
                 </div>

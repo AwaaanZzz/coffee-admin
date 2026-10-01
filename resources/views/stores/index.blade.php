@@ -29,18 +29,18 @@
     {{-- View Mode Switcher --}}
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
         <div class="d-flex align-items-center gap-2">
-            <button type="button" class="btn btn-sm btn-accent d-flex align-items-center gap-2" id="tabBtnTable" onclick="switchStoreView('table')">
+            <button type="button" class="btn btn-sm btn-outline-modern active d-flex align-items-center gap-2" id="tabBtnTable" onclick="switchStoreView('table')">
                 <i data-lucide="list" style="width:15px;height:15px;"></i>
-                <span>Daftar Tabel Toko</span>
+                <span>Daftar tabel toko</span>
             </button>
             <button type="button" class="btn btn-sm btn-outline-modern d-flex align-items-center gap-2" id="tabBtnMap" onclick="switchStoreView('map')">
                 <i data-lucide="map" style="width:15px;height:15px;"></i>
-                <span>Peta Persebaran Mitra</span>
+                <span>Peta persebaran mitra</span>
             </button>
         </div>
         <div class="text-muted small d-none d-md-flex align-items-center gap-2">
-            <i data-lucide="store" style="width:14px;height:14px;color:var(--accent);"></i>
-            <span>Total <strong>{{ $stores->total() ?? $stores->count() }}</strong> Toko Mitra Terdaftar</span>
+            <i data-lucide="store" style="width:14px;height:14px;color:var(--text-muted);"></i>
+            <span>Total <strong>{{ $stores->total() ?? $stores->count() }}</strong> toko mitra terdaftar</span>
         </div>
     </div>
 
@@ -54,11 +54,11 @@
                                 <tr>
                                     <th style="width: 30px;"></th>
                                     <th>#</th>
-                                    <th>Nama Toko</th>
-                                    <th>Alamat & Peta</th>
-                                    <th>Penanggung Jawab</th>
-                                    <th>Tgl Kerjasama</th>
-                                    <th>Stock</th>
+                                    <th>Nama toko</th>
+                                    <th>Alamat & peta</th>
+                                    <th>Penanggung jawab</th>
+                                    <th>Tgl. kerja sama</th>
+                                    <th>Stok</th>
                                     <th class="text-end">Aksi</th>
                                 </tr>
                             </thead>
@@ -75,34 +75,44 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <span>{{ $store->alamat ?? '-' }}</span>
+                                            @if($store->alamat)
+                                                <span>{{ $store->alamat }}</span>
+                                            @else
+                                                <span class="text-muted">Belum diisi</span>
+                                            @endif
                                             @if($store->has_coordinates)
-                                                <a href="{{ $store->google_maps_url }}" target="_blank" class="badge bg-light text-accent border ms-1 text-decoration-none" title="Buka di Google Maps" onclick="event.stopPropagation();">
+                                                <a href="{{ $store->google_maps_url }}" target="_blank" class="badge-modern badge-neutral ms-1 text-decoration-none" title="Buka di Google Maps" onclick="event.stopPropagation();">
                                                     <i data-lucide="navigation" style="width:10px;height:10px;display:inline-block;vertical-align:-1px;"></i> Maps
                                                 </a>
                                             @endif
                                         </td>
-                                        <td>{{ $store->penanggung_jawab ?? '-' }}</td>
+                                        <td>
+                                            @if($store->penanggung_jawab)
+                                                {{ $store->penanggung_jawab }}
+                                            @else
+                                                <span class="text-muted">Belum diisi</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $store->tgl_kerjasama->format('d-m-Y') }}</td>
                                         <td>
-                                            <span class="badge-modern bg-info-subtle text-info" style="font-size:0.75rem;padding:3px 10px;border-radius:20px;">
+                                            <span class="badge-modern badge-neutral">
                                                 {{ $store->stockBatches->count() }} batch
                                             </span>
                                         </td>
                                         <td class="text-end" onclick="event.stopPropagation();">
                                             <div class="d-flex justify-content-end gap-2">
                                                 @if($store->has_coordinates)
-                                                    <a href="{{ $store->google_maps_url }}" target="_blank" class="btn btn-table-action text-accent" title="Buka di Google Maps">
+                                                    <a href="{{ $store->google_maps_url }}" target="_blank" class="btn btn-table-action" title="Buka di Google Maps">
                                                         <i data-lucide="navigation"></i>
                                                     </a>
                                                 @endif
-                                                <a href="{{ route('stores.show', $store) }}" class="btn btn-table-action text-info" title="Detail & Peta Toko">
+                                                <a href="{{ route('stores.show', $store) }}" class="btn btn-table-action" title="Detail & Peta Toko">
                                                     <i data-lucide="eye"></i>
                                                 </a>
-                                                <a href="{{ route('stores.edit', $store) }}" class="btn btn-table-action text-warning" title="Edit Toko & Titik Peta">
+                                                <a href="{{ route('stores.edit', $store) }}" class="btn btn-table-action" title="Edit Toko & Titik Peta">
                                                     <i data-lucide="edit"></i>
                                                 </a>
-                                                <a href="{{ route('stores.prices.edit', $store) }}" class="btn btn-table-action text-success" title="Atur Harga">
+                                                <a href="{{ route('stores.prices.edit', $store) }}" class="btn btn-table-action" title="Atur Harga">
                                                     <i data-lucide="tag"></i>
                                                 </a>
                                                 <form action="{{ route('stores.destroy', $store) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus toko ini?')">
@@ -120,33 +130,33 @@
                                         <td colspan="8" style="padding:0;border-top:none;">
                                             <div class="stock-detail-wrapper" style="background:var(--bg-primary);border-top:2px solid var(--accent);padding:16px 20px;margin:0;">
                                                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-                                                    <i data-lucide="package" style="width:18px;height:18px;color:var(--accent);"></i>
-                                                    <span style="font-weight:700;color:var(--text-primary);font-size:0.9rem;">Stock — {{ $store->name }}</span>
+                                                    <i data-lucide="package" style="width:18px;height:18px;color:var(--text-secondary);"></i>
+                                                    <span style="font-weight:600;color:var(--text-primary);font-size:0.875rem;">Stok — {{ $store->name }}</span>
                                                     <span style="font-size:0.8rem;color:var(--text-muted);margin-left:auto;">{{ $store->stockBatches->count() }} batch ditemukan</span>
                                                 </div>
                                                 @if($store->stockBatches->count() > 0)
-                                                    <div class="table-responsive" style="border-radius:10px;overflow:hidden;border:1px solid var(--border);">
-                                                        <table class="table-modern w-100" style="margin:0;font-size:0.82rem;">
+                                                    <div class="table-responsive" style="border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border);">
+                                                        <table class="table-modern w-100" style="margin:0;font-size:0.8125rem;">
                                                             <thead>
-                                                                <tr style="background:var(--bg-card);">
-                                                                    <th style="padding:10px 12px;">Kode Produksi</th>
-                                                                    <th style="padding:10px 12px;">Kopi</th>
-                                                                    <th style="padding:10px 12px;">Tgl Stock</th>
-                                                                    <th style="padding:10px 12px;">Tgl Exp</th>
-                                                                    <th style="padding:10px 12px;" class="text-center">Stock</th>
-                                                                    <th style="padding:10px 12px;" class="text-center">Laku</th>
-                                                                    <th style="padding:10px 12px;" class="text-center">Sisa</th>
-                                                                    <th style="padding:10px 12px;" class="text-end">Total (Rp)</th>
-                                                                    <th style="padding:10px 12px;" class="text-center">Status</th>
+                                                                <tr style="background:var(--bg-subtle);">
+                                                                    <th>Kode produksi</th>
+                                                                    <th>Jenis kopi</th>
+                                                                    <th>Tgl. stok</th>
+                                                                    <th>Tgl. kedaluwarsa</th>
+                                                                    <th class="text-end">Stok</th>
+                                                                    <th class="text-end">Laku</th>
+                                                                    <th class="text-end">Sisa</th>
+                                                                    <th class="text-end">Total (Rp)</th>
+                                                                    <th class="text-center">Status</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 @foreach($store->stockBatches->sortByDesc('tgl_stock') as $batch)
                                                                     <tr style="background:var(--bg-card);{{ $batch->isExpired ? 'opacity:0.5;' : ($batch->isExpiringSoon ? 'background:var(--danger-light);' : '') }}">
-                                                                        <td style="padding:8px 12px;font-weight:600;">{{ $batch->kode_produksi }}</td>
-                                                                        <td style="padding:8px 12px;">{{ $batch->coffeeType->name ?? '-' }}</td>
-                                                                        <td style="padding:8px 12px;">{{ $batch->tgl_stock->format('d/m/Y') }}</td>
-                                                                        <td style="padding:8px 12px;">
+                                                                        <td style="font-weight:600;">{{ $batch->kode_produksi }}</td>
+                                                                        <td>{{ $batch->coffeeType->name ?? 'Belum diisi' }}</td>
+                                                                        <td>{{ $batch->tgl_stock->format('d/m/Y') }}</td>
+                                                                        <td>
                                                                             <span style="{{ $batch->isExpiringSoon ? 'color:var(--danger);font-weight:600;' : '' }}">
                                                                                 {{ $batch->tgl_exp->format('d/m/Y') }}
                                                                             </span>
@@ -154,20 +164,20 @@
                                                                                 <i data-lucide="alert-triangle" style="width:13px;height:13px;color:var(--danger);margin-left:4px;"></i>
                                                                             @endif
                                                                         </td>
-                                                                        <td style="padding:8px 12px;" class="text-center">{{ $batch->jumlah_stock }}</td>
-                                                                        <td style="padding:8px 12px;" class="text-center">{{ $batch->laku }}</td>
-                                                                        <td style="padding:8px 12px;font-weight:600;" class="text-center">{{ $batch->sisa }}</td>
-                                                                        <td style="padding:8px 12px;" class="text-end">Rp {{ number_format($batch->total, 0, ',', '.') }}</td>
-                                                                        <td style="padding:8px 12px;" class="text-center">
+                                                                        <td class="text-end tabular-nums">{{ $batch->jumlah_stock }}</td>
+                                                                        <td class="text-end tabular-nums">{{ $batch->laku }}</td>
+                                                                        <td class="text-end tabular-nums fw-bold">{{ $batch->sisa }}</td>
+                                                                        <td class="text-end tabular-nums">Rp {{ number_format($batch->total, 0, ',', '.') }}</td>
+                                                                        <td class="text-center">
                                                                             @php
-                                                                                $statusColor = match($batch->status) {
-                                                                                    'normal' => 'background:var(--success-light);color:var(--success);',
-                                                                                    'tarik' => 'background:var(--warning-light);color:var(--warning);',
-                                                                                    'ganti' => 'background:var(--info-light);color:var(--info);',
-                                                                                    default => 'background:var(--accent-light);color:var(--accent);',
+                                                                                $badgeClass = match($batch->status) {
+                                                                                    'normal' => 'badge-success',
+                                                                                    'tarik' => 'badge-warning',
+                                                                                    'ganti' => 'badge-info',
+                                                                                    default => 'badge-neutral',
                                                                                 };
                                                                             @endphp
-                                                                            <span style="{{ $statusColor }}font-size:0.72rem;padding:3px 10px;border-radius:20px;font-weight:600;text-transform:capitalize;">
+                                                                            <span class="badge-modern {{ $badgeClass }}" style="text-transform:capitalize;">
                                                                                 {{ $batch->status }}
                                                                             </span>
                                                                         </td>
@@ -179,7 +189,7 @@
                                                 @else
                                                     <div style="text-align:center;padding:24px;color:var(--text-muted);font-size:0.85rem;">
                                                         <i data-lucide="inbox" style="width:32px;height:32px;margin-bottom:8px;opacity:0.5;"></i>
-                                                        <p style="margin:0;">Belum ada stock untuk toko ini.</p>
+                                                        <p style="margin:0;">Belum ada stok untuk toko ini.</p>
                                                     </div>
                                                 @endif
                                             </div>
@@ -216,13 +226,13 @@
                         <p class="text-muted small m-0 mt-1">Pemetaan geografis lokasi toko mitra kerja sama Kopi Hiku Himu.</p>
                     </div>
                     <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-success text-white px-2 py-1" style="font-size:0.75rem;">
+                        <span class="badge-modern badge-success">
                             <i data-lucide="map-pin" style="width:12px;height:12px;display:inline-block;vertical-align:-1px;"></i>
-                            <span id="mapStoreCount">{{ $allStoresForMap->filter->has_coordinates->count() }}</span> Toko Berkoordinat
+                            <span id="mapStoreCount">{{ $allStoresForMap->filter->has_coordinates->count() }}</span> Toko berkoordinat
                         </span>
                         <button type="button" class="btn btn-sm btn-outline-modern d-flex align-items-center gap-1" id="btnFitAllStores">
                             <i data-lucide="maximize-2" style="width:13px;height:13px;"></i>
-                            <span>Fokuskan Semua</span>
+                            <span>Fokuskan semua</span>
                         </button>
                     </div>
                 </div>
@@ -231,10 +241,10 @@
                 </div>
                 <div class="p-3 bg-light border-top d-flex flex-wrap justify-content-between align-items-center gap-2" style="border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius);">
                     <div class="text-muted small d-flex align-items-center gap-2">
-                        <i data-lucide="info" style="width:15px;height:15px;color:var(--accent);"></i>
+                        <i data-lucide="info" style="width:15px;height:15px;color:var(--text-secondary);"></i>
                         <span>Klik pin kopi untuk melihat detail toko, penanggung jawab, jumlah batch stok, dan navigasi arah.</span>
                     </div>
-                    <a href="{{ route('stores.create') }}" class="btn btn-sm btn-accent shadow-sm">
+                    <a href="{{ route('stores.create') }}" class="btn btn-sm btn-outline-modern">
                         <i data-lucide="plus" style="width:14px;height:14px;"></i> Tambah Toko Baru
                     </a>
                 </div>
@@ -327,13 +337,13 @@
             if (view === 'table') {
                 tablePane.style.display = 'block';
                 mapPane.style.display = 'none';
-                btnTable.className = 'btn btn-sm btn-accent d-flex align-items-center gap-2';
+                btnTable.className = 'btn btn-sm btn-outline-modern active d-flex align-items-center gap-2';
                 btnMap.className = 'btn btn-sm btn-outline-modern d-flex align-items-center gap-2';
             } else {
                 tablePane.style.display = 'none';
                 mapPane.style.display = 'block';
                 btnTable.className = 'btn btn-sm btn-outline-modern d-flex align-items-center gap-2';
-                btnMap.className = 'btn btn-sm btn-accent d-flex align-items-center gap-2';
+                btnMap.className = 'btn btn-sm btn-outline-modern active d-flex align-items-center gap-2';
                 
                 initNetworkMap();
                 setTimeout(() => {

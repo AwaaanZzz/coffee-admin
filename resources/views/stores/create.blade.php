@@ -36,13 +36,13 @@
                     </div>
 
                     <div class="col-md-6 mb-4 form-group-modern">
-                        <label class="form-label-modern">Tanggal Kerjasama <span class="text-danger">*</span></label>
+                        <label class="form-label-modern">Tanggal kerja sama <span class="text-danger">*</span></label>
                         <input type="date" name="tgl_kerjasama" class="form-control-modern w-100" value="{{ old('tgl_kerjasama') }}" required>
                         @error('tgl_kerjasama') <small class="text-danger mt-1 d-block">{{ $message }}</small> @enderror
                     </div>
 
                     <div class="col-md-6 mb-4 form-group-modern">
-                        <label class="form-label-modern">Penanggung Jawab</label>
+                        <label class="form-label-modern">Penanggung jawab</label>
                         <input type="text" name="penanggung_jawab" class="form-control-modern w-100" value="{{ old('penanggung_jawab') }}" placeholder="Nama penanggung jawab">
                     </div>
 
@@ -57,14 +57,14 @@
                             <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
                                 <div>
                                     <label class="form-label-modern fw-bold mb-1 d-flex align-items-center gap-2">
-                                        <i data-lucide="map-pin" class="text-accent" style="width:18px;height:18px;"></i>
-                                        <span>Titik Lokasi Peta (Latitude & Longitude)</span>
+                                        <i data-lucide="map-pin" class="text-secondary" style="width:18px;height:18px;"></i>
+                                        <span>Titik lokasi peta (latitude & longitude)</span>
                                     </label>
                                     <p class="text-muted small m-0">Klik pada peta atau geser pin untuk menentukan titik presisi toko mitra.</p>
                                 </div>
                                 <div class="d-flex gap-2">
-                                    <button type="button" class="btn btn-sm btn-outline-accent" id="btnGeolocate" title="Gunakan koordinat GPS perangkat Anda">
-                                        <i data-lucide="crosshair" style="width:14px;height:14px;"></i> Deteksi GPS Saya
+                                    <button type="button" class="btn btn-sm btn-outline-modern" id="btnGeolocate" title="Gunakan koordinat GPS perangkat Anda">
+                                        <i data-lucide="crosshair" style="width:14px;height:14px;"></i> Deteksi GPS saya
                                     </button>
                                 </div>
                             </div>
@@ -72,14 +72,14 @@
                             {{-- Search Location Geocoder Input --}}
                             <div class="input-group input-group-sm mb-3">
                                 <span class="input-group-text bg-light border-end-0">
-                                    <i data-lucide="search" style="width:14px;height:14px;color:var(--accent);"></i>
+                                    <i data-lucide="search" style="width:14px;height:14px;color:var(--text-muted);"></i>
                                 </span>
                                 <input type="text" id="mapSearchInput" class="form-control border-start-0" placeholder="Ketik nama jalan, kelurahan, atau kota untuk mencari di peta...">
-                                <button type="button" class="btn btn-outline-secondary px-3" id="btnSearchMap">Cari di Peta</button>
+                                <button type="button" class="btn btn-outline-modern px-3" id="btnSearchMap">Cari di peta</button>
                             </div>
 
                             {{-- Leaflet Map Container --}}
-                            <div id="locationPickerMap" style="height: 320px; width: 100%; border-radius: 8px; border: 1px solid var(--border); z-index: 1;"></div>
+                            <div id="locationPickerMap" style="height: 320px; width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border); z-index: 1;"></div>
 
                             {{-- Coordinate Inputs --}}
                             <div class="row g-2 mt-2">
@@ -104,7 +104,7 @@
 
                 <div class="form-actions mt-4 pt-3 border-top d-flex gap-2">
                     <button type="submit" class="btn btn-accent">
-                        <i data-lucide="save"></i> Simpan Toko
+                        <i data-lucide="save"></i> Simpan toko
                     </button>
                     <a href="{{ route('stores.index') }}" class="btn btn-outline-modern">Batal</a>
                 </div>

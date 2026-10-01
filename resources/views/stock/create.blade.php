@@ -37,9 +37,9 @@
                         <!-- Baris 1: Toko Mitra & Jenis Kopi -->
                         <div class="row g-3 mb-3">
                             <div class="col-md-6 form-group-modern">
-                                <label class="form-label-modern fw-semibold">Toko Mitra <span class="text-danger">*</span></label>
+                                <label class="form-label-modern fw-semibold">Toko mitra <span class="text-danger">*</span></label>
                                 <select name="store_id" class="form-control-modern w-100" required>
-                                    <option value="">-- Pilih Toko Mitra --</option>
+                                    <option value="">-- Pilih toko mitra --</option>
                                     @foreach ($stores as $s)
                                         <option value="{{ $s->id }}" {{ old('store_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                                     @endforeach
@@ -48,9 +48,9 @@
                             </div>
 
                             <div class="col-md-6 form-group-modern">
-                                <label class="form-label-modern fw-semibold">Jenis Kopi <span class="text-danger">*</span></label>
+                                <label class="form-label-modern fw-semibold">Jenis kopi <span class="text-danger">*</span></label>
                                 <select name="coffee_type_id" class="form-control-modern w-100" required>
-                                    <option value="">-- Pilih Varian Kopi --</option>
+                                    <option value="">-- Pilih jenis kopi --</option>
                                     @foreach ($coffeeTypes as $c)
                                         <option value="{{ $c->id }}" {{ old('coffee_type_id') == $c->id ? 'selected' : '' }}>{{ $c->name }} ({{ ucfirst($c->category) }})</option>
                                     @endforeach
@@ -62,15 +62,15 @@
                         <!-- Baris 2: Kode Produksi & Barcode Retail -->
                         <div class="row g-3 mb-3">
                             <div class="col-md-6 form-group-modern">
-                                <label class="form-label-modern fw-semibold mb-1">Kode Produksi <span class="text-danger">*</span></label>
+                                <label class="form-label-modern fw-semibold mb-1">Kode produksi <span class="text-danger">*</span></label>
                                 <input type="text" name="kode_produksi" id="kodeProduksiInput" class="form-control-modern form-control font-monospace fw-bold" value="{{ old('kode_produksi', $defaultKodeProduksi ?? '') }}" placeholder="HH-2609-001" required style="letter-spacing: 0.05em;">
                                 @error('kode_produksi') <small class="text-danger mt-1 d-block">{{ $message }}</small> @enderror
                             </div>
 
                             <div class="col-md-6 form-group-modern">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <label class="form-label-modern fw-semibold mb-0">Barcode Retail <span class="text-danger">*</span></label>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" id="btnGenBarcode" title="Acak Barcode" style="font-size: 0.72rem;">
+                                    <label class="form-label-modern fw-semibold mb-0">Barcode retail <span class="text-danger">*</span></label>
+                                    <button type="button" class="btn btn-sm btn-outline-modern py-0 px-2" id="btnGenBarcode" title="Acak Barcode" style="font-size: 0.72rem;">
                                         <i data-lucide="refresh-cw" style="width: 11px; height: 11px;"></i> Acak
                                     </button>
                                 </div>
@@ -82,19 +82,19 @@
                         <!-- Baris 3: Jumlah Stok, Tanggal Masuk, Tanggal Kadaluarsa -->
                         <div class="row g-3 mb-4">
                             <div class="col-md-4 form-group-modern">
-                                <label class="form-label-modern fw-semibold">Jumlah Stok (Pcs) <span class="text-danger">*</span></label>
+                                <label class="form-label-modern fw-semibold">Jumlah stok (pcs) <span class="text-danger">*</span></label>
                                 <input type="number" name="jumlah_stock" min="1" class="form-control-modern w-100 font-monospace fw-bold" value="{{ old('jumlah_stock') }}" placeholder="0" required>
                                 @error('jumlah_stock') <small class="text-danger mt-1 d-block">{{ $message }}</small> @enderror
                             </div>
 
                             <div class="col-md-4 form-group-modern">
-                                <label class="form-label-modern fw-semibold">Tanggal Masuk Stok <span class="text-danger">*</span></label>
+                                <label class="form-label-modern fw-semibold">Tanggal masuk stok <span class="text-danger">*</span></label>
                                 <input type="date" name="tgl_stock" class="form-control-modern w-100 font-monospace" value="{{ old('tgl_stock', date('Y-m-d')) }}" required>
                                 @error('tgl_stock') <small class="text-danger mt-1 d-block">{{ $message }}</small> @enderror
                             </div>
 
                             <div class="col-md-4 form-group-modern">
-                                <label class="form-label-modern fw-semibold">Tanggal Kadaluarsa (Exp) <span class="text-danger">*</span></label>
+                                <label class="form-label-modern fw-semibold">Tanggal kedaluwarsa <span class="text-danger">*</span></label>
                                 <input type="date" name="tgl_exp" class="form-control-modern w-100 font-monospace" value="{{ old('tgl_exp', date('Y-m-d', strtotime('+3 months'))) }}" required>
                                 @error('tgl_exp') <small class="text-danger mt-1 d-block">{{ $message }}</small> @enderror
                             </div>
@@ -103,7 +103,7 @@
                         <!-- Pratinjau Barcode Kemasan Retail -->
                         <div class="p-3 mb-4 rounded-3 border bg-white text-center shadow-xs" id="barcodePreviewBox" style="max-width: 440px; margin: 0 auto;">
                             <div class="d-flex align-items-center justify-content-center mb-2 px-1">
-                                <span class="text-uppercase fw-bold text-muted" style="font-size: 0.68rem; letter-spacing: 0.08em;">Pratinjau Stiker Barcode</span>
+                                <span class="fw-semibold text-muted" style="font-size: 0.75rem;">Pratinjau label barcode</span>
                             </div>
                             <div class="d-flex justify-content-center align-items-center py-1">
                                 <svg id="liveBarcodeSvg" style="max-width: 100%; height: 50px; display: block; margin: 0 auto;"></svg>
@@ -112,9 +112,9 @@
 
                         <!-- Form Actions -->
                         <div class="form-actions pt-3 border-top d-flex justify-content-end gap-2">
-                            <a href="{{ route('stock.index') }}" class="btn btn-outline-secondary px-3">Batal</a>
+                            <a href="{{ route('stock.index') }}" class="btn btn-outline-modern px-3">Batal</a>
                             <button type="submit" class="btn btn-accent px-4 d-inline-flex align-items-center gap-1.5">
-                                <i data-lucide="save" style="width: 16px; height: 16px;"></i> Simpan Stock
+                                <i data-lucide="save" style="width: 16px; height: 16px;"></i> Simpan stok
                             </button>
                         </div>
                     </form>

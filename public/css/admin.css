@@ -839,6 +839,12 @@ a {
   color: var(--text-primary);
 }
 
+.btn-outline-modern.active {
+  background: var(--bg-sidebar);
+  color: #FFFFFF;
+  border-color: var(--bg-sidebar);
+}
+
 .btn-outline-modern i, .btn-outline-modern svg {
   width: 15px;
   height: 15px;

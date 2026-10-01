@@ -13,13 +13,12 @@
     /* Executive Kiosk Scanner Terminal */
     .scanner-hero-card {
         background: var(--bg-card, #ffffff);
-        border: 1px solid var(--border, #E8DFD5);
-        border-radius: var(--radius-lg, 18px);
-        padding: 1.75rem;
+        border: 1px solid var(--border-color, #E8DFD5);
+        border-radius: var(--radius-sm, 8px);
+        padding: 1.25rem 1.5rem;
         box-shadow: var(--shadow-sm);
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
         position: relative;
-        overflow: hidden;
     }
 
     .scanner-hero-card::before {
@@ -29,47 +28,37 @@
     .scanner-hardware-badge {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        background: rgba(16, 185, 129, 0.12);
-        color: #10b981;
-        border: 1px solid rgba(16, 185, 129, 0.3);
-        padding: 6px 14px;
-        border-radius: 9999px;
+        gap: 6px;
+        background: rgba(46, 125, 50, 0.08);
+        color: var(--success, #2e7d32);
+        border: 1px solid rgba(46, 125, 50, 0.25);
+        padding: 4px 10px;
+        border-radius: var(--radius-sm, 8px);
         font-size: 0.8rem;
-        font-weight: 700;
-        letter-spacing: 0.3px;
+        font-weight: 600;
     }
 
     .scanner-hardware-badge .pulse-led {
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background-color: #10b981;
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-        animation: pulseLed 1.8s infinite;
-    }
-
-    @keyframes pulseLed {
-        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-        70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        background-color: var(--success, #2e7d32);
     }
 
     /* Target Scanner Box */
     .scan-station-box {
-        background: #ffffff;
-        border: 1px solid #E2E8F0;
-        border-radius: 16px;
+        background: var(--bg-card, #ffffff);
+        border: 1px solid var(--border-color, #E2E8F0);
+        border-radius: var(--radius-sm, 8px);
         padding: 1.25rem 1.5rem;
-        transition: all 0.3s ease;
         position: relative;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        box-shadow: var(--shadow-sm);
     }
 
     .scan-station-box.is-active {
-        border-color: #10b981;
-        background: rgba(16, 185, 129, 0.04);
-        box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+        border-color: var(--navy, #1E3A5F);
+        background: var(--bg-card, #ffffff);
+        box-shadow: 0 0 0 1px var(--navy, #1E3A5F);
     }
 
     .scan-input-wrapper {
@@ -77,20 +66,19 @@
     }
 
     .scan-input-wrapper input {
-        font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-        font-size: 1.15rem;
+        font-family: var(--font-sans, 'Manrope', -apple-system, sans-serif);
+        font-size: 1.05rem;
         font-weight: 600;
-        padding: 0.85rem 1.25rem 0.85rem 3rem;
-        border-radius: 12px;
-        border: 1px solid #E2E8F0;
+        padding: 0.75rem 1.25rem 0.75rem 3rem;
+        border-radius: var(--radius-sm, 8px);
+        border: 1px solid var(--border-color, #E2E8F0);
         background: var(--bg-card, #ffffff);
         color: var(--text-main, #2C1E14);
-        transition: all 0.25s ease;
     }
 
     .scan-input-wrapper input:focus {
-        border-color: #1E3A5F;
-        box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.08);
+        border-color: var(--navy, #1E3A5F);
+        box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.1);
         outline: none;
     }
 
@@ -112,10 +100,9 @@
         font-family: inherit;
         font-weight: 600;
         color: var(--text-muted, #786C60);
-        background: #F4EFEA;
-        border: 1px solid #DCD3C7;
+        background: var(--bg-main, #FAF5EE);
+        border: 1px solid var(--border-color, #DCD3C7);
         border-radius: 4px;
-        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
         line-height: 1.2;
     }
 
@@ -158,65 +145,60 @@
     /* Product Display Card */
     .product-kiosk-card {
         background: var(--bg-card, #ffffff);
-        border: 1px solid var(--border, #E8DFD5);
-        border-radius: 20px;
-        box-shadow: var(--shadow-md, 0 10px 25px -5px rgba(0, 0, 0, 0.08));
+        border: 1px solid var(--border-color, #E8DFD5);
+        border-radius: var(--radius-sm, 8px);
+        box-shadow: var(--shadow-sm);
         overflow: hidden;
-        transition: all 0.35s ease;
     }
 
     .product-kiosk-header {
-        background: #1E3A5F;
+        background: var(--navy, #1E3A5F);
         color: #ffffff;
-        padding: 1.5rem 2rem;
+        padding: 1.25rem 1.5rem;
         position: relative;
     }
 
     .product-kiosk-header .coffee-title {
-        font-size: 1.85rem;
-        font-weight: 800;
-        letter-spacing: -0.5px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.3px;
         color: #FFFFFF;
-        margin-bottom: 0.35rem;
+        margin-bottom: 0.25rem;
         line-height: 1.2;
     }
 
     .product-kiosk-header .badge-category {
-        background: rgba(200, 138, 78, 0.25);
-        color: #FBBF24;
-        border: 1px solid rgba(251, 191, 36, 0.4);
-        padding: 4px 10px;
-        border-radius: 9999px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 0.5px;
+        background: rgba(255, 255, 255, 0.15);
+        color: #FFFFFF;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.72rem;
+        font-weight: 600;
         text-transform: uppercase;
     }
 
-    /* Price Big Badge */
+    /* Price Display */
     .price-kiosk-display {
-        background: rgba(200, 138, 78, 0.06);
-        border: 1.5px solid rgba(200, 138, 78, 0.25);
-        border-radius: 16px;
-        padding: 1.5rem;
+        background: var(--bg-card, #ffffff);
+        border: 1px solid var(--border-color, #E8DFD5);
+        border-radius: var(--radius-sm, 8px);
+        padding: 1.25rem;
         text-align: center;
     }
 
     .price-kiosk-label {
-        font-size: 0.78rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
+        font-size: 0.75rem;
+        font-weight: 600;
         color: var(--text-muted, #786C60);
         margin-bottom: 0.35rem;
     }
 
     .price-kiosk-value {
-        font-size: 2.25rem;
-        font-weight: 900;
-        color: #C88A4E;
-        font-family: 'JetBrains Mono', 'Consolas', monospace;
-        letter-spacing: -0.5px;
+        font-size: 1.85rem;
+        font-weight: 700;
+        color: var(--accent, #C88A4E);
+        font-variant-numeric: tabular-nums;
         line-height: 1;
     }
 
@@ -224,37 +206,37 @@
     .freshness-pill {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px 16px;
-        border-radius: 12px;
-        font-weight: 700;
-        font-size: 0.88rem;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: var(--radius-sm, 8px);
+        font-weight: 600;
+        font-size: 0.82rem;
     }
 
     .freshness-pill.fresh {
-        background: rgba(16, 185, 129, 0.12);
-        color: #10b981;
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        background: rgba(46, 125, 50, 0.1);
+        color: var(--success, #2e7d32);
+        border: 1px solid rgba(46, 125, 50, 0.25);
     }
 
     .freshness-pill.warning {
-        background: rgba(245, 158, 11, 0.12);
-        color: #f59e0b;
-        border: 1px solid rgba(245, 158, 11, 0.3);
+        background: rgba(230, 81, 0, 0.1);
+        color: var(--warning, #e65100);
+        border: 1px solid rgba(230, 81, 0, 0.25);
     }
 
     .freshness-pill.expired {
-        background: rgba(239, 68, 68, 0.12);
-        color: #ef4444;
-        border: 1px solid rgba(239, 68, 68, 0.3);
+        background: rgba(198, 40, 40, 0.1);
+        color: var(--danger, #c62828);
+        border: 1px solid rgba(198, 40, 40, 0.25);
     }
 
     /* Barcode Visual Box */
     .barcode-render-box {
         background: #ffffff;
-        border: 1px solid #E2E8F0;
-        border-radius: 14px;
-        padding: 1rem;
+        border: 1px solid var(--border-color, #E2E8F0);
+        border-radius: var(--radius-sm, 8px);
+        padding: 0.75rem;
         text-align: center;
     }
 
@@ -266,21 +248,21 @@
     /* Empty Placeholder */
     .kiosk-empty-state {
         text-align: center;
-        padding: 3.5rem 2rem;
+        padding: 3rem 2rem;
         color: var(--text-muted, #786C60);
     }
 
     .kiosk-empty-icon {
-        width: 64px;
-        height: 64px;
-        border-radius: 16px;
-        background: rgba(200, 138, 78, 0.08);
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-sm, 8px);
+        background: var(--bg-hover, #F4EFEA);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1rem;
-        color: var(--accent, #C88A4E);
-        border: 1px solid rgba(200, 138, 78, 0.2);
+        margin-bottom: 0.75rem;
+        color: var(--text-muted, #786C60);
+        border: 1px solid var(--border-color, #E2E8F0);
     }
 
     /* Recent Scan Table */
@@ -352,10 +334,10 @@
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <label for="barcodeTerminalInput" class="form-label fw-bold small text-uppercase mb-0" style="letter-spacing: 0.5px; color: var(--text-muted, #786C60);">
                         <i data-lucide="barcode" style="width: 15px; height: 15px;" class="me-1"></i>
-                        Scan Barcode Produk
+                        Scan barcode produk
                     </label>
                     <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-0.5" style="font-size: 0.72rem;">
-                        <span class="pulse-led d-inline-block me-1" style="width:6px;height:6px;vertical-align:1px;"></span> Siap Scan
+                        <span class="pulse-led d-inline-block me-1" style="width:6px;height:6px;vertical-align:1px;"></span> Siap scan
                     </span>
                 </div>
                 <div class="scan-input-wrapper">
@@ -371,17 +353,17 @@
             </div>
             
             <div class="col-lg-4">
-                <div class="d-flex flex-column justify-content-center gap-2 p-3 rounded-3 h-100" style="background: var(--bg-card, #ffffff); border: 1px solid #E2E8F0;">
+                <div class="d-flex flex-column justify-content-center gap-2 p-3 h-100" style="background: var(--bg-card, #ffffff); border: 1px solid var(--border-color, #E2E8F0); border-radius: var(--radius-sm, 8px);">
                     <div class="d-flex align-items-center justify-content-between">
-                        <span class="text-muted small">Barcode Terakhir:</span>
+                        <span class="text-muted small">Barcode terakhir:</span>
                         <span class="badge bg-light text-dark font-monospace" id="scannerLastCode">-</span>
                     </div>
                     <div class="d-flex align-items-center justify-content-between">
-                        <span class="text-muted small">Waktu Scan:</span>
+                        <span class="text-muted small">Waktu scan:</span>
                         <span class="fw-semibold small font-monospace" id="scannerLastTime">-</span>
                     </div>
                     <div class="d-flex align-items-center justify-content-between">
-                        <span class="text-muted small">Total Batch:</span>
+                        <span class="text-muted small">Total batch:</span>
                         <span class="badge bg-light text-muted border">{{ $totalBatches }} Batch</span>
                     </div>
                 </div>
@@ -403,7 +385,7 @@
                         <h2 class="coffee-title" id="resCoffeeName">Nama Varian Kopi</h2>
                         <div class="d-flex flex-wrap align-items-center gap-3 text-white-50 small font-monospace mt-2">
                             <div>
-                                <span class="text-uppercase" style="letter-spacing: 0.5px; font-size: 0.75rem;">Kode Produksi:</span> 
+                                <span class="text-uppercase" style="letter-spacing: 0.5px; font-size: 0.75rem;">Kode produksi:</span> 
                                 <span class="badge bg-warning text-dark fw-bold px-2 py-1" id="resKodeProduksi">-</span>
                             </div>
                             <div class="border-start ps-3 border-secondary">
@@ -431,7 +413,7 @@
                     <!-- Column 1: Harga Jual Resmi Toko -->
                     <div class="col-lg-4 col-md-6">
                         <div class="price-kiosk-display h-100 d-flex flex-column justify-content-center">
-                            <div class="price-kiosk-label">Harga Jual Resmi Toko</div>
+                            <div class="price-kiosk-label">Harga jual resmi toko</div>
                             <div class="price-kiosk-value" id="resHargaJual">Rp 0</div>
                             <div class="mt-2 text-muted small">
                                 Sesuai master harga di toko mitra tersebut
@@ -441,24 +423,24 @@
 
                     <!-- Column 2: Parameter Tanggal & Kesegaran -->
                     <div class="col-lg-4 col-md-6">
-                        <div class="p-3 rounded-4 h-100" style="background: var(--bg-input, #FBF7F0); border: 1px solid var(--border, #E8DFD5);">
+                        <div class="p-3 h-100" style="background: var(--bg-input, #FBF7F0); border: 1px solid var(--border-color, #E8DFD5); border-radius: var(--radius-sm, 8px);">
                             <div class="text-uppercase fw-bold text-muted small mb-3" style="font-size: 0.72rem; letter-spacing: 0.5px;">
                                 <i data-lucide="calendar" style="width: 14px; height: 14px;" class="me-1 text-accent"></i>
-                                Informasi Siklus Masa Simpan
+                                Informasi siklus masa simpan
                             </div>
                             
                             <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
-                                <span class="text-muted small">Tanggal Expired:</span>
+                                <span class="text-muted small">Tanggal kedaluwarsa:</span>
                                 <span class="fw-bold font-monospace text-dark fs-6" id="resTglExp">-</span>
                             </div>
                             
                             <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
-                                <span class="text-muted small">Tanggal Masuk Stok:</span>
+                                <span class="text-muted small">Tanggal masuk stok:</span>
                                 <span class="fw-medium font-monospace text-dark small" id="resTglStock">-</span>
                             </div>
                             
                             <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-muted small">Hitungan Hari:</span>
+                                <span class="text-muted small">Hitungan hari:</span>
                                 <span class="badge" id="resDaysBadge" style="font-size: 0.75rem;">- Hari</span>
                             </div>
                         </div>
@@ -466,11 +448,11 @@
 
                     <!-- Column 3: Sisa Stok Fisik & Barcode SVG -->
                     <div class="col-lg-4 col-md-12">
-                        <div class="p-3 rounded-4 h-100 d-flex flex-column justify-content-between" style="background: var(--bg-card, #ffffff); border: 1px solid var(--border, #E8DFD5);">
+                        <div class="p-3 h-100 d-flex flex-column justify-content-between" style="background: var(--bg-card, #ffffff); border: 1px solid var(--border-color, #E8DFD5); border-radius: var(--radius-sm, 8px);">
                             <div>
                                 <div class="text-uppercase fw-bold text-muted small mb-2" style="font-size: 0.72rem; letter-spacing: 0.5px;">
                                     <i data-lucide="package" style="width: 14px; height: 14px;" class="me-1 text-accent"></i>
-                                    Status Sisa Stok Fisik
+                                    Status sisa stok fisik
                                 </div>
                                 <div class="d-flex align-items-baseline gap-2 mb-1">
                                     <span class="fs-2 fw-bold font-monospace" id="resSisaStok" style="color: var(--text-main, #2C1E14);">0</span>
@@ -487,23 +469,24 @@
                                 <svg id="resBarcodeSvg"></svg>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Quick Operations Toolbar for Scanned Batch -->
-            <div class="p-3 border-top bg-light d-flex flex-wrap align-items-center justify-content-between gap-3" style="border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+            <div class="p-3 border-top bg-light d-flex flex-wrap align-items-center justify-content-between gap-3" style="border-bottom-left-radius: var(--radius-sm, 8px); border-bottom-right-radius: var(--radius-sm, 8px);">
                 <div class="d-flex align-items-center gap-2 flex-wrap">
-                    <span class="text-muted small fw-semibold">Aksi Cepat:</span>
+                    <span class="text-muted small fw-semibold">Aksi cepat:</span>
                     <a href="#" id="btnScanGoToStock" class="btn btn-sm btn-outline-modern" target="_blank">
-                        Kelola di Stok Batch
+                        Kelola di stok batch
                     </a>
                     <button type="button" id="btnScanPrintLabel" class="btn btn-sm btn-outline-secondary">
-                        Cetak Stiker Barcode
+                        Cetak stiker barcode
                     </button>
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <button type="button" id="btnScanRecordSale" class="btn btn-sm btn-accent fw-bold px-3">
-                        +1 Pack Terjual
+                        +1 Pack terjual
                     </button>
                 </div>
             </div>
@@ -519,17 +502,17 @@
     </div>
 
     <!-- Recent Session Scan History Table -->
-    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: var(--radius-sm, 8px);">
         <div class="card-header bg-white py-3 px-4 d-flex align-items-center justify-content-between border-bottom">
             <div class="d-flex align-items-center gap-2">
                 <i data-lucide="history" style="width: 18px; height: 18px; color: var(--accent, #C88A4E);"></i>
-                <h6 class="fw-bold mb-0">Riwayat Pemindaian Sesi Ini</h6>
+                <h6 class="fw-bold mb-0">Riwayat pemindaian sesi ini</h6>
                 <span class="badge bg-light text-dark rounded-pill ms-2" id="badgeHistoryCount">0 Item</span>
             </div>
             
             <button type="button" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1" id="btnClearHistory">
                 <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
-                <span>Bersihkan Riwayat</span>
+                <span>Bersihkan riwayat</span>
             </button>
         </div>
         
@@ -538,20 +521,20 @@
                 <thead>
                     <tr>
                         <th style="min-width: 85px;">Waktu</th>
-                        <th style="min-width: 140px;">Kode Produksi</th>
+                        <th style="min-width: 140px;">Kode produksi</th>
                         <th style="min-width: 140px;">Barcode</th>
-                        <th style="min-width: 160px;">Varian Kopi</th>
-                        <th style="min-width: 130px;">Toko Mitra</th>
-                        <th style="min-width: 110px;">Tgl Expired</th>
+                        <th style="min-width: 160px;">Varian kopi</th>
+                        <th style="min-width: 130px;">Toko mitra</th>
+                        <th style="min-width: 110px;">Tgl kedaluwarsa</th>
                         <th style="min-width: 120px;">Status</th>
-                        <th class="text-end" style="min-width: 110px;">Harga Jual</th>
+                        <th class="text-end" style="min-width: 110px;">Harga jual</th>
                     </tr>
                 </thead>
                 <tbody id="tableScanHistoryBody">
                     <tr id="emptyHistoryRow">
                         <td colspan="8" class="text-center py-5 text-muted">
                             <i data-lucide="scan-barcode" style="width: 28px; height: 28px; opacity: 0.35;" class="mb-2 d-block mx-auto"></i>
-                            <div class="fw-semibold text-secondary small">Belum Ada Riwayat Pemindaian</div>
+                            <div class="fw-semibold text-secondary small">Belum ada riwayat pemindaian</div>
                             <small class="text-muted" style="font-size:0.75rem;">Scan barcode kemasan untuk melihat detail produk.</small>
                         </td>
                     </tr>

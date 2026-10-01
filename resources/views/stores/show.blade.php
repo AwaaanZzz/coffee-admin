@@ -34,34 +34,34 @@
     <div class="row mb-4">
         <div class="col-md-4">
             <div class="stat-card">
-                <div class="stat-icon stat-icon-stock">
+                <div class="stat-icon">
                     <i data-lucide="calendar"></i>
                 </div>
                 <div class="stat-info">
-                    <div class="stat-label">Kerjasama Sejak</div>
+                    <div class="stat-label">Kerja sama sejak</div>
                     <div class="stat-value fs-5">{{ $store->tgl_kerjasama->format('d-m-Y') }}</div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="stat-card">
-                <div class="stat-icon stat-icon-sold">
+                <div class="stat-icon">
                     <i data-lucide="user"></i>
                 </div>
                 <div class="stat-info">
-                    <div class="stat-label">Penanggung Jawab</div>
-                    <div class="stat-value fs-5">{{ $store->penanggung_jawab ?? '-' }}</div>
+                    <div class="stat-label">Penanggung jawab</div>
+                    <div class="stat-value fs-5">{{ $store->penanggung_jawab ?: 'Belum diisi' }}</div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="stat-card">
-                <div class="stat-icon stat-icon-revenue">
+                <div class="stat-icon">
                     <i data-lucide="map-pin"></i>
                 </div>
                 <div class="stat-info">
                     <div class="stat-label">Alamat</div>
-                    <div class="stat-value fs-6 text-truncate" title="{{ $store->alamat }}">{{ $store->alamat ?? '-' }}</div>
+                    <div class="stat-value fs-6 text-truncate" title="{{ $store->alamat }}">{{ $store->alamat ?: 'Belum diisi' }}</div>
                 </div>
             </div>
         </div>
@@ -71,11 +71,11 @@
     <div class="card-modern mb-4">
         <div class="card-header-modern d-flex flex-wrap justify-content-between align-items-center gap-2">
             <div>
-                <h5 class="card-title-modern m-0">Lokasi Real Toko Mitra di Peta</h5>
+                <h5 class="card-title-modern m-0">Lokasi Toko Mitra di Peta</h5>
                 <p class="text-muted small m-0 mt-1">Peta geografis titik toko untuk rute kurir distribusi & navigasi pengiriman stok.</p>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <a href="{{ $store->google_maps_url }}" target="_blank" class="btn btn-sm btn-accent d-inline-flex align-items-center gap-1 shadow-sm">
+                <a href="{{ $store->google_maps_url }}" target="_blank" class="btn btn-sm btn-outline-modern d-inline-flex align-items-center gap-1">
                     <i data-lucide="navigation" style="width:14px;height:14px;"></i>
                     <span>Buka Google Maps</span>
                     <i data-lucide="external-link" style="width:12px;height:12px;"></i>
@@ -97,7 +97,7 @@
                 <div class="p-3 bg-light border-top d-flex flex-wrap justify-content-between align-items-center gap-2" style="border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius);">
                     <div class="d-flex align-items-center gap-3">
                         <div class="d-flex align-items-center gap-1 text-muted small">
-                            <i data-lucide="map-pinned" style="width:15px;height:15px;color:var(--accent);"></i>
+                            <i data-lucide="map-pinned" style="width:15px;height:15px;color:var(--text-secondary);"></i>
                             <span>Koordinat GPS:</span>
                             <strong class="text-dark font-monospace" id="coordText">{{ $store->latitude }}, {{ $store->longitude }}</strong>
                         </div>
@@ -106,19 +106,19 @@
                         </button>
                     </div>
                     <div class="text-muted small d-flex align-items-center gap-1">
-                        <i data-lucide="info" style="width:13px;height:13px;color:var(--info);"></i>
+                        <i data-lucide="info" style="width:13px;height:13px;color:var(--text-secondary);"></i>
                         <span>Peta jalan OpenStreetMap interaktif. Geser dan perbesar bebas.</span>
                     </div>
                 </div>
             @else
                 <div class="text-center py-5 px-3">
-                    <div class="stat-icon stat-icon-store mx-auto mb-3" style="width:54px;height:54px;">
-                        <i data-lucide="map-pin-off" style="width:26px;height:26px;"></i>
+                    <div class="stat-icon mx-auto mb-3" style="width:48px;height:48px;">
+                        <i data-lucide="map-pin-off" style="width:24px;height:24px;"></i>
                     </div>
                     <h6 class="fw-bold text-dark">Titik Koordinat Peta Belum Diatur</h6>
                     <p class="text-muted small mb-3">Tentukan titik lokasi toko ini di peta agar rute pengiriman dan navigasi GPS pengantar tampil otomatis.</p>
-                    <a href="{{ route('stores.edit', $store) }}" class="btn btn-sm btn-accent">
-                        <i data-lucide="map-pin"></i> Tentukan Titik Peta Sekarang
+                    <a href="{{ route('stores.edit', $store) }}" class="btn btn-sm btn-outline-modern">
+                        <i data-lucide="map-pin"></i> Tentukan Titik Peta
                     </a>
                 </div>
             @endif
@@ -128,7 +128,7 @@
     <div class="card-modern mb-4">
         <div class="card-header-modern d-flex justify-content-between align-items-center">
             <h5 class="m-0">Harga Kopi di Toko Ini</h5>
-            <a href="{{ route('stores.prices.edit', $store) }}" class="btn btn-sm btn-accent">
+            <a href="{{ route('stores.prices.edit', $store) }}" class="btn btn-sm btn-outline-modern">
                 <i data-lucide="tag"></i> Atur Harga
             </a>
         </div>
@@ -136,9 +136,9 @@
             <table class="table-modern w-100 m-0">
                 <thead>
                     <tr>
-                        <th>Nama Kopi</th>
+                        <th>Nama kopi</th>
                         <th>Kategori</th>
-                        <th>Harga</th>
+                        <th class="text-end">Harga jual</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -146,11 +146,11 @@
                         <tr>
                             <td class="fw-bold">{{ $price->coffeeType->name }}</td>
                             <td>
-                                <span class="badge-modern {{ $price->coffeeType->category === 'robusta' ? 'bg-dark text-white' : 'bg-warning text-dark' }}">
+                                <span class="badge-modern badge-neutral">
                                     {{ ucfirst($price->coffeeType->category) }}
                                 </span>
                             </td>
-                            <td>Rp {{ number_format($price->price, 0, ',', '.') }}</td>
+                            <td class="text-end tabular-nums">Rp {{ number_format($price->price, 0, ',', '.') }}</td>
                         </tr>
                     @empty
                         <tr>
@@ -170,10 +170,10 @@
     <div class="card-modern mb-4">
         <div class="card-header-modern d-flex justify-content-between align-items-center">
             <h5 class="card-title-modern m-0">
-                Produk Paling Laku di {{ $store->name }}
+                Produk terlaris di {{ $store->name }}
             </h5>
-            <a href="{{ route('stock.create') }}?store_id={{ $store->id }}" class="btn btn-sm btn-accent">
-                <i data-lucide="plus"></i> Tambah Stock Toko
+            <a href="{{ route('stock.create') }}?store_id={{ $store->id }}" class="btn btn-sm btn-outline-modern">
+                <i data-lucide="plus"></i> Tambah stok toko
             </a>
         </div>
         <div class="card-body-modern">
@@ -184,37 +184,29 @@
                     </div>
                 </div>
                 <div class="col-lg-5">
-                    <h6 class="fw-bold mb-3 text-muted" style="font-size:0.85rem;">Peringkat Penjualan Produk</h6>
+                    <h6 class="fw-bold mb-3 text-muted" style="font-size:0.85rem;">Peringkat penjualan produk</h6>
                     <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
-                        <table class="table table-sm table-hover align-middle mb-0" style="font-size:0.82rem;">
+                        <table class="table-modern w-100" style="font-size:0.8125rem;">
                             <thead>
-                                <tr class="text-muted">
-                                    <th>#</th>
-                                    <th>Kopi</th>
+                                <tr>
+                                    <th style="width: 36px;">#</th>
+                                    <th>Nama kopi</th>
                                     <th class="text-end">Terjual</th>
-                                    <th class="text-end">Omset</th>
+                                    <th class="text-end">Omzet</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($topProducts as $i => $p)
                                     <tr>
                                         <td>
-                                            @if($i === 0)
-                                                <span class="badge rounded-pill bg-warning text-dark fw-bold" style="font-size:0.75rem; min-width:22px;">1</span>
-                                            @elseif($i === 1)
-                                                <span class="badge rounded-pill bg-secondary text-white fw-bold" style="font-size:0.75rem; min-width:22px;">2</span>
-                                            @elseif($i === 2)
-                                                <span class="badge rounded-pill border fw-bold text-dark" style="font-size:0.75rem; min-width:22px; background:#F5E5D3;">3</span>
-                                            @else
-                                                <span class="badge rounded-pill bg-light text-muted border fw-semibold" style="font-size:0.75rem; min-width:22px;">{{ $i + 1 }}</span>
-                                            @endif
+                                            <span class="badge-modern badge-neutral">{{ $i + 1 }}</span>
                                         </td>
                                         <td>
                                             <div class="fw-bold">{{ $p['name'] }}</div>
-                                            <span class="badge {{ $p['category'] === 'robusta' ? 'bg-primary' : 'bg-warning text-dark' }}" style="font-size:0.65rem;">{{ $p['category'] }}</span>
+                                            <span class="badge-modern badge-neutral" style="font-size:0.7rem;">{{ ucfirst($p['category']) }}</span>
                                         </td>
-                                        <td class="text-end fw-bold text-success">{{ $p['qty'] }} pcs</td>
-                                        <td class="text-end text-muted">Rp {{ number_format($p['revenue'], 0, ',', '.') }}</td>
+                                        <td class="text-end tabular-nums">{{ $p['qty'] }} pcs</td>
+                                        <td class="text-end tabular-nums">Rp {{ number_format($p['revenue'], 0, ',', '.') }}</td>
                                     </tr>
                                 @empty
                                     <tr>

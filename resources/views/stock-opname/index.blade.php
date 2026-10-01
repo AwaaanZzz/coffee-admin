@@ -14,13 +14,13 @@
         <div>
             <div class="d-flex align-items-center gap-2">
                 <h3 class="page-title m-0">Stok Opname & Audit Konsinyasi</h3>
-                <span class="badge bg-accent text-white px-2 py-1" style="font-size:0.75rem;">Lapangan</span>
+                <span class="badge-modern badge-neutral">Audit lapangan</span>
             </div>
             <p class="page-subtitle mt-1 mb-0">Audit fisik berkala dan rekonsiliasi penjualan toko mitra.</p>
         </div>
         <div class="page-actions d-flex gap-2">
             <a href="{{ route('stock.index') }}" class="btn btn-outline-modern">
-                Kelola Stok Fisik
+                Kelola stok fisik
             </a>
         </div>
     </div>
@@ -29,7 +29,7 @@
     <div class="card-modern mb-4">
         <div class="card-header-modern d-flex justify-content-between align-items-center">
             <h5 class="card-title-modern m-0">Pilih Toko Mitra</h5>
-            <span class="badge bg-light text-muted border">{{ $stores->count() }} Toko</span>
+            <span class="badge-modern badge-neutral">{{ $stores->count() }} toko</span>
         </div>
         <div class="card-body-modern p-4">
             <div class="row g-3">
@@ -45,27 +45,27 @@
                                     <h6 class="fw-bold text-dark m-0">
                                         {{ $store->name }}
                                     </h6>
-                                    <span class="badge {{ $store->active_batches_count > 0 ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-light text-muted border' }}" style="font-size:0.7rem;">
+                                    <span class="badge-modern badge-neutral" style="font-size:0.7rem;">
                                         {{ $store->active_batches_count }} batch
                                     </span>
                                 </div>
                                 <div class="mb-2.5">
                                     @if($lastOpname)
                                         @if($daysSinceAudit <= 7)
-                                            <span class="badge bg-success-subtle text-success border border-success-subtle" style="font-size: 0.68rem;">
-                                                Diaudit {{ $daysSinceAudit == 0 ? 'Hari ini' : $daysSinceAudit . ' hari lalu' }}
+                                            <span class="badge-modern badge-success" style="font-size: 0.68rem;">
+                                                Diaudit {{ $daysSinceAudit == 0 ? 'hari ini' : $daysSinceAudit . ' hari lalu' }}
                                             </span>
                                         @elseif($daysSinceAudit <= 14)
-                                            <span class="badge bg-light text-secondary border" style="font-size: 0.68rem;">
+                                            <span class="badge-modern badge-neutral" style="font-size: 0.68rem;">
                                                 Diaudit {{ $daysSinceAudit }} hari lalu
                                             </span>
                                         @else
-                                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle" style="font-size: 0.68rem;">
-                                                Perlu Audit ({{ $daysSinceAudit }} hr lalu)
+                                            <span class="badge-modern badge-warning" style="font-size: 0.68rem;">
+                                                Perlu audit ({{ $daysSinceAudit }} hr lalu)
                                             </span>
                                         @endif
                                     @else
-                                        <span class="badge bg-light text-muted border" style="font-size: 0.68rem;">
+                                        <span class="badge-modern badge-neutral" style="font-size: 0.68rem;">
                                             Belum pernah diaudit
                                         </span>
                                     @endif
@@ -81,8 +81,8 @@
                             </div>
                             
                             <div class="border-top pt-2.5">
-                                <a href="{{ route('stock-opname.create', $store) }}" class="btn btn-sm btn-accent w-100 text-center fw-semibold py-1.5" style="letter-spacing: 0.2px;">
-                                    Mulai Audit
+                                <a href="{{ route('stock-opname.create', $store) }}" class="btn btn-sm btn-outline-modern w-100 text-center fw-semibold py-1.5">
+                                    Mulai audit
                                 </a>
                             </div>
                         </div>
@@ -107,13 +107,13 @@
                 <table class="table-modern w-100 m-0 align-middle">
                     <thead>
                         <tr>
-                            <th style="padding-left: 20px;">ID & Tgl Audit</th>
-                            <th>Toko Mitra</th>
+                            <th style="padding-left: 20px;">ID & tgl. audit</th>
+                            <th>Toko mitra</th>
                             <th>Auditor</th>
-                            <th class="text-center">Stok Sistem</th>
-                            <th class="text-center">Fisik Ditemukan</th>
-                            <th class="text-center">Terjual Otomatis</th>
-                            <th class="text-end">Total Uang Penjualan</th>
+                            <th class="text-end">Stok sistem</th>
+                            <th class="text-end">Fisik ditemukan</th>
+                            <th class="text-end">Terjual otomatis</th>
+                            <th class="text-end">Total uang penjualan</th>
                             <th class="text-end" style="padding-right: 20px;">Aksi</th>
                         </tr>
                     </thead>
@@ -126,28 +126,28 @@
                                 </td>
                                 <td>
                                     <div class="fw-bold text-dark">
-                                        <span>{{ $opname->store->name ?? '-' }}</span>
+                                        <span>{{ $opname->store->name ?? 'Belum diisi' }}</span>
                                     </div>
-                                    <small class="text-muted" style="font-size:0.72rem;">PJ: {{ $opname->store->penanggung_jawab ?? '-' }}</small>
+                                    <small class="text-muted" style="font-size:0.72rem;">PJ: {{ $opname->store->penanggung_jawab ?: 'Belum diisi' }}</small>
                                 </td>
                                 <td>
-                                    <span class="badge bg-light text-dark border" style="font-size:0.75rem;">
+                                    <span class="badge-modern badge-neutral" style="font-size:0.75rem;">
                                         {{ $opname->user->name ?? 'Admin' }}
                                     </span>
                                 </td>
-                                <td class="text-center tabular-nums">{{ $opname->total_stok_sistem }} pcs</td>
-                                <td class="text-center tabular-nums fw-semibold text-info">{{ $opname->total_fisik_terhitung }} pcs</td>
-                                <td class="text-center tabular-nums">
-                                    <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1" style="font-size:0.78rem;">
+                                <td class="text-end tabular-nums">{{ $opname->total_stok_sistem }} pcs</td>
+                                <td class="text-end tabular-nums fw-semibold">{{ $opname->total_fisik_terhitung }} pcs</td>
+                                <td class="text-end tabular-nums">
+                                    <span class="badge-modern badge-success" style="font-size:0.78rem;">
                                         +{{ $opname->total_selisih_laku }} pcs laku
                                     </span>
                                 </td>
-                                <td class="text-end tabular-nums fw-bold text-primary">
+                                <td class="text-end tabular-nums fw-semibold">
                                     Rp {{ number_format($opname->total_nilai_penjualan, 0, ',', '.') }}
                                 </td>
                                 <td class="text-end" style="padding-right: 20px;">
                                     <a href="{{ route('stock-opname.receipt', $opname->id) }}" class="btn btn-sm btn-outline-modern">
-                                        Berita Acara &rarr;
+                                        Berita acara &rarr;
                                     </a>
                                 </td>
                             </tr>
