@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Laporan Penjualan - Kopi Hiku Himu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
             color: #1e293b;
             background: #f8fafc;
             padding: 2rem;
@@ -16,14 +19,15 @@
             margin: 0 auto;
             background: #fff;
             padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
         .header-brand h3 {
             margin: 0;
             font-weight: 800;
             letter-spacing: -0.5px;
-            color: #0f172a;
+            color: #1E3A5F;
         }
         .header-brand span {
             font-size: 0.85rem;
@@ -32,11 +36,10 @@
             color: #64748b;
         }
         .table-report th {
-            background-color: #f1f5f9;
-            color: #334155;
-            font-weight: 700;
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 600;
             font-size: 0.8rem;
-            text-transform: uppercase;
             border-bottom: 2px solid #cbd5e1;
         }
         .table-report td {
@@ -52,6 +55,19 @@
             font-weight: 600;
             font-size: 0.85rem;
         }
+        .btn-print-accent {
+            background: #C88A4E;
+            color: #ffffff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .btn-print-accent:hover {
+            background: #b57a3e;
+            color: #ffffff;
+        }
         @media print {
             body {
                 background: #fff !important;
@@ -59,6 +75,7 @@
             }
             .report-page {
                 box-shadow: none !important;
+                border: none !important;
                 border-radius: 0 !important;
                 padding: 0 !important;
                 max-width: 100% !important;
@@ -73,12 +90,12 @@
     <div class="report-page">
         <!-- Floating Actions for non-print -->
         <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom no-print">
-            <button onclick="window.history.back()" class="btn btn-sm btn-outline-secondary">
+            <button onclick="window.history.back()" class="btn btn-sm btn-outline-secondary" style="border-radius: 8px;">
                 &larr; Kembali
             </button>
             <div class="d-flex gap-2">
-                <button onclick="window.print()" class="btn btn-sm btn-primary">
-                    Cetak / Simpan PDF
+                <button onclick="window.print()" class="btn-print-accent">
+                    Cetak / simpan PDF
                 </button>
             </div>
         </div>
@@ -88,11 +105,11 @@
             <div class="header-brand">
                 <h3>KOPI HIKU HIMU</h3>
                 <span>Artisan Coffee Roastery & Konsinyasi</span>
-                <div class="text-muted small mt-1">Laporan Resmi Penjualan Kopi Mitra</div>
+                <div class="text-muted small mt-1">Laporan resmi penjualan kopi mitra</div>
             </div>
             <div class="text-end">
-                <div class="badge bg-primary px-3 py-1.5 text-uppercase">Laporan Penjualan</div>
-                <div class="small text-muted mt-1">Tanggal Cetak: <strong>{{ date('d/m/Y H:i') }}</strong></div>
+                <div class="badge bg-light text-dark border px-3 py-1.5" style="border-radius: 6px;">Laporan penjualan</div>
+                <div class="small text-muted mt-1">Tanggal cetak: <strong>{{ date('d/m/Y H:i') }}</strong></div>
             </div>
         </div>
 

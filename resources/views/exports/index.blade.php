@@ -12,97 +12,73 @@
 <style>
     .export-card-modern {
         background: var(--bg-card, #ffffff);
-        border: 1px solid var(--border, #E8DFD5);
-        border-radius: var(--radius-lg, 18px);
-        padding: 1.75rem;
+        border: 1px solid var(--border-color, #E8DFD5);
+        border-radius: var(--radius-sm, 8px);
+        padding: 1.5rem;
         box-shadow: var(--shadow-sm);
-        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         height: 100%;
         display: flex;
         flex-direction: column;
     }
-    .export-card-modern:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-lg);
-        border-color: var(--accent, #C88A4E);
-    }
     .export-icon-wrapper {
-        width: 54px;
-        height: 54px;
-        border-radius: 14px;
+        width: 44px;
+        height: 44px;
+        border-radius: var(--radius-sm, 8px);
         display: flex;
         align-items: center;
         justify-content: center;
     }
     .export-filter-box {
-        background: var(--bg-input, #FBF7F0);
-        border: 1px solid var(--border, #E8DFD5);
-        border-radius: var(--radius, 14px);
-        padding: 1.25rem;
+        background: var(--bg-main, #FAF5EE);
+        border: 1px solid var(--border-color, #E8DFD5);
+        border-radius: var(--radius-sm, 8px);
+        padding: 1rem;
     }
     .export-label {
-        font-size: 0.72rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: var(--text-secondary, #5A6B7D);
-        margin-bottom: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-muted, #786C60);
+        margin-bottom: 4px;
         display: block;
     }
     .btn-export-xlsx {
-        background: #1B4D3E;
+        background: var(--navy, #1E3A5F);
         color: #ffffff !important;
         font-weight: 600;
-        font-size: 0.88rem;
-        border: 1px solid #163E32;
-        border-radius: 10px;
-        padding: 10px 16px;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 5px rgba(27, 77, 62, 0.15);
-        letter-spacing: 0.2px;
+        font-size: 0.85rem;
+        border: 1px solid var(--navy, #1E3A5F);
+        border-radius: var(--radius-sm, 8px);
+        padding: 8px 14px;
+        transition: background 0.15s ease;
     }
     .btn-export-xlsx:hover {
-        background: #143B2F;
-        border-color: #0E2920;
+        background: #142841;
         color: #ffffff !important;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 10px rgba(27, 77, 62, 0.22);
     }
     .btn-export-pdf {
-        background: #842029;
-        color: #ffffff !important;
+        background: var(--bg-card, #ffffff);
+        color: var(--text-main, #2C1E14) !important;
         font-weight: 600;
-        font-size: 0.88rem;
-        border: 1px solid #6E1B22;
-        border-radius: 10px;
-        padding: 10px 16px;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 5px rgba(132, 32, 41, 0.15);
-        letter-spacing: 0.2px;
+        font-size: 0.85rem;
+        border: 1px solid var(--border-color, #cbd5e1);
+        border-radius: var(--radius-sm, 8px);
+        padding: 8px 12px;
     }
     .btn-export-pdf:hover {
-        background: #6E1B22;
-        border-color: #55151A;
-        color: #ffffff !important;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 10px rgba(132, 32, 41, 0.22);
+        background: var(--bg-hover, #f8fafc);
+        color: var(--text-main, #2C1E14) !important;
     }
     .btn-export-csv {
-        background: #FFFFFF;
-        color: var(--text-primary, #1E3A5F);
-        border: 1px solid #CBD5E1;
-        border-radius: 10px;
-        padding: 10px 14px;
+        background: var(--bg-card, #ffffff);
+        color: var(--text-main, #2C1E14);
+        border: 1px solid var(--border-color, #cbd5e1);
+        border-radius: var(--radius-sm, 8px);
+        padding: 8px 12px;
         font-weight: 600;
-        font-size: 0.88rem;
-        transition: all 0.2s ease;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+        font-size: 0.85rem;
     }
     .btn-export-csv:hover {
-        background: #F8FAFC;
-        color: #0F172A;
-        border-color: #94A3B8;
-        transform: translateY(-1px);
+        background: var(--bg-hover, #f8fafc);
     }
 </style>
 @endsection
@@ -127,10 +103,10 @@
         </div>
         <div class="d-flex gap-2">
             <a href="{{ route('sales.index') }}" class="btn btn-outline-modern">
-                Data Penjualan
+                Data penjualan
             </a>
             <a href="{{ route('stock.index') }}" class="btn btn-outline-modern">
-                Data Stock
+                Data stok
             </a>
         </div>
     </div>
@@ -140,9 +116,9 @@
         <div class="col-md-4">
             <div class="card-modern p-3">
                 <div>
-                    <div class="text-muted small fw-semibold text-uppercase" style="font-size:0.72rem; letter-spacing:0.5px;">Data Penjualan Terdata</div>
-                    <div class="fs-4 fw-bold mt-1" style="color: var(--text-primary, #1E3A5F); font-family: 'Manrope', sans-serif;">
-                        {{ number_format($totalSalesCount) }} <span style="font-size:0.85rem; font-family:'Manrope',sans-serif;" class="text-muted fw-normal">transaksi</span>
+                    <div class="text-muted small fw-semibold" style="font-size:0.75rem;">Data penjualan terdata</div>
+                    <div class="fs-4 fw-bold mt-1" style="color: var(--text-main, #1E3A5F); font-variant-numeric: tabular-nums;">
+                        {{ number_format($totalSalesCount) }} <span style="font-size:0.85rem;" class="text-muted fw-normal">transaksi</span>
                     </div>
                 </div>
             </div>
@@ -150,9 +126,9 @@
         <div class="col-md-4">
             <div class="card-modern p-3">
                 <div>
-                    <div class="text-muted small fw-semibold text-uppercase" style="font-size:0.72rem; letter-spacing:0.5px;">Batch Stok Fisik</div>
-                    <div class="fs-4 fw-bold mt-1" style="color: var(--text-primary, #1E3A5F); font-family: 'Manrope', sans-serif;">
-                        {{ number_format($totalStockCount) }} <span style="font-size:0.85rem; font-family:'Manrope',sans-serif;" class="text-muted fw-normal">batch terdaftar</span>
+                    <div class="text-muted small fw-semibold" style="font-size:0.75rem;">Batch stok fisik</div>
+                    <div class="fs-4 fw-bold mt-1" style="color: var(--text-main, #1E3A5F); font-variant-numeric: tabular-nums;">
+                        {{ number_format($totalStockCount) }} <span style="font-size:0.85rem;" class="text-muted fw-normal">batch terdaftar</span>
                     </div>
                 </div>
             </div>
@@ -160,9 +136,9 @@
         <div class="col-md-4">
             <div class="card-modern p-3">
                 <div>
-                    <div class="text-muted small fw-semibold text-uppercase" style="font-size:0.72rem; letter-spacing:0.5px;">Varian Kopi Roastery</div>
-                    <div class="fs-4 fw-bold mt-1" style="color: var(--text-primary, #1E3A5F); font-family: 'Manrope', sans-serif;">
-                        {{ number_format($totalCoffeeCount) }} <span style="font-size:0.85rem; font-family:'Manrope',sans-serif;" class="text-muted fw-normal">jenis kopi</span>
+                    <div class="text-muted small fw-semibold" style="font-size:0.75rem;">Varian kopi roastery</div>
+                    <div class="fs-4 fw-bold mt-1" style="color: var(--text-main, #1E3A5F); font-variant-numeric: tabular-nums;">
+                        {{ number_format($totalCoffeeCount) }} <span style="font-size:0.85rem;" class="text-muted fw-normal">jenis kopi</span>
                     </div>
                 </div>
             </div>
@@ -175,18 +151,18 @@
         <div class="col-12 col-lg-4">
             <div class="export-card-modern">
                 <div class="d-flex align-items-center justify-content-between mb-3">
-                    <span class="badge bg-light text-primary border" style="font-size: 0.72rem; font-weight: 600;">Harian / Bulanan</span>
+                    <span class="badge bg-light text-primary border" style="font-size: 0.72rem; font-weight: 600;">Harian / bulanan</span>
                 </div>
-                <h4 class="fw-bold mb-2" style="color: var(--text-primary, #1E3A5F); font-family: 'Manrope', sans-serif;">Laporan Penjualan</h4>
+                <h4 class="fw-bold mb-2" style="color: var(--text-main, #1E3A5F);">Laporan penjualan</h4>
                 <p class="text-muted small mb-4" style="line-height: 1.5;">
                     Rekapitulasi transaksi penjualan konsinyasi per toko mitra, tanggal transaksi, jenis kopi terjual, harga satuan, dan omset pendapatan.
                 </p>
 
                 <div class="export-filter-box mb-4">
                     <div class="mb-3">
-                        <label class="export-label">Filter Toko Mitra:</label>
-                        <select id="salesStoreSelect" class="form-select form-select-sm" style="border-radius: 8px; border-color: var(--border);">
-                            <option value="">Semua Toko Mitra</option>
+                        <label class="export-label">Filter toko mitra:</label>
+                        <select id="salesStoreSelect" class="form-select form-select-sm" style="border-radius: var(--radius-sm, 8px); border-color: var(--border-color);">
+                            <option value="">Semua toko mitra</option>
                             @foreach($stores as $st)
                             <option value="{{ $st->id }}">{{ $st->name }}</option>
                             @endforeach
@@ -194,19 +170,19 @@
                     </div>
                     <div class="row g-2">
                         <div class="col-6">
-                            <label class="export-label">Dari Tanggal:</label>
-                            <input type="date" id="salesStartDate" class="form-control form-control-sm" style="border-radius: 8px; border-color: var(--border);">
+                            <label class="export-label">Dari tanggal:</label>
+                            <input type="date" id="salesStartDate" class="form-control form-control-sm" style="border-radius: var(--radius-sm, 8px); border-color: var(--border-color);">
                         </div>
                         <div class="col-6">
-                            <label class="export-label">Sampai Tanggal:</label>
-                            <input type="date" id="salesEndDate" class="form-control form-control-sm" style="border-radius: 8px; border-color: var(--border);">
+                            <label class="export-label">Sampai tanggal:</label>
+                            <input type="date" id="salesEndDate" class="form-control form-control-sm" style="border-radius: var(--radius-sm, 8px); border-color: var(--border-color);">
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-auto d-flex flex-column gap-2">
                     <button type="button" class="btn btn-export-xlsx d-flex align-items-center justify-content-center" onclick="exportReport('sales', 'xlsx')">
-                        <span>Download Excel (.xlsx)</span>
+                        <span>Unduh Excel (.xlsx)</span>
                     </button>
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-export-pdf flex-fill d-flex align-items-center justify-content-center" onclick="exportReport('sales', 'pdf')">
@@ -224,18 +200,18 @@
         <div class="col-12 col-lg-4">
             <div class="export-card-modern">
                 <div class="d-flex align-items-center justify-content-between mb-3">
-                    <span class="badge bg-light text-success border" style="font-size: 0.72rem; font-weight: 600;">HPP & Margin</span>
+                    <span class="badge bg-light text-success border" style="font-size: 0.72rem; font-weight: 600;">HPP & margin</span>
                 </div>
-                <h4 class="fw-bold mb-2" style="color: var(--text-primary, #1E3A5F); font-family: 'Manrope', sans-serif;">Neraca Laba Rugi</h4>
+                <h4 class="fw-bold mb-2" style="color: var(--text-main, #1E3A5F);">Neraca laba rugi</h4>
                 <p class="text-muted small mb-4" style="line-height: 1.5;">
                     Analisis margin keuntungan bersih, total omset penjualan, beban modal pokok produksi (HPP) per varian kopi, dan persentase laba kotor.
                 </p>
 
                 <div class="export-filter-box mb-4">
                     <div class="mb-3">
-                        <label class="export-label">Filter Toko Mitra:</label>
-                        <select id="financeStoreSelect" class="form-select form-select-sm" style="border-radius: 8px; border-color: var(--border);">
-                            <option value="">Semua Toko Mitra</option>
+                        <label class="export-label">Filter toko mitra:</label>
+                        <select id="financeStoreSelect" class="form-select form-select-sm" style="border-radius: var(--radius-sm, 8px); border-color: var(--border-color);">
+                            <option value="">Semua toko mitra</option>
                             @foreach($stores as $st)
                             <option value="{{ $st->id }}">{{ $st->name }}</option>
                             @endforeach
@@ -243,19 +219,19 @@
                     </div>
                     <div class="row g-2">
                         <div class="col-6">
-                            <label class="export-label">Dari Tanggal:</label>
-                            <input type="date" id="financeStartDate" class="form-control form-control-sm" style="border-radius: 8px; border-color: var(--border);">
+                            <label class="export-label">Dari tanggal:</label>
+                            <input type="date" id="financeStartDate" class="form-control form-control-sm" style="border-radius: var(--radius-sm, 8px); border-color: var(--border-color);">
                         </div>
                         <div class="col-6">
-                            <label class="export-label">Sampai Tanggal:</label>
-                            <input type="date" id="financeEndDate" class="form-control form-control-sm" style="border-radius: 8px; border-color: var(--border);">
+                            <label class="export-label">Sampai tanggal:</label>
+                            <input type="date" id="financeEndDate" class="form-control form-control-sm" style="border-radius: var(--radius-sm, 8px); border-color: var(--border-color);">
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-auto d-flex flex-column gap-2">
                     <button type="button" class="btn btn-export-xlsx d-flex align-items-center justify-content-center" onclick="exportReport('finance', 'xlsx')">
-                        <span>Download Excel (.xlsx)</span>
+                        <span>Unduh Excel (.xlsx)</span>
                     </button>
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-export-pdf flex-fill d-flex align-items-center justify-content-center" onclick="exportReport('finance', 'pdf')">
@@ -273,37 +249,37 @@
         <div class="col-12 col-lg-4">
             <div class="export-card-modern">
                 <div class="d-flex align-items-center justify-content-between mb-3">
-                    <span class="badge bg-light text-warning border" style="font-size: 0.72rem; font-weight: 600;">Audit & Sisa</span>
+                    <span class="badge bg-light text-warning border" style="font-size: 0.72rem; font-weight: 600;">Audit & sisa</span>
                 </div>
-                <h4 class="fw-bold mb-2" style="color: var(--text-primary, #1E3A5F); font-family: 'Manrope', sans-serif;">Inventaris Stok Kopi</h4>
+                <h4 class="fw-bold mb-2" style="color: var(--text-main, #1E3A5F);">Inventaris stok kopi</h4>
                 <p class="text-muted small mb-4" style="line-height: 1.5;">
                     Status sisa fisik rak toko konsinyasi, kode batch produksi, tanggal kedaluwarsa, jumlah laku, dan nilai estimasi aset kopi beredar.
                 </p>
 
                 <div class="export-filter-box mb-4">
                     <div class="mb-3">
-                        <label class="export-label">Filter Toko Mitra:</label>
-                        <select id="stockStoreSelect" class="form-select form-select-sm" style="border-radius: 8px; border-color: var(--border);">
-                            <option value="">Semua Toko Mitra</option>
+                        <label class="export-label">Filter toko mitra:</label>
+                        <select id="stockStoreSelect" class="form-select form-select-sm" style="border-radius: var(--radius-sm, 8px); border-color: var(--border-color);">
+                            <option value="">Semua toko mitra</option>
                             @foreach($stores as $st)
                             <option value="{{ $st->id }}">{{ $st->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-0">
-                        <label class="export-label">Filter Status Stok:</label>
-                        <select id="stockStatusSelect" class="form-select form-select-sm" style="border-radius: 8px; border-color: var(--border);">
-                            <option value="">Semua Status Stok</option>
-                            <option value="active">Stok Aktif (Sisa > 0)</option>
-                            <option value="expiring">Hampir Kadaluarsa (&le; 7 Hari)</option>
-                            <option value="expired">Sudah Kadaluarsa (Expired)</option>
+                        <label class="export-label">Filter status stok:</label>
+                        <select id="stockStatusSelect" class="form-select form-select-sm" style="border-radius: var(--radius-sm, 8px); border-color: var(--border-color);">
+                            <option value="">Semua status stok</option>
+                            <option value="active">Stok aktif (sisa > 0)</option>
+                            <option value="expiring">Hampir kedaluwarsa (≤ 7 hari)</option>
+                            <option value="expired">Sudah kedaluwarsa</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="mt-auto d-flex flex-column gap-2">
                     <button type="button" class="btn btn-export-xlsx d-flex align-items-center justify-content-center" onclick="exportReport('stock', 'xlsx')">
-                        <span>Download Excel (.xlsx)</span>
+                        <span>Unduh Excel (.xlsx)</span>
                     </button>
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-export-pdf flex-fill d-flex align-items-center justify-content-center" onclick="exportReport('stock', 'pdf')">

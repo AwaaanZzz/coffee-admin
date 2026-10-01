@@ -5,43 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Keuangan - Print</title>
     <style>
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; line-height: 1.5; margin: 0; padding: 20px; }
-        .print-header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
-        .print-header h1 { margin: 0; font-size: 24px; text-transform: uppercase; }
-        .print-header p { margin: 5px 0 0; color: #666; font-size: 14px; }
+        body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; color: #1e293b; line-height: 1.5; margin: 0; padding: 20px; }
+        .print-header { text-align: center; border-bottom: 2px solid #1E3A5F; padding-bottom: 10px; margin-bottom: 20px; }
+        .print-header h1 { margin: 0; font-size: 20px; font-weight: 700; color: #1E3A5F; }
+        .print-header p { margin: 5px 0 0; color: #64748b; font-size: 13px; }
         table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 12px; }
-        th, td { border: 1px solid #ddd; padding: 10px 12px; text-align: left; }
-        th { background-color: #f4f4f4; font-weight: bold; text-transform: uppercase; }
-        .text-right { text-align: right; }
-        .text-success { color: #059669; }
-        .text-danger { color: #dc2626; }
-        .print-footer { text-align: right; font-size: 10px; color: #999; margin-top: 30px; border-top: 1px solid #eee; padding-top: 10px; }
+        th, td { border: 1px solid #e2e8f0; padding: 10px 12px; text-align: left; }
+        th { background-color: #f8fafc; font-weight: 600; font-size: 11px; }
+        .text-right { text-align: right; font-variant-numeric: tabular-nums; }
+        .text-success { color: #2e7d32; }
+        .text-danger { color: #c62828; }
+        .print-footer { text-align: right; font-size: 10px; color: #94a3b8; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
         
         @media print {
             body { padding: 0; margin: 0; }
-            th, td { border: 1px solid #000; }
+            th, td { border: 1px solid #cbd5e1; }
             th { background-color: transparent !important; }
             /* Force colors in print */
-            .text-success { color: #059669 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .text-danger { color: #dc2626 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .text-success { color: #2e7d32 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .text-danger { color: #c62828 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
     </style>
 </head>
 <body onload="window.print()">
 
     <div class="print-header">
-        <h1>LAPORAN KEUANGAN - Coffee Admin</h1>
+        <h1>Laporan Keuangan - Kopi Hiku Himu</h1>
         <p>Tahun: {{ request('year', date('Y')) }}</p>
     </div>
 
     <table>
         <thead>
             <tr>
-                <th>Toko</th>
+                <th>Toko mitra</th>
                 <th>Periode</th>
                 <th class="text-right">Pemasukan</th>
                 <th class="text-right">Pengeluaran</th>
-                <th class="text-right">Laba/Rugi</th>
+                <th class="text-right">Laba / rugi</th>
             </tr>
         </thead>
         <tbody>

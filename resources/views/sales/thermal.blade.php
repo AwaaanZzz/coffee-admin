@@ -62,25 +62,25 @@
         }
 
         .btn-action-primary {
-            background: #0f172a;
+            background: #C88A4E;
             color: #ffffff;
-            border-color: #0f172a;
+            border-color: #C88A4E;
         }
 
         .btn-action-primary:hover {
-            background: #1e293b;
+            background: #b57a3e;
             color: #ffffff;
         }
 
         .btn-action-success {
-            background: #10b981;
-            color: #ffffff;
-            border-color: #059669;
+            background: #ffffff;
+            color: #2e7d32;
+            border-color: #cbd5e1;
         }
 
         .btn-action-success:hover {
-            background: #059669;
-            color: #ffffff;
+            background: #f8fafc;
+            color: #1e293b;
         }
 
         /* Thermal Paper Container */
@@ -335,10 +335,10 @@
                 <i data-lucide="maximize-2" style="width: 14px; height: 14px;"></i> Format: 58mm
             </button>
             <a href="{{ $whatsAppUrl }}" target="_blank" class="btn-action btn-action-success">
-                <i data-lucide="message-circle" style="width: 14px; height: 14px;"></i> Kirim WA
+                <i data-lucide="message-circle" style="width: 14px; height: 14px;"></i> Kirim WhatsApp
             </a>
             <button type="button" class="btn-action btn-action-primary" onclick="window.print()">
-                <i data-lucide="printer" style="width: 14px; height: 14px;"></i> Cetak Struk
+                <i data-lucide="printer" style="width: 14px; height: 14px;"></i> Cetak struk
             </button>
         </div>
     </div>

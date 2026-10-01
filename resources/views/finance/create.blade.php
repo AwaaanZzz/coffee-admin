@@ -12,10 +12,10 @@
 @endsection
 
 @section('content')
-    <div class="page-header">
+    <div class="page-header mb-4">
         <div>
-            <h3 class="page-title">Buat Laporan Keuangan</h3>
-            <p class="page-subtitle">Hitung dan simpan laporan pemasukan/pengeluaran toko.</p>
+            <h3 class="page-title mb-1">Buat laporan keuangan</h3>
+            <p class="page-subtitle text-muted mb-0">Hitung dan simpan laporan pemasukan dan pengeluaran toko mitra.</p>
         </div>
     </div>
 
@@ -25,52 +25,54 @@
                 @csrf
 
                 <div class="row">
-                    <div class="col-md-4 mb-4 form-group-modern">
-                        <label class="form-label-modern">Toko <span class="text-danger">*</span></label>
-                        <select name="store_id" id="storeSelect" class="form-control-modern w-100" required>
-                            <option value="">-- Pilih Toko --</option>
+                    <div class="col-md-4 mb-3 form-group-modern">
+                        <label class="form-label-modern">Toko mitra <span class="text-danger">*</span></label>
+                        <select name="store_id" id="storeSelect" class="form-control-modern form-select w-100" required>
+                            <option value="">-- Pilih toko mitra --</option>
                             @foreach ($stores as $s)
                                 <option value="{{ $s->id }}">{{ $s->name }}</option>
                             @endforeach
                         </select>
                     </div>
 
-                    <div class="col-md-4 mb-4 form-group-modern">
-                        <label class="form-label-modern">Periode Awal <span class="text-danger">*</span></label>
+                    <div class="col-md-4 mb-3 form-group-modern">
+                        <label class="form-label-modern">Periode awal <span class="text-danger">*</span></label>
                         <input type="date" name="periode_awal" id="periodeAwal" class="form-control-modern w-100" required>
                     </div>
 
-                    <div class="col-md-4 mb-4 form-group-modern">
-                        <label class="form-label-modern">Periode Akhir <span class="text-danger">*</span></label>
+                    <div class="col-md-4 mb-3 form-group-modern">
+                        <label class="form-label-modern">Periode akhir <span class="text-danger">*</span></label>
                         <input type="date" name="periode_akhir" id="periodeAkhir" class="form-control-modern w-100" required>
                     </div>
 
-                    <div class="col-12 mb-4">
-                        <button type="button" id="btnHitung" class="btn btn-outline-modern">
-                            <i data-lucide="calculator"></i> Hitung Pemasukan Otomatis
+                    <div class="col-12 mb-3">
+                        <button type="button" id="btnHitung" class="btn btn-outline-modern d-inline-flex align-items-center gap-2">
+                            <i data-lucide="calculator" style="width: 15px; height: 15px;"></i>
+                            <span>Hitung pemasukan otomatis</span>
                         </button>
                     </div>
 
-                    <div class="col-md-6 mb-4 form-group-modern">
+                    <div class="col-md-6 mb-3 form-group-modern">
                         <label class="form-label-modern">Pemasukan (Rp) <span class="text-danger">*</span></label>
-                        <input type="number" step="0.01" name="pemasukan" id="pemasukanInput" class="form-control-modern w-100" required>
-                        <small class="text-muted mt-1 d-block"><i data-lucide="info" style="width:14px;height:14px;"></i> Bisa diisi otomatis dari total penjualan, atau diedit manual.</small>
+                        <input type="number" step="0.01" name="pemasukan" id="pemasukanInput" class="form-control-modern w-100" required placeholder="0">
+                        <small class="text-muted mt-1 d-block"><i data-lucide="info" style="width:13px;height:13px;vertical-align:-1px;"></i> Dapat diisi otomatis dari total transaksi penjualan, atau disunting manual.</small>
                     </div>
 
-                    <div class="col-md-6 mb-4 form-group-modern">
+                    <div class="col-md-6 mb-3 form-group-modern">
                         <label class="form-label-modern">Pengeluaran (Rp) <span class="text-danger">*</span></label>
-                        <input type="number" step="0.01" name="pengeluaran" class="form-control-modern w-100" value="0" required>
+                        <input type="number" step="0.01" name="pengeluaran" class="form-control-modern w-100" value="0" required placeholder="0">
                     </div>
 
-                    <div class="col-12 mb-4 form-group-modern">
+                    <div class="col-12 mb-3 form-group-modern">
                         <label class="form-label-modern">Catatan (opsional)</label>
                         <textarea name="catatan" class="form-control-modern w-100" rows="3" placeholder="Masukkan keterangan tambahan jika ada"></textarea>
                     </div>
                 </div>
 
                 <div class="form-actions mt-4 pt-3 border-top d-flex gap-2">
-                    <button type="submit" class="btn btn-accent">
-                        <i data-lucide="save"></i> Simpan Laporan
+                    <button type="submit" class="btn btn-accent d-flex align-items-center gap-2">
+                        <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+                        <span>Simpan laporan</span>
                     </button>
                     <a href="{{ route('finance.index') }}" class="btn btn-outline-modern">Batal</a>
                 </div>

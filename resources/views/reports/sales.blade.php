@@ -3,90 +3,98 @@
 @section('title', 'Laporan Penjualan')
 
 @section('breadcrumbs')
-    <a href="{{ route('dashboard') }}">Home</a>
-    <i data-lucide="chevron-right"></i>
-    <span>Laporan Penjualan</span>
+    <div class="breadcrumbs">
+        <a href="{{ route('dashboard') }}">Beranda</a>
+        <i data-lucide="chevron-right"></i>
+        <span>Laporan penjualan</span>
+    </div>
 @endsection
 
 @section('content')
-    <div class="page-header">
+    <div class="page-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
         <div>
-            <h1 class="page-title">Laporan Penjualan</h1>
-            <p class="page-subtitle">Analisis dan laporan penjualan kopi</p>
+            <h3 class="page-title mb-1">Laporan penjualan</h3>
+            <p class="page-subtitle text-muted mb-0">Analisis kinerja distribusi dan volume penjualan kopi ke toko mitra.</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('reports.sales.export', 'csv') }}?{{ http_build_query(request()->all()) }}" class="btn btn-accent">Export CSV</a>
+            <a href="{{ route('reports.sales.export', 'csv') }}?{{ http_build_query(request()->all()) }}" class="btn btn-outline-modern d-flex align-items-center gap-2">
+                <i data-lucide="download" style="width: 16px; height: 16px;"></i>
+                <span>Ekspor CSV</span>
+            </a>
         </div>
     </div>
 
     <!-- Filter Bar -->
     <div class="card-modern mb-4">
-        <div class="card-body-modern filter-bar">
+        <div class="card-body-modern p-3">
             <form method="GET" action="{{ route('reports.sales') }}" class="row g-3 align-items-end">
-                <div class="col-md-3 filter-group">
-                    <label class="form-label form-label-modern">Toko</label>
-                    <select name="store_id" class="form-select form-control-modern">
-                        <option value="">Semua Toko</option>
+                <div class="col-md-3">
+                    <label class="form-label-modern small mb-1">Toko mitra</label>
+                    <select name="store_id" class="form-control-modern form-select form-select-sm">
+                        <option value="">Semua toko mitra</option>
                         @foreach($stores ?? [] as $store)
                             <option value="{{ $store->id }}" {{ request('store_id') == $store->id ? 'selected' : '' }}>{{ $store->name }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-2 filter-group">
-                    <label class="form-label form-label-modern">Dari Tanggal</label>
-                    <input type="date" name="date_from" class="form-control form-control-modern" value="{{ request('date_from') }}">
+                <div class="col-md-2">
+                    <label class="form-label-modern small mb-1">Dari tanggal</label>
+                    <input type="date" name="date_from" class="form-control-modern form-control-sm" value="{{ request('date_from') }}">
                 </div>
-                <div class="col-md-2 filter-group">
-                    <label class="form-label form-label-modern">Sampai Tanggal</label>
-                    <input type="date" name="date_to" class="form-control form-control-modern" value="{{ request('date_to') }}">
+                <div class="col-md-2">
+                    <label class="form-label-modern small mb-1">Sampai tanggal</label>
+                    <input type="date" name="date_to" class="form-control-modern form-control-sm" value="{{ request('date_to') }}">
                 </div>
-                <div class="col-md-3 filter-group">
-                    <label class="form-label form-label-modern">Jenis Kopi</label>
-                    <select name="coffee_type_id" class="form-select form-control-modern">
-                        <option value="">Semua Kopi</option>
+                <div class="col-md-3">
+                    <label class="form-label-modern small mb-1">Varian kopi</label>
+                    <select name="coffee_type_id" class="form-control-modern form-select form-select-sm">
+                        <option value="">Semua varian kopi</option>
                         @foreach($coffeeTypes ?? [] as $ct)
                             <option value="{{ $ct->id }}" {{ request('coffee_type_id') == $ct->id ? 'selected' : '' }}>{{ $ct->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <button type="submit" class="btn btn-accent w-100">Filter</button>
+                    <button type="submit" class="btn btn-accent w-100 d-flex align-items-center justify-content-center gap-2">
+                        <i data-lucide="filter" style="width: 14px; height: 14px;"></i>
+                        <span>Terapkan filter</span>
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- KPI Cards -->
+    <!-- KPI Cards (Maksimal 4) -->
     <div class="row g-3 mb-4">
         <div class="col-6 col-lg-3">
             <div class="stat-card">
                 <div class="stat-info">
-                    <div class="stat-value" style="font-size:0.95rem">Rp {{ number_format($totalRevenue ?? 0, 0, ',', '.') }}</div>
-                    <div class="stat-label">Total Revenue</div>
+                    <div class="stat-label">Total pendapatan</div>
+                    <div class="stat-value" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($totalRevenue ?? 0, 0, ',', '.') }}</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-3">
             <div class="stat-card">
                 <div class="stat-info">
-                    <div class="stat-value">{{ $totalUnits ?? 0 }}</div>
-                    <div class="stat-label">Total Unit Terjual</div>
+                    <div class="stat-label">Unit terjual</div>
+                    <div class="stat-value" style="font-variant-numeric: tabular-nums;">{{ number_format($totalUnits ?? 0, 0, ',', '.') }} pcs</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-3">
             <div class="stat-card">
                 <div class="stat-info">
-                    <div class="stat-value" style="font-size:0.95rem">Rp {{ number_format($avgPerTransaction ?? 0, 0, ',', '.') }}</div>
-                    <div class="stat-label">Rata-rata/Transaksi</div>
+                    <div class="stat-label">Rata-rata transaksi</div>
+                    <div class="stat-value" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($avgPerTransaction ?? 0, 0, ',', '.') }}</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-3">
             <div class="stat-card">
                 <div class="stat-info">
-                    <div class="stat-value">{{ $sales->count() }}</div>
-                    <div class="stat-label">Total Transaksi</div>
+                    <div class="stat-label">Total transaksi</div>
+                    <div class="stat-value" style="font-variant-numeric: tabular-nums;">{{ number_format($sales->count(), 0, ',', '.') }}</div>
                 </div>
             </div>
         </div>
@@ -96,10 +104,12 @@
     @if($dailyBreakdown->count() > 0)
     <div class="card-modern mb-4">
         <div class="card-header-modern">
-            <h5 class="card-title-modern m-0">Grafik Penjualan Harian</h5>
+            <h5 class="card-title-modern m-0">Tren pendapatan harian</h5>
         </div>
         <div class="card-body-modern">
-            <canvas id="salesChart" height="250"></canvas>
+            <div style="height: 250px;">
+                <canvas id="salesChart"></canvas>
+            </div>
         </div>
     </div>
     @endif
@@ -107,34 +117,34 @@
     <div class="row g-4">
         <!-- Sales Table -->
         <div class="col-lg-8">
-            <div class="card-modern" style="height:100%">
+            <div class="card-modern h-100">
                 <div class="card-header-modern">
-                    <h5 class="card-title-modern m-0">Detail Penjualan</h5>
+                    <h5 class="card-title-modern m-0">Rincian transaksi penjualan</h5>
                 </div>
                 <div class="card-body-modern p-0">
                     <div class="table-responsive">
                         <table class="table-modern w-100 m-0">
                             <thead>
                                 <tr>
-                                    <th>Tanggal</th>
-                                    <th>Toko</th>
-                                    <th>Jenis Kopi</th>
-                                    <th>Jumlah</th>
-                                    <th>Total</th>
+                                    <th style="min-width: 100px;">Tanggal</th>
+                                    <th>Toko mitra</th>
+                                    <th>Varian kopi</th>
+                                    <th class="text-end" style="min-width: 80px;">Jumlah</th>
+                                    <th class="text-end" style="min-width: 120px;">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($sales as $sale)
                                     <tr>
-                                        <td>{{ \Carbon\Carbon::parse($sale->tanggal)->format('d-m-Y') }}</td>
-                                        <td>{{ $sale->store->name ?? '-' }}</td>
+                                        <td class="text-muted" style="font-variant-numeric: tabular-nums;">{{ \Carbon\Carbon::parse($sale->tanggal)->format('d/m/Y') }}</td>
+                                        <td class="fw-semibold text-main">{{ $sale->store->name ?? '-' }}</td>
                                         <td>{{ $sale->coffeeType->name ?? '-' }}</td>
-                                        <td>{{ $sale->jumlah }}</td>
-                                        <td class="fw-bold">Rp {{ number_format($sale->total, 0, ',', '.') }}</td>
+                                        <td class="text-end fw-semibold" style="font-variant-numeric: tabular-nums;">{{ number_format($sale->jumlah, 0, ',', '.') }}</td>
+                                        <td class="text-end fw-bold" style="font-variant-numeric: tabular-nums; color: var(--text-main);">Rp {{ number_format($sale->total, 0, ',', '.') }}</td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center text-muted py-4">Belum ada data penjualan.</td>
+                                        <td colspan="5" class="text-center text-muted py-4 small">Belum ada data penjualan pada periode ini.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -146,18 +156,18 @@
 
         <!-- Top Sellers -->
         <div class="col-lg-4">
-            <div class="card-modern" style="height:100%">
+            <div class="card-modern h-100">
                 <div class="card-header-modern">
-                    <h5 class="card-title-modern m-0">Top Sellers</h5>
+                    <h5 class="card-title-modern m-0">Varian terlaris</h5>
                 </div>
                 <div class="card-body-modern p-0">
                     <div class="table-responsive">
                         <table class="table-modern w-100 m-0">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Jenis Kopi</th>
-                                    <th>Unit</th>
+                                    <th style="width: 40px;">#</th>
+                                    <th>Varian kopi</th>
+                                    <th class="text-end">Unit</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -165,13 +175,13 @@
                                 @forelse($topSellers ?? [] as $coffeeTypeId => $totalQty)
                                     @php $coffeeName = $coffeeTypes->firstWhere('id', $coffeeTypeId)->name ?? '-'; @endphp
                                     <tr>
-                                        <td class="fw-bold">{{ $rank++ }}</td>
-                                        <td>{{ $coffeeName }}</td>
-                                        <td class="fw-bold text-success">{{ $totalQty }}</td>
+                                        <td class="text-muted small" style="font-variant-numeric: tabular-nums;">{{ $rank++ }}</td>
+                                        <td class="fw-semibold text-main">{{ $coffeeName }}</td>
+                                        <td class="text-end fw-semibold" style="font-variant-numeric: tabular-nums;">{{ number_format($totalQty, 0, ',', '.') }}</td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="3" class="text-center text-muted py-4">Belum ada data.</td>
+                                        <td colspan="3" class="text-center text-muted py-4 small">Belum ada data varian terlaris.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

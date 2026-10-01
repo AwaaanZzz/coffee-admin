@@ -12,20 +12,20 @@
 @endsection
 
 @section('content')
-    <div class="page-header">
+    <div class="page-header mb-4">
         <div>
-            <h3 class="page-title">Catat Penjualan</h3>
-            <p class="page-subtitle">Masukkan data kopi yang telah terjual.</p>
+            <h3 class="page-title mb-1">Catat penjualan</h3>
+            <p class="page-subtitle text-muted mb-0">Masukkan data kopi yang telah terjual di toko mitra.</p>
         </div>
     </div>
 
     @if ($errors->any())
         <div class="alert-modern alert-danger mb-4">
             <div class="d-flex align-items-center gap-2 mb-2">
-                <i data-lucide="alert-circle"></i>
-                <strong>Terjadi Kesalahan:</strong>
+                <i data-lucide="alert-circle" style="width: 16px; height: 16px;"></i>
+                <strong>Terjadi kesalahan:</strong>
             </div>
-            <ul class="m-0 pl-4">
+            <ul class="m-0 ps-3 small">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -39,38 +39,39 @@
                 @csrf
 
                 <div class="row">
-                    <div class="col-md-6 mb-4 form-group-modern">
-                        <label class="form-label-modern">Toko <span class="text-danger">*</span></label>
-                        <select name="store_id" id="storeSelect" class="form-control-modern w-100" required>
-                            <option value="">-- Pilih Toko --</option>
+                    <div class="col-md-6 mb-3 form-group-modern">
+                        <label class="form-label-modern">Toko mitra <span class="text-danger">*</span></label>
+                        <select name="store_id" id="storeSelect" class="form-control-modern form-select w-100" required>
+                            <option value="">-- Pilih toko mitra --</option>
                             @foreach ($stores as $s)
                                 <option value="{{ $s->id }}">{{ $s->name }}</option>
                             @endforeach
                         </select>
                     </div>
 
-                    <div class="col-md-6 mb-4 form-group-modern">
-                        <label class="form-label-modern">Stock / Kopi <span class="text-danger">*</span></label>
-                        <select name="stock_batch_id" id="batchSelect" class="form-control-modern w-100" required disabled>
-                            <option value="">-- Pilih Toko Dulu --</option>
+                    <div class="col-md-6 mb-3 form-group-modern">
+                        <label class="form-label-modern">Stok / varian kopi <span class="text-danger">*</span></label>
+                        <select name="stock_batch_id" id="batchSelect" class="form-control-modern form-select w-100" required disabled>
+                            <option value="">-- Pilih toko terlebih dahulu --</option>
                         </select>
                     </div>
 
-                    <div class="col-md-6 mb-4 form-group-modern">
-                        <label class="form-label-modern">Jumlah Terjual <span class="text-danger">*</span></label>
-                        <input type="number" name="jumlah" id="jumlahInput" min="1" class="form-control-modern w-100" required>
+                    <div class="col-md-6 mb-3 form-group-modern">
+                        <label class="form-label-modern">Jumlah terjual <span class="text-danger">*</span></label>
+                        <input type="number" name="jumlah" id="jumlahInput" min="1" class="form-control-modern w-100" required placeholder="0">
                         <small class="text-muted mt-1 d-block" id="sisaInfo"></small>
                     </div>
 
-                    <div class="col-md-6 mb-4 form-group-modern">
-                        <label class="form-label-modern">Tanggal <span class="text-danger">*</span></label>
+                    <div class="col-md-6 mb-3 form-group-modern">
+                        <label class="form-label-modern">Tanggal transaksi <span class="text-danger">*</span></label>
                         <input type="date" name="tanggal" class="form-control-modern w-100" value="{{ date('Y-m-d') }}" required>
                     </div>
                 </div>
 
                 <div class="form-actions mt-4 pt-3 border-top d-flex gap-2">
-                    <button type="submit" class="btn btn-accent">
-                        <i data-lucide="save"></i> Simpan
+                    <button type="submit" class="btn btn-accent d-flex align-items-center gap-2">
+                        <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+                        <span>Simpan penjualan</span>
                     </button>
                     <a href="{{ route('sales.index') }}" class="btn btn-outline-modern">Batal</a>
                 </div>

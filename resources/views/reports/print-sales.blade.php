@@ -5,24 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Penjualan - Print</title>
     <style>
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; line-height: 1.5; margin: 0; padding: 20px; }
-        .print-header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
-        .print-header h1 { margin: 0; font-size: 24px; text-transform: uppercase; }
-        .print-header p { margin: 5px 0 0; color: #666; font-size: 14px; }
-        .summary-box { display: flex; justify-content: space-between; margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; background: #f9f9f9; }
+        body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif; color: #1e293b; line-height: 1.5; margin: 0; padding: 20px; }
+        .print-header { text-align: center; border-bottom: 2px solid #1E3A5F; padding-bottom: 10px; margin-bottom: 20px; }
+        .print-header h1 { margin: 0; font-size: 20px; font-weight: 700; color: #1E3A5F; }
+        .print-header p { margin: 5px 0 0; color: #64748b; font-size: 13px; }
+        .summary-box { display: flex; justify-content: space-between; margin-bottom: 20px; padding: 12px 16px; border: 1px solid #e2e8f0; background: #FAF5EE; border-radius: 8px; }
         .summary-item { text-align: center; }
-        .summary-item h4 { margin: 0; font-size: 12px; color: #666; text-transform: uppercase; }
-        .summary-item p { margin: 5px 0 0; font-size: 18px; font-weight: bold; color: #000; }
+        .summary-item h4 { margin: 0; font-size: 11px; color: #64748b; font-weight: 600; }
+        .summary-item p { margin: 4px 0 0; font-size: 16px; font-weight: 700; color: #1e293b; font-variant-numeric: tabular-nums; }
         table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 12px; }
-        th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
-        th { background-color: #f4f4f4; font-weight: bold; text-transform: uppercase; }
-        .text-right { text-align: right; }
-        .print-footer { text-align: right; font-size: 10px; color: #999; margin-top: 30px; border-top: 1px solid #eee; padding-top: 10px; }
+        th, td { border: 1px solid #e2e8f0; padding: 8px 12px; text-align: left; }
+        th { background-color: #f8fafc; font-weight: 600; font-size: 11px; }
+        .text-right { text-align: right; font-variant-numeric: tabular-nums; }
+        .print-footer { text-align: right; font-size: 10px; color: #94a3b8; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
         
         @media print {
             body { padding: 0; margin: 0; }
-            .summary-box { border: 1px solid #000; background: transparent; }
-            th, td { border: 1px solid #000; }
+            .summary-box { border: 1px solid #cbd5e1; background: transparent; }
+            th, td { border: 1px solid #cbd5e1; }
             th { background-color: transparent !important; }
         }
     </style>
@@ -30,22 +30,22 @@
 <body onload="window.print()">
 
     <div class="print-header">
-        <h1>LAPORAN PENJUALAN - Coffee Admin</h1>
-        <p>Periode: {{ request('from_date', '01-01-2023') }} s/d {{ request('to_date', '31-12-2023') }}</p>
-        <p>Toko: {{ request('store') ? 'Cabang ' . request('store') : 'Semua Toko' }}</p>
+        <h1>Laporan Penjualan - Kopi Hiku Himu</h1>
+        <p>Periode: {{ request('from_date', '01/01/2023') }} s/d {{ request('to_date', '31/12/2023') }}</p>
+        <p>Toko: {{ request('store') ? 'Cabang ' . request('store') : 'Semua toko mitra' }}</p>
     </div>
 
     <div class="summary-box">
         <div class="summary-item">
-            <h4>Total Revenue</h4>
+            <h4>Total pendapatan</h4>
             <p>Rp {{ number_format($totalRevenue ?? 15000000, 0, ',', '.') }}</p>
         </div>
         <div class="summary-item">
-            <h4>Total Units Terjual</h4>
+            <h4>Total unit terjual</h4>
             <p>{{ number_format($totalUnit ?? 1250, 0, ',', '.') }}</p>
         </div>
         <div class="summary-item">
-            <h4>Rata-rata per Transaksi</h4>
+            <h4>Rata-rata per transaksi</h4>
             <p>Rp {{ number_format($avgTransaction ?? 45000, 0, ',', '.') }}</p>
         </div>
     </div>
@@ -54,8 +54,8 @@
         <thead>
             <tr>
                 <th>Tanggal</th>
-                <th>Toko</th>
-                <th>Jenis Kopi</th>
+                <th>Toko mitra</th>
+                <th>Varian kopi</th>
                 <th class="text-right">Jumlah</th>
                 <th class="text-right">Harga</th>
                 <th class="text-right">Total</th>

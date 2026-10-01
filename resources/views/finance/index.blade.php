@@ -10,26 +10,27 @@
 @endsection
 
 @section('content')
-    <div class="page-header">
+    <div class="page-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
         <div>
-            <h3 class="page-title">Laporan Keuangan</h3>
-            <p class="page-subtitle">Pantau pemasukan dan pengeluaran per toko.</p>
+            <h3 class="page-title mb-1">Laporan keuangan</h3>
+            <p class="page-subtitle text-muted mb-0">Pantau pemasukan, pengeluaran, dan margin laba bersih per toko mitra.</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('finance.create') }}" class="btn btn-accent">
-                <i data-lucide="plus"></i> Buat Laporan
+            <a href="{{ route('finance.create') }}" class="btn btn-accent d-flex align-items-center gap-2">
+                <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
+                <span>Buat laporan</span>
             </a>
         </div>
     </div>
 
-    <div class="filter-bar mb-4">
-        <form method="GET" class="d-flex align-items-center gap-3 bg-white p-3 rounded shadow-sm border">
-            <div class="d-flex align-items-center gap-2">
-                <i data-lucide="filter" class="text-muted"></i>
-                <span class="fw-bold">Filter Toko:</span>
+    <div class="card-modern p-3 mb-4">
+        <form method="GET" class="d-flex flex-wrap align-items-center gap-3">
+            <div class="d-flex align-items-center gap-2 text-muted small fw-semibold">
+                <i data-lucide="filter" style="width: 16px; height: 16px;"></i>
+                <span>Filter toko mitra:</span>
             </div>
-            <select name="store_id" class="form-control-modern" style="max-width:260px;" onchange="this.form.submit()">
-                <option value="">Semua Toko</option>
+            <select name="store_id" class="form-control-modern form-select form-select-sm" style="max-width:240px;" onchange="this.form.submit()">
+                <option value="">Semua toko mitra</option>
                 @foreach ($stores as $s)
                     <option value="{{ $s->id }}" {{ request('store_id') == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                 @endforeach
@@ -43,34 +44,34 @@
                 <table class="table-modern w-100 m-0">
                     <thead>
                         <tr>
-                            <th>Toko</th>
-                            <th>Periode</th>
-                            <th>Pemasukan</th>
-                            <th>Pengeluaran</th>
-                            <th>Laba/Rugi</th>
+                            <th>Toko mitra</th>
+                            <th style="min-width: 170px;">Periode</th>
+                            <th class="text-end" style="min-width: 120px;">Pemasukan</th>
+                            <th class="text-end" style="min-width: 120px;">Pengeluaran</th>
+                            <th class="text-end" style="min-width: 130px;">Laba / rugi</th>
                             <th>Catatan</th>
-                            <th class="text-end">Aksi</th>
+                            <th class="text-end" style="min-width: 80px;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($reports as $r)
-                            <tr class="{{ $r->laba >= 0 ? 'table-success-tint' : 'table-danger-tint' }}">
-                                <td class="fw-bold">{{ $r->store->name }}</td>
-                                <td>{{ $r->periode_awal->format('d-m-Y') }} &ndash; {{ $r->periode_akhir->format('d-m-Y') }}</td>
-                                <td>Rp {{ number_format($r->pemasukan, 0, ',', '.') }}</td>
-                                <td>Rp {{ number_format($r->pengeluaran, 0, ',', '.') }}</td>
-                                <td>
-                                    <span class="badge-modern {{ $r->laba >= 0 ? 'badge-profit bg-success text-white' : 'badge-loss bg-danger text-white' }}">
+                            <tr>
+                                <td class="fw-semibold text-main">{{ $r->store->name }}</td>
+                                <td class="text-muted" style="font-variant-numeric: tabular-nums;">{{ $r->periode_awal->format('d/m/Y') }} &ndash; {{ $r->periode_akhir->format('d/m/Y') }}</td>
+                                <td class="text-end" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($r->pemasukan, 0, ',', '.') }}</td>
+                                <td class="text-end text-muted" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($r->pengeluaran, 0, ',', '.') }}</td>
+                                <td class="text-end">
+                                    <span class="badge {{ $r->laba >= 0 ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}" style="font-variant-numeric: tabular-nums; font-weight: 600;">
                                         Rp {{ number_format($r->laba, 0, ',', '.') }}
                                     </span>
                                 </td>
-                                <td class="text-muted">{{ $r->catatan ?? '-' }}</td>
+                                <td class="text-muted small">{{ $r->catatan ?? 'Belum diisi' }}</td>
                                 <td class="text-end">
-                                    <form action="{{ route('finance.destroy', $r) }}" method="POST" onsubmit="return confirm('Hapus laporan ini?')">
+                                    <form action="{{ route('finance.destroy', $r) }}" method="POST" onsubmit="return confirm('Hapus laporan keuangan ini?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-table-action text-danger" title="Hapus">
-                                            <i data-lucide="trash-2"></i>
+                                        <button type="submit" class="btn btn-sm btn-outline-modern text-danger p-1" title="Hapus laporan">
+                                            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
                                         </button>
                                     </form>
                                 </td>
@@ -79,8 +80,8 @@
                             <tr>
                                 <td colspan="7">
                                     <div class="empty-state text-center py-5">
-                                        <i data-lucide="bar-chart-2" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
-                                        <h5>Belum ada laporan keuangan.</h5>
+                                        <i data-lucide="bar-chart-2" class="text-muted mb-2 opacity-50" style="width: 40px; height: 40px;"></i>
+                                        <p class="text-muted mb-0 small">Belum ada laporan keuangan.</p>
                                     </div>
                                 </td>
                             </tr>
@@ -88,12 +89,12 @@
                     </tbody>
                     @if($reports->count() > 0)
                     <tfoot>
-                        <tr class="bg-light fw-bold">
-                            <td colspan="2" class="text-end">Total Keseluruhan:</td>
-                            <td>Rp {{ number_format($reports->sum('pemasukan'), 0, ',', '.') }}</td>
-                            <td>Rp {{ number_format($reports->sum('pengeluaran'), 0, ',', '.') }}</td>
+                        <tr class="fw-bold" style="background: var(--bg-input, #FBF7F0); border-top: 2px solid var(--border-color, #E8DFD5);">
+                            <td colspan="2" class="text-end">Total keseluruhan:</td>
+                            <td class="text-end" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($reports->sum('pemasukan'), 0, ',', '.') }}</td>
+                            <td class="text-end text-muted" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($reports->sum('pengeluaran'), 0, ',', '.') }}</td>
                             @php $totalLaba = $reports->sum('laba'); @endphp
-                            <td class="{{ $totalLaba >= 0 ? 'text-success' : 'text-danger' }}">
+                            <td class="text-end {{ $totalLaba >= 0 ? 'text-success' : 'text-danger' }}" style="font-variant-numeric: tabular-nums;">
                                 Rp {{ number_format($totalLaba, 0, ',', '.') }}
                             </td>
                             <td colspan="2"></td>
@@ -102,9 +103,11 @@
                     @endif
                 </table>
             </div>
-            <div class="p-3 border-top">
-                {{ $reports->links() }}
-            </div>
+            @if($reports->hasPages())
+                <div class="p-3 border-top">
+                    {{ $reports->links() }}
+                </div>
+            @endif
         </div>
     </div>
 @endsection

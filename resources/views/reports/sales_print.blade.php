@@ -74,7 +74,7 @@
             font-family: var(--font-mono);
         }
         .btn-print {
-            background: #0f172a;
+            background: #C88A4E;
             color: #ffffff;
             border: none;
             padding: 8px 18px;
@@ -85,7 +85,7 @@
             transition: all 0.2s;
         }
         .btn-print:hover {
-            background: #1e293b;
+            background: #b57a3e;
         }
         @media print {
             body {
@@ -110,12 +110,12 @@
     <div class="d-flex justify-content-between align-items-start mb-4 pb-3 border-bottom">
         <div>
             <h1 class="header-title">Kopi Hiku Himu</h1>
-            <div class="header-sub">Laporan Rekapitulasi Data Transaksi Penjualan</div>
+            <div class="header-sub">Laporan rekapitulasi data transaksi penjualan</div>
             <div class="small text-muted mt-2">Dicetak: {{ now()->translatedFormat('d F Y, H:i') }} WIB</div>
         </div>
         <div class="text-end no-print">
             <button class="btn-print" onclick="window.print()">
-                Cetak Dokumen
+                Cetak dokumen
             </button>
         </div>
     </div>
@@ -125,10 +125,10 @@
             <thead>
                 <tr>
                     <th style="width: 40px;" class="text-center">#</th>
-                    <th>Toko Mitra</th>
-                    <th>Varian Kopi</th>
-                    <th class="text-center">Jumlah</th>
-                    <th class="text-end">Harga Satuan</th>
+                    <th>Toko mitra</th>
+                    <th>Varian kopi</th>
+                    <th class="text-end">Jumlah</th>
+                    <th class="text-end">Harga satuan</th>
                     <th class="text-end">Total</th>
                     <th class="text-center">Tanggal</th>
                 </tr>
@@ -136,26 +136,26 @@
             <tbody>
                 @forelse($sales as $i => $s)
                 <tr>
-                    <td class="text-center text-muted small">{{ $i + 1 }}</td>
+                    <td class="text-center text-muted small" style="font-variant-numeric: tabular-nums;">{{ $i + 1 }}</td>
                     <td class="fw-semibold">{{ $s->store->name ?? '-' }}</td>
                     <td>{{ $s->coffeeType->name ?? '-' }}</td>
-                    <td class="text-center font-mono fw-bold">{{ $s->jumlah }}</td>
-                    <td class="text-end font-mono">Rp {{ number_format($s->harga, 0, ',', '.') }}</td>
-                    <td class="text-end font-mono fw-bold">Rp {{ number_format($s->total, 0, ',', '.') }}</td>
-                    <td class="text-center font-mono small text-muted">{{ $s->tanggal ? \Carbon\Carbon::parse($s->tanggal)->format('d/m/Y') : '-' }}</td>
+                    <td class="text-end fw-semibold" style="font-variant-numeric: tabular-nums;">{{ $s->jumlah }}</td>
+                    <td class="text-end text-muted" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($s->harga, 0, ',', '.') }}</td>
+                    <td class="text-end fw-bold" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($s->total, 0, ',', '.') }}</td>
+                    <td class="text-center small text-muted" style="font-variant-numeric: tabular-nums;">{{ $s->tanggal ? \Carbon\Carbon::parse($s->tanggal)->format('d/m/Y') : '-' }}</td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="text-center py-4 text-muted">Tidak ada data transaksi penjualan yang sesuai filter.</td>
+                    <td colspan="7" class="text-center py-4 text-muted small">Tidak ada data transaksi penjualan yang sesuai filter.</td>
                 </tr>
                 @endforelse
             </tbody>
             <tfoot>
                 <tr style="background-color: #f8fafc; font-weight: 700;">
-                    <td colspan="3" class="text-end text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.05em;">Total Keseluruhan:</td>
-                    <td class="text-center font-mono">{{ $sales->sum('jumlah') }}</td>
+                    <td colspan="3" class="text-end" style="font-size: 0.85rem;">Total keseluruhan:</td>
+                    <td class="text-end" style="font-variant-numeric: tabular-nums;">{{ $sales->sum('jumlah') }}</td>
                     <td></td>
-                    <td class="text-end font-mono text-dark" style="font-size: 0.95rem;">Rp {{ number_format($sales->sum('total'), 0, ',', '.') }}</td>
+                    <td class="text-end text-dark" style="font-size: 0.95rem; font-variant-numeric: tabular-nums;">Rp {{ number_format($sales->sum('total'), 0, ',', '.') }}</td>
                     <td></td>
                 </tr>
             </tfoot>
@@ -168,7 +168,7 @@
             <div>Dokumen ini sah dan diterbitkan secara digital oleh sistem.</div>
         </div>
         <div class="text-center" style="width: 180px;">
-            <div class="mb-5">Penanggung Jawab,</div>
+            <div class="mb-5">Penanggung jawab,</div>
             <div class="border-top pt-1 fw-bold text-dark">{{ auth()->user()->name ?? 'Administrator' }}</div>
         </div>
     </div>
