@@ -15,7 +15,10 @@
             <h3 class="page-title">Data Penjualan</h3>
             <p class="page-subtitle">Rekapitulasi penjualan kopi di semua toko mitra.</p>
         </div>
-        <div class="page-actions">
+        <div class="page-actions d-flex align-items-center gap-2">
+            <a href="{{ route('exports.index') }}" class="btn btn-outline-success d-flex align-items-center gap-1.5">
+                <i data-lucide="file-spreadsheet"></i> Ekspor Excel & PDF
+            </a>
             <a href="{{ route('sales.create') }}" class="btn btn-accent">
                 <i data-lucide="plus"></i> Catat Penjualan
             </a>
@@ -62,13 +65,21 @@
                                 <td>Rp {{ number_format($sale->harga, 0, ',', '.') }}</td>
                                 <td class="fw-bold">Rp {{ number_format($sale->total, 0, ',', '.') }}</td>
                                 <td class="text-end">
-                                    <form action="{{ route('sales.destroy', $sale) }}" method="POST" onsubmit="return confirm('Hapus data ini? Stock akan dikembalikan.')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-table-action text-danger" title="Hapus">
-                                            <i data-lucide="trash-2"></i>
-                                        </button>
-                                    </form>
+                                    <div class="d-inline-flex align-items-center gap-1">
+                                        <a href="{{ route('sales.thermal', $sale) }}" target="_blank" class="btn btn-sm btn-table-action text-warning" title="Cetak Struk Thermal (58/80mm)">
+                                            <i data-lucide="receipt"></i>
+                                        </a>
+                                        <a href="{{ route('sales.invoice', $sale) }}" target="_blank" class="btn btn-sm btn-table-action text-primary" title="Faktur A4 & Nota WA">
+                                            <i data-lucide="printer"></i>
+                                        </a>
+                                        <form action="{{ route('sales.destroy', $sale) }}" method="POST" onsubmit="return confirm('Hapus data ini? Stock akan dikembalikan.')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-table-action text-danger" title="Hapus">
+                                                <i data-lucide="trash-2"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @empty

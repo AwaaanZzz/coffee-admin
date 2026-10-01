@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\ActivityLog;
 
+use Illuminate\Support\Facades\RateLimiter;
+
 class AuthController extends Controller
 {
     public function showLogin()
@@ -22,10 +24,22 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        if (Auth::attempt($credentials)) {
+        $throttleKey = strtolower($request->input('email')) . '|' . $request->ip();
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+            return back()->withErrors([
+                'email' => "Terlalu banyak percobaan login gagal. Silakan coba lagi dalam {$seconds} detik.",
+            ])->onlyInput('email');
+        }
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            RateLimiter::clear($throttleKey);
             $request->session()->regenerate();
             return redirect()->intended('dashboard');
         }
+
+        RateLimiter::hit($throttleKey, 60);
 
         return back()->withErrors([
             'email' => 'Email atau password salah.',

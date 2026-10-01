@@ -7,7 +7,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Icons -->
@@ -18,11 +18,10 @@
             --secondary: #C88A4E;
             --tertiary: #A67261;
             --neutral: #F5E5D3;
-            --bg-gradient: linear-gradient(135deg, #F5E5D3 0%, #FAF6F0 100%);
         }
         body {
             font-family: 'Manrope', sans-serif;
-            background: var(--bg-gradient);
+            background: #FBF7F0;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -35,7 +34,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         h1, h2, h3, h4, h5, h6, .brand-name {
-            font-family: 'Literata', serif;
+            font-family: 'Manrope', sans-serif;
         }
         .login-wrapper {
             width: 100%;
@@ -136,6 +135,16 @@
             border-color: var(--primary);
             color: var(--primary);
         }
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear,
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
         .input-group {
             margin-bottom: 1rem;
         }
@@ -229,7 +238,7 @@
                     <div>
                         <label class="form-label">Password</label>
                         <div class="input-group">
-                            <input type="password" name="password" id="password" class="form-control" required placeholder="••••••••">
+                            <input type="password" name="password" id="password" class="form-control" required>
                             <span class="input-group-text clickable" onclick="togglePassword('password', 'eye-icon-1')" title="Show/Hide Password">
                                 <i data-lucide="eye" id="eye-icon-1" width="18" height="18"></i>
                             </span>
@@ -242,7 +251,7 @@
                     <div>
                         <label class="form-label">Confirm Password</label>
                         <div class="input-group">
-                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required placeholder="••••••••">
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
                             <span class="input-group-text clickable" onclick="togglePassword('password_confirmation', 'eye-icon-2')" title="Show/Hide Password">
                                 <i data-lucide="eye" id="eye-icon-2" width="18" height="18"></i>
                             </span>

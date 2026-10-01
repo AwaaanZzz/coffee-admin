@@ -15,7 +15,7 @@
             <p class="page-subtitle">Analisis dan laporan penjualan kopi</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('reports.sales.export', 'csv') }}?{{ http_build_query(request()->all()) }}" class="btn btn-accent"><i data-lucide="download"></i> Export CSV</a>
+            <a href="{{ route('reports.sales.export', 'csv') }}?{{ http_build_query(request()->all()) }}" class="btn btn-accent">Export CSV</a>
         </div>
     </div>
 
@@ -60,7 +60,6 @@
     <div class="row g-3 mb-4">
         <div class="col-6 col-lg-3">
             <div class="stat-card">
-                <div class="stat-icon bg-purple"><i data-lucide="wallet"></i></div>
                 <div class="stat-info">
                     <div class="stat-value" style="font-size:0.95rem">Rp {{ number_format($totalRevenue ?? 0, 0, ',', '.') }}</div>
                     <div class="stat-label">Total Revenue</div>
@@ -69,7 +68,6 @@
         </div>
         <div class="col-6 col-lg-3">
             <div class="stat-card">
-                <div class="stat-icon bg-info"><i data-lucide="package"></i></div>
                 <div class="stat-info">
                     <div class="stat-value">{{ $totalUnits ?? 0 }}</div>
                     <div class="stat-label">Total Unit Terjual</div>
@@ -78,7 +76,6 @@
         </div>
         <div class="col-6 col-lg-3">
             <div class="stat-card">
-                <div class="stat-icon bg-success"><i data-lucide="shopping-bag"></i></div>
                 <div class="stat-info">
                     <div class="stat-value" style="font-size:0.95rem">Rp {{ number_format($avgPerTransaction ?? 0, 0, ',', '.') }}</div>
                     <div class="stat-label">Rata-rata/Transaksi</div>
@@ -87,7 +84,6 @@
         </div>
         <div class="col-6 col-lg-3">
             <div class="stat-card">
-                <div class="stat-icon bg-warning"><i data-lucide="hash"></i></div>
                 <div class="stat-info">
                     <div class="stat-value">{{ $sales->count() }}</div>
                     <div class="stat-label">Total Transaksi</div>
@@ -152,7 +148,7 @@
         <div class="col-lg-4">
             <div class="card-modern" style="height:100%">
                 <div class="card-header-modern">
-                    <h5 class="card-title-modern m-0">🏆 Top Sellers</h5>
+                    <h5 class="card-title-modern m-0">Top Sellers</h5>
                 </div>
                 <div class="card-body-modern p-0">
                     <div class="table-responsive">
@@ -195,13 +191,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const chartEl = document.getElementById('salesChart');
     if (!chartEl) return;
 
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const gridColor = isDark ? '#334155' : '#e2e8f0';
+    function checkIsDark() {
+        return document.documentElement.getAttribute('data-theme') === 'dark';
+    }
+    const isDark = checkIsDark();
+    const gridColor = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)';
 
     const ctx = chartEl.getContext('2d');
-    const gradient = ctx.createLinearGradient(0, 0, 0, 250);
-    gradient.addColorStop(0, 'rgba(30,58,95,0.15)');
-    gradient.addColorStop(1, 'rgba(30,58,95,0)');
 
     const labels = [];
     const data = [];
@@ -215,21 +211,64 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Revenue',
+                label: 'Pendapatan Harian',
                 data: data,
-                borderColor: '#1E3A5F',
-                backgroundColor: gradient,
+                borderColor: '#C88A4E',
+                backgroundColor: 'rgba(200, 138, 78, 0.08)',
                 borderWidth: 2.5,
                 pointBackgroundColor: '#C88A4E',
+                pointBorderColor: isDark ? '#1e293b' : '#ffffff',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 7,
                 fill: true,
-                tension: 0.4
+                tension: 0.35
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: { x: { grid: { display: false } }, y: { grid: { color: gridColor }, beginAtZero: true } }
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#0f172a',
+                    borderColor: '#334155',
+                    borderWidth: 1,
+                    padding: 10,
+                    cornerRadius: 8,
+                    titleFont: { family: "'Manrope', sans-serif", weight: 'bold' },
+                    bodyFont: { family: "'Manrope', sans-serif", size: 12 },
+                    callbacks: {
+                        label: function(ctx) {
+                            return ' Omset: Rp ' + Number(ctx.raw || 0).toLocaleString('id-ID');
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: {
+                        color: isDark ? '#94a3b8' : '#64748b',
+                        font: { family: "'Manrope', sans-serif", size: 11 }
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)'
+                    },
+                    ticks: {
+                        color: isDark ? '#94a3b8' : '#64748b',
+                        font: { family: "'Manrope', sans-serif", size: 11 },
+                        callback: function(v) {
+                            if (v >= 1000000) return 'Rp ' + (v / 1000000).toFixed(1) + ' jt';
+                            if (v >= 1000) return 'Rp ' + (v / 1000).toFixed(0) + ' rb';
+                            return 'Rp ' + v;
+                        }
+                    }
+                }
+            }
         }
     });
 });

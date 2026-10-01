@@ -18,15 +18,24 @@
     </div>
 
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2" role="alert">
+            <i data-lucide="check-circle" style="width: 18px; height: 18px; flex-shrink: 0;"></i>
+            <div>{{ session('success') }}</div>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
     
-    @if(session('error'))
+    @if($errors->any())
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
+            <div class="fw-bold d-flex align-items-center gap-2 mb-1">
+                <i data-lucide="alert-circle" style="width: 18px; height: 18px; flex-shrink: 0;"></i>
+                <span>Gagal Menyimpan Data:</span>
+            </div>
+            <ul class="mb-0 ps-3">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
@@ -37,8 +46,8 @@
             <div class="card card-modern">
                 <div class="card-body card-body-modern text-center py-5">
                     <div class="mb-4 position-relative d-inline-block">
-                        <img src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name ?? 'Admin') . '&background=random' }}" alt="Profile Avatar" class="rounded-circle border border-3 border-white shadow" style="width: 120px; height: 120px; object-fit: cover;">
-                        <button class="btn btn-sm btn-accent rounded-circle position-absolute bottom-0 end-0 shadow-sm" style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;" onclick="document.getElementById('avatarUpload').click()">
+                        <img src="{{ auth()->user()->avatar ? (str_starts_with(auth()->user()->avatar, 'http') ? auth()->user()->avatar : asset(auth()->user()->avatar)) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name ?? 'Admin') . '&background=1E3A5F&color=fff' }}" alt="Profile Avatar" class="rounded-circle border border-3 border-white shadow" style="width: 120px; height: 120px; object-fit: cover;">
+                        <button class="btn btn-sm btn-accent rounded-circle position-absolute bottom-0 end-0 shadow-sm" style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;" onclick="document.getElementById('avatarUpload').click()" title="Ubah Foto Profil">
                             <i data-lucide="camera" style="width: 16px; height: 16px;"></i>
                         </button>
                     </div>
@@ -107,31 +116,51 @@
                     <h5 class="card-title-modern m-0">Ubah Password</h5>
                 </div>
                 <div class="card-body card-body-modern">
-                    <form action="{{ url('profile/password') }}" method="POST" class="form-modern">
+                    <form action="{{ route('profile.password') }}" method="POST" class="form-modern">
                         @csrf
                         @method('PUT')
                         
                         <div class="row g-3">
                             <div class="col-12 form-group-modern">
-                                <label class="form-label form-label-modern">Password Saat Ini</label>
-                                <input type="password" name="current_password" class="form-control form-control-modern @error('current_password') is-invalid @enderror" required>
-                                @error('current_password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                <label class="form-label form-label-modern fw-bold">Password Saat Ini <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="password" name="current_password" id="inputCurrentPassword" class="form-control form-control-modern @error('current_password') is-invalid @enderror" placeholder="Masukkan password yang aktif saat ini" required>
+                                    <button class="btn btn-outline-secondary btn-sm px-3" type="button" onclick="togglePasswordVisibility('inputCurrentPassword', this)" title="Lihat password">
+                                        <i data-lucide="eye" style="width:15px;height:15px;"></i>
+                                    </button>
+                                </div>
+                                @error('current_password')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                             </div>
                             
                             <div class="col-md-6 form-group-modern">
-                                <label class="form-label form-label-modern">Password Baru</label>
-                                <input type="password" name="password" class="form-control form-control-modern @error('password') is-invalid @enderror" required>
-                                @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                <label class="form-label form-label-modern fw-bold">Password Baru <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="password" name="password" id="inputNewPassword" class="form-control form-control-modern @error('password') is-invalid @enderror @error('new_password') is-invalid @enderror" placeholder="Minimal 6 karakter" required>
+                                    <button class="btn btn-outline-secondary btn-sm px-3" type="button" onclick="togglePasswordVisibility('inputNewPassword', this)" title="Lihat password">
+                                        <i data-lucide="eye" style="width:15px;height:15px;"></i>
+                                    </button>
+                                </div>
+                                <small class="text-muted" style="font-size:0.75rem;">Gunakan minimal 6 karakter kombinasi huruf & angka.</small>
+                                @error('password')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+                                @error('new_password')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
                             </div>
 
                             <div class="col-md-6 form-group-modern">
-                                <label class="form-label form-label-modern">Konfirmasi Password Baru</label>
-                                <input type="password" name="password_confirmation" class="form-control form-control-modern" required>
+                                <label class="form-label form-label-modern fw-bold">Konfirmasi Password Baru <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="password" name="password_confirmation" id="inputConfirmPassword" class="form-control form-control-modern" placeholder="Ketik ulang password baru" required>
+                                    <button class="btn btn-outline-secondary btn-sm px-3" type="button" onclick="togglePasswordVisibility('inputConfirmPassword', this)" title="Lihat password">
+                                        <i data-lucide="eye" style="width:15px;height:15px;"></i>
+                                    </button>
+                                </div>
+                                <small class="text-muted" style="font-size:0.75rem;">Pastikan sama persis dengan password baru.</small>
                             </div>
 
                             <div class="col-12 mt-4 text-end">
-                                <button type="submit" class="btn btn-outline-modern me-2" type="reset">Batal</button>
-                                <button type="submit" class="btn btn-accent">Update Password</button>
+                                <button type="reset" class="btn btn-outline-modern me-2">Batal</button>
+                                <button type="submit" class="btn btn-accent d-inline-flex align-items-center gap-1.5">
+                                    <i data-lucide="save" style="width:15px;height:15px;"></i> Simpan Password Baru
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -148,15 +177,32 @@ document.addEventListener('DOMContentLoaded', function() {
     lucide.createIcons();
     
     // File upload preview
-    document.getElementById('avatarUpload').addEventListener('change', function(e) {
-        if(e.target.files && e.target.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.querySelector('.rounded-circle').src = e.target.result;
+    const avatarInput = document.getElementById('avatarUpload');
+    if (avatarInput) {
+        avatarInput.addEventListener('change', function(e) {
+            if(e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const avatarImg = document.querySelector('.rounded-circle');
+                    if (avatarImg) avatarImg.src = e.target.result;
+                }
+                reader.readAsDataURL(e.target.files[0]);
             }
-            reader.readAsDataURL(e.target.files[0]);
-        }
-    });
+        });
+    }
 });
+
+function togglePasswordVisibility(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerHTML = '<i data-lucide="eye-off" style="width:15px;height:15px;"></i>';
+    } else {
+        input.type = 'password';
+        btn.innerHTML = '<i data-lucide="eye" style="width:15px;height:15px;"></i>';
+    }
+    lucide.createIcons();
+}
 </script>
 @endsection

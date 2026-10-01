@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Icons -->
@@ -15,186 +15,292 @@
     <style>
         :root {
             --primary: #1E3A5F;
-            --secondary: #C88A4E;
-            --tertiary: #A67261;
-            --neutral: #F5E5D3;
-            --bg-gradient: linear-gradient(135deg, #F5E5D3 0%, #FAF6F0 100%);
+            --primary-dark: #152B47;
+            --accent: #C88A4E;
+            --accent-hover: #B77A3E;
+            --text-main: #2C1E14;
+            --text-muted: #786C60;
+            --border-color: #E8DFD5;
+            --bg-page: #FBF7F0;
         }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Manrope', sans-serif;
-            background: var(--bg-gradient);
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-page);
             min-height: 100vh;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem 1rem;
-            animation: fadeIn 0.8s ease-out;
+            padding: 2.5rem 1.25rem;
+            color: var(--text-main);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        h1, h2, h3, h4, h5, h6, .brand-name {
-            font-family: 'Literata', serif;
-        }
+
         .login-wrapper {
             width: 100%;
-            max-width: 440px;
+            max-width: 420px;
+            animation: cardAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .brand-section {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.75rem;
         }
+
+        .logo-img-box {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 0.85rem;
+        }
+
         .logo-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            margin-bottom: 1rem;
+            width: 74px;
+            height: 74px;
+            border-radius: 18px;
+            box-shadow: 0 10px 24px -4px rgba(200, 138, 78, 0.28);
+            border: 2px solid #ffffff;
             object-fit: cover;
+            display: block;
         }
+
         .brand-name {
+            font-family: 'Manrope', sans-serif;
             color: var(--primary);
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
+            font-size: 1.65rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.2rem;
         }
+
         .tagline {
-            color: var(--tertiary);
+            font-family: 'Manrope', sans-serif;
+            color: var(--accent);
             font-style: italic;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
+            letter-spacing: 0.2px;
         }
+
         .auth-card {
             background: #ffffff;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 45px -12px rgba(44, 30, 20, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
+            position: relative;
             overflow: hidden;
         }
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid #eee;
+
+        .card-body-custom {
+            padding: 2.25rem 2rem;
         }
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 1rem;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .tab.active {
+
+        .auth-title {
+            font-size: 1.15rem;
+            font-weight: 700;
             color: var(--primary);
-            border-bottom: 3px solid var(--primary);
-            background: #fdfdfd;
+            margin-bottom: 0.25rem;
+            text-align: center;
         }
-        .tab:not(.active) {
-            color: #888;
-            border-bottom: 3px solid transparent;
+
+        .auth-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 1.75rem;
         }
-        .tab:not(.active):hover {
-            color: #555;
-            background: #fafafa;
-        }
-        .card-body {
-            padding: 2.5rem 2rem;
-        }
-        .form-label {
+
+        .form-label-custom {
+            font-size: 0.82rem;
             font-weight: 600;
-            color: #444;
-            font-size: 0.9rem;
-            margin-bottom: 0.4rem;
+            color: var(--primary);
+            margin-bottom: 0.45rem;
+            display: block;
         }
-        .input-group-text {
+
+        .custom-input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .custom-input-group .form-control {
+            width: 100%;
+            height: 48px;
+            padding: 0.65rem 42px 0.65rem 1rem;
+            font-size: 0.92rem;
+            font-family: inherit;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            background: #ffffff;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+        }
+
+        .custom-input-group .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(200, 138, 78, 0.14);
+            background: #ffffff;
+        }
+
+        /* Disable Microsoft Edge / IE native password reveal & clear icons */
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear,
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        .custom-input-group .input-icon-box {
+            position: absolute;
+            right: 14px;
+            color: var(--text-muted);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-input-group .btn-password-toggle {
+            position: absolute;
+            right: 8px;
             background: transparent;
-            border-left: none;
-            color: #888;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.15s ease;
+            z-index: 5;
+            user-select: none;
+        }
+
+        .custom-input-group .btn-password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .form-check-custom {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-check-custom .form-check-input {
+            width: 17px;
+            height: 17px;
+            margin-top: 0;
+            border: 1.5px solid #C8BFB5;
+            border-radius: 4px;
             cursor: pointer;
         }
-        .form-control {
-            padding: 0.7rem 1rem;
-            border-right: none;
-            border-radius: 8px 0 0 8px;
-        }
-        .form-control:focus {
-            box-shadow: none;
-            border-color: var(--primary);
-        }
-        .form-control:focus + .input-group-text {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-        .input-group {
-            margin-bottom: 1.2rem;
-        }
-        .input-group > .form-control {
-            border-right: none;
-        }
-        .input-group > .input-group-text {
-            border-radius: 0 8px 8px 0;
-            background-color: #fff;
-        }
-        
-        .btn-primary {
+
+        .form-check-custom .form-check-input:checked {
             background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .form-check-custom .form-check-label {
+            font-size: 0.84rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .btn-login {
+            width: 100%;
+            height: 48px;
+            background: var(--primary);
+            color: #ffffff;
             border: none;
-            border-radius: 30px;
-            padding: 14px;
-            font-weight: 600;
-            font-size: 1.05rem;
-            transition: background-color 0.2s;
-            margin-top: 1rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.2px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(30, 58, 95, 0.25);
+            cursor: pointer;
         }
-        .btn-primary:hover {
-            background-color: #152b47;
+
+        .btn-login:hover {
+            background: var(--primary-dark);
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(30, 58, 95, 0.35);
         }
-        .form-check-input:checked {
-            background-color: var(--primary);
-            border-color: var(--primary);
+
+        .btn-login:active {
+            transform: translateY(0);
         }
-        .reset-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        .reset-link:hover {
-            text-decoration: underline;
-        }
-        .error-message {
-            color: #dc3545;
-            font-size: 0.85rem;
-            margin-top: -0.8rem;
+
+        .error-feedback {
+            color: #dc2626;
+            font-size: 0.78rem;
+            font-weight: 500;
+            margin-top: -0.9rem;
             margin-bottom: 1rem;
             display: block;
+        }
+
+        .footer-credit {
+            text-align: center;
+            margin-top: 1.75rem;
+            font-size: 0.76rem;
+            color: var(--text-muted);
         }
     </style>
 </head>
 <body>
     <div class="login-wrapper">
+        <!-- Logo & Header Roastery -->
         <div class="brand-section">
-            <img src="/images/logo-kopi-hiku-himu.png" alt="Logo" class="logo-img">
+            <div class="logo-img-box">
+                <img src="{{ asset('images/logo-kopi-hiku-himu.png') }}" alt="Kopi Hiku Himu" class="logo-img">
+            </div>
             <h1 class="brand-name">Kopi Hiku Himu</h1>
             <div class="tagline">"Hidupku Hidupmu No Julid No Drama"</div>
         </div>
 
+        <!-- Auth Card -->
         <div class="auth-card">
-            <div class="tabs">
-                <span class="tab active" style="cursor:default;">Admin Login</span>
-            </div>
+            <div class="card-body-custom">
+                <h2 class="auth-title">Admin Login</h2>
+                <p class="auth-subtitle">Sistem Manajemen & Distribusi Kopi</p>
 
-            <div class="card-body">
                 @if (session('error'))
-                    <div class="alert alert-danger p-2 mb-3" style="font-size: 0.9rem;">
+                    <div class="alert alert-danger p-2 mb-3" style="font-size: 0.85rem; border-radius: 10px;">
                         {{ session('error') }}
                     </div>
                 @endif
                 
                 @if ($errors->any() && !$errors->has('email') && !$errors->has('password'))
-                    <div class="alert alert-danger p-2 mb-3" style="font-size: 0.9rem;">
+                    <div class="alert alert-danger p-2 mb-3" style="font-size: 0.85rem; border-radius: 10px;">
                         @foreach ($errors->all() as $error)
                             <div>{{ $error }}</div>
                         @endforeach
@@ -204,68 +310,76 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     
+                    <!-- Email / Admin ID -->
                     <div>
-                        <label class="form-label">Admin ID or Email</label>
-                        <div class="input-group">
-                            <input type="email" name="email" class="form-control" value="{{ old('email') }}" required autofocus placeholder="admin@example.com">
-                            <span class="input-group-text">
-                                <i data-lucide="user" width="18" height="18"></i>
+                        <label class="form-label-custom">Admin ID or Email</label>
+                        <div class="custom-input-group">
+                            <input type="email" name="email" class="form-control" value="{{ old('email') }}" required autofocus autocomplete="username">
+                            <span class="input-icon-box">
+                                <i data-lucide="user" style="width: 18px; height: 18px;"></i>
                             </span>
                         </div>
                         @error('email')
-                            <span class="error-message">{{ $message }}</span>
+                            <span class="error-feedback">{{ $message }}</span>
                         @enderror
                     </div>
 
+                    <!-- Password -->
                     <div>
-                        <label class="form-label">Password</label>
-                        <div class="input-group">
-                            <input type="password" name="password" id="password" class="form-control" required placeholder="••••••••">
-                            <span class="input-group-text" onclick="togglePassword()" style="cursor: pointer;" title="Show/Hide Password">
-                                <i data-lucide="eye" id="eye-icon" width="18" height="18"></i>
-                            </span>
+                        <label class="form-label-custom">Password</label>
+                        <div class="custom-input-group">
+                            <input type="password" name="password" id="password" class="form-control" required autocomplete="current-password">
+                            <button type="button" class="btn-password-toggle" onclick="togglePassword()" title="Tampilkan / Sembunyikan Password" tabindex="-1">
+                                <span id="iconEyeOpen" style="display: inline-flex; align-items: center;"><i data-lucide="eye" style="width: 18px; height: 18px;"></i></span>
+                                <span id="iconEyeClosed" style="display: none; align-items: center;"><i data-lucide="eye-off" style="width: 18px; height: 18px;"></i></span>
+                            </button>
                         </div>
                         @error('password')
-                            <span class="error-message">{{ $message }}</span>
+                            <span class="error-feedback">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                            <label class="form-check-label" for="remember" style="font-size: 0.85rem; color: #666;">
-                                Remember me
-                            </label>
-                        </div>
-                        <a href="#" class="reset-link">Reset Access</a>
+                    <!-- Remember Me -->
+                    <div class="form-check-custom">
+                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                        <label class="form-check-label" for="remember">
+                            Remember me
+                        </label>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">
-                        Login to Portal 
-                        <i data-lucide="arrow-right" width="18" height="18"></i>
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-login">
+                        <span>Login to Portal</span>
+                        <i data-lucide="arrow-right" style="width: 17px; height: 17px;"></i>
                     </button>
                 </form>
             </div>
         </div>
+
+        <div class="footer-credit">
+            &copy; {{ date('Y') }} Kopi Hiku Himu Artisan Roastery
+        </div>
     </div>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JS & Lucide -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         lucide.createIcons();
 
         function togglePassword() {
             const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eye-icon');
+            const eyeOpen = document.getElementById('iconEyeOpen');
+            const eyeClosed = document.getElementById('iconEyeClosed');
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                eyeIcon.setAttribute('data-lucide', 'eye-off');
+                if (eyeOpen) eyeOpen.style.display = 'none';
+                if (eyeClosed) eyeClosed.style.display = 'inline-flex';
             } else {
                 passwordInput.type = 'password';
-                eyeIcon.setAttribute('data-lucide', 'eye');
+                if (eyeOpen) eyeOpen.style.display = 'inline-flex';
+                if (eyeClosed) eyeClosed.style.display = 'none';
             }
-            lucide.createIcons();
         }
     </script>
 </body>

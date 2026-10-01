@@ -12,6 +12,11 @@ class CoffeeType extends Model
     protected $fillable = [
         'name',
         'category', // robusta | arabika
+        'modal', // HPP modal per pack/pcs
+    ];
+
+    protected $casts = [
+        'modal' => 'float',
     ];
 
     public function storePrices()

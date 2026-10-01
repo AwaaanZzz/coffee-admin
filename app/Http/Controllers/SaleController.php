@@ -94,9 +94,187 @@ class SaleController extends Controller
     public function destroy(Sale $sale)
     {
         // Kembalikan laku di stock batch
-        $sale->stockBatch->decrement('laku', $sale->jumlah);
+        if ($sale->stockBatch) {
+            $sale->stockBatch->decrement('laku', min($sale->jumlah, $sale->stockBatch->laku));
+        }
         $sale->delete();
 
         return redirect()->route('sales.index')->with('success', 'Data penjualan dihapus & stock dikembalikan.');
+    }
+
+    public function invoice(Request $request, Sale $sale)
+    {
+        $sale->load(['store', 'coffeeType', 'stockBatch']);
+
+        $isBatch = $request->query('mode') === 'batch';
+
+        if ($isBatch) {
+            $items = Sale::with(['coffeeType', 'stockBatch'])
+                ->where('store_id', $sale->store_id)
+                ->whereDate('tanggal', $sale->tanggal)
+                ->orderBy('id')
+                ->get();
+        } else {
+            $items = collect([$sale]);
+        }
+
+        $storeSameDaySalesCount = Sale::where('store_id', $sale->store_id)
+            ->whereDate('tanggal', $sale->tanggal)
+            ->count();
+
+        $grandTotal = $items->sum('total');
+        $totalQty = $items->sum('jumlah');
+        $rawTerbilang = trim(preg_replace('/\s+/', ' ', $this->terbilang((int) $grandTotal)));
+        $terbilang = $rawTerbilang ? ($rawTerbilang . ' Rupiah') : 'Nol Rupiah';
+
+        $invoiceNumber = 'INV/' . $sale->tanggal->format('Ymd') . '/' . str_pad($sale->id, 5, '0', STR_PAD_LEFT);
+        $whatsAppText = $this->generateWhatsAppText($sale, $items, $grandTotal, $invoiceNumber, $isBatch);
+        $whatsAppUrl = 'https://api.whatsapp.com/send?text=' . urlencode($whatsAppText);
+
+        return view('sales.invoice', compact(
+            'sale',
+            'items',
+            'isBatch',
+            'storeSameDaySalesCount',
+            'grandTotal',
+            'totalQty',
+            'terbilang',
+            'invoiceNumber',
+            'whatsAppText',
+            'whatsAppUrl'
+        ));
+    }
+
+    public function thermal(Request $request, Sale $sale)
+    {
+        $sale->load(['store', 'coffeeType', 'stockBatch']);
+
+        $isBatch = $request->query('mode') === 'batch';
+
+        if ($isBatch) {
+            $items = Sale::with(['coffeeType', 'stockBatch'])
+                ->where('store_id', $sale->store_id)
+                ->whereDate('tanggal', $sale->tanggal)
+                ->orderBy('id')
+                ->get();
+        } else {
+            $items = collect([$sale]);
+        }
+
+        $storeSameDaySalesCount = Sale::where('store_id', $sale->store_id)
+            ->whereDate('tanggal', $sale->tanggal)
+            ->count();
+
+        $grandTotal = $items->sum('total');
+        $totalQty = $items->sum('jumlah');
+        $invoiceNumber = 'TRX/' . $sale->tanggal->format('ymd') . '/' . str_pad($sale->id, 4, '0', STR_PAD_LEFT);
+        $whatsAppText = $this->generateWhatsAppText($sale, $items, $grandTotal, $invoiceNumber, $isBatch);
+        $whatsAppUrl = 'https://api.whatsapp.com/send?text=' . urlencode($whatsAppText);
+
+        return view('sales.thermal', compact(
+            'sale',
+            'items',
+            'isBatch',
+            'storeSameDaySalesCount',
+            'grandTotal',
+            'totalQty',
+            'invoiceNumber',
+            'whatsAppText',
+            'whatsAppUrl'
+        ));
+    }
+
+    public function generateWhatsAppText($sale, $items, $grandTotal, $invoiceNumber, $isBatch = false)
+    {
+        $storeName = $sale->store?->name ?? 'Pelanggan';
+        $tgl = $sale->tanggal ? $sale->tanggal->format('d/m/Y') : now()->format('d/m/Y');
+        $jam = now()->format('H:i');
+        $kasir = auth()->check() ? auth()->user()->name : 'Admin';
+
+        $msg = "*KOPI HIKU HIMU*\n";
+        $msg .= "_Artisan Roastery & Coffee Supply_\n";
+        $msg .= "Jl. Roastery No. 8, Sleman, D.I. Yogyakarta\n";
+        $msg .= "HP / WA: 0812-3456-7890\n\n";
+
+        $msg .= "=======================\n";
+        $msg .= "*NOTA ELEKTRONIK*\n";
+        $msg .= "=======================\n";
+        $msg .= "No Nota     : " . $invoiceNumber . "\n";
+        $msg .= "Mitra/Toko  : " . $storeName . "\n";
+        if (!empty($sale->store?->penanggung_jawab)) {
+            $msg .= "Kontak (PJ) : " . $sale->store->penanggung_jawab . "\n";
+        }
+        $msg .= "Tanggal     : " . $tgl . " - " . $jam . " WIB\n";
+        $msg .= "Kasir/Petugas: " . $kasir . "\n\n";
+
+        $msg .= "=======================\n";
+        $msg .= "*RINCIAN PESANAN*\n";
+        $msg .= "=======================\n";
+
+        foreach ($items as $item) {
+            $namaKopi = $item->coffeeType?->name ?? 'Kopi';
+            $qty = $item->jumlah;
+            $harga = number_format($item->harga, 0, ',', '.');
+            $subtotal = number_format($item->total, 0, ',', '.');
+            $batchStr = $item->stockBatch?->kode_produksi ? " (" . $item->stockBatch->kode_produksi . ")" : "";
+
+            $msg .= "- " . $namaKopi . $batchStr . "\n";
+            $msg .= "  " . $qty . " Pcs x Rp " . $harga . " = Rp " . $subtotal . "\n\n";
+        }
+
+        $totalFmt = number_format($grandTotal, 0, ',', '.');
+        $msg .= "=======================\n";
+        $msg .= "Status    : *LUNAS / TERCATAT* \u{2705}\n";
+        $msg .= "=======================\n";
+        $msg .= "subTotal  =  Rp " . $totalFmt . "\n";
+        $msg .= "Diskon    =  Rp 0\n";
+        $msg .= "Total     =  *Rp " . $totalFmt . "*\n";
+        $msg .= "=======================\n\n";
+
+        $msg .= "PERHATIAN!! \u{1F4CC}\n";
+        $msg .= "1. Pengambilan / verifikasi fisik wajib menunjukkan nota cetak atau nota WA ini.\n";
+        $msg .= "2. Komplain kualitas / selisih barang kami layani maksimal 1x24 jam sejak barang diterima dengan melampirkan fisik produk utuh.\n";
+        $msg .= "3. Apabila mitra/konsumen tidak menghitung jumlah fisik saat serah terima, maka jumlah yang kami catat dianggap benar.\n";
+        $msg .= "4. Garansi penggantian berlaku jika ditemukan cacat segel kemasan atau roasting dari pihak kami.\n\n";
+
+        $msg .= "KAMI TIDAK BERTANGGUNG JAWAB ATAS:\n";
+        $msg .= "1. Penurunan aroma / rasa akibat penyimpanan di tempat lembap atau terkena sinar matahari langsung setelah diterima.\n";
+        $msg .= "2. Produk yang kemasannya telah dibuka, digiling ulang sendiri, atau dipindahtangankan tanpa persetujuan.\n";
+        $msg .= "3. Kerusakan fisik akibat bencana alam / Force Majeure.\n\n";
+
+        $msg .= "TERIMAKASIH atas kerja sama dan kepercayaannya! \u{2615}\u{2728}\n\n";
+        $msg .= "Tautan E-Nota Resmi:\n";
+        $msg .= route('sales.invoice', $sale->id) . ($isBatch ? '?mode=batch' : '') . "\n\n";
+        $msg .= "Terima Kasih";
+
+        return $msg;
+    }
+
+    private function terbilang($number)
+    {
+        $bilangan = ['', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima', 'Enam', 'Tujuh', 'Delapan', 'Sembilan', 'Sepuluh', 'Sebelas'];
+        $number = abs($number);
+
+        if ($number < 12) {
+            return $bilangan[$number];
+        } elseif ($number < 20) {
+            return $this->terbilang($number - 10) . ' Belas';
+        } elseif ($number < 100) {
+            return $this->terbilang(intdiv($number, 10)) . ' Puluh ' . $this->terbilang($number % 10);
+        } elseif ($number < 200) {
+            return 'Seratus ' . $this->terbilang($number - 100);
+        } elseif ($number < 1000) {
+            return $this->terbilang(intdiv($number, 100)) . ' Ratus ' . $this->terbilang($number % 100);
+        } elseif ($number < 2000) {
+            return 'Seribu ' . $this->terbilang($number - 1000);
+        } elseif ($number < 1000000) {
+            return $this->terbilang(intdiv($number, 1000)) . ' Ribu ' . $this->terbilang($number % 1000);
+        } elseif ($number < 1000000000) {
+            return $this->terbilang(intdiv($number, 1000000)) . ' Juta ' . $this->terbilang($number % 1000000);
+        } elseif ($number < 1000000000000) {
+            return $this->terbilang(intdiv($number, 1000000000)) . ' Miliar ' . $this->terbilang($number % 1000000000);
+        }
+
+        return '';
     }
 }

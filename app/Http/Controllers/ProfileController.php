@@ -41,20 +41,30 @@ class ProfileController extends Controller
 
     public function updatePassword(Request $request)
     {
+        // Mendukung input 'password' maupun 'new_password'
+        $field = $request->has('new_password') ? 'new_password' : 'password';
+
         $request->validate([
             'current_password' => 'required',
-            'new_password' => 'required|string|min:8|confirmed',
+            $field => 'required|string|min:6|confirmed',
+        ], [
+            'current_password.required' => 'Password saat ini wajib diisi.',
+            $field . '.required' => 'Password baru wajib diisi.',
+            $field . '.min' => 'Password baru minimal 6 karakter.',
+            $field . '.confirmed' => 'Konfirmasi password baru tidak cocok.',
         ]);
 
+        /** @var \App\Models\User $user */
         $user = Auth::user();
 
         if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'Password saat ini tidak cocok.']);
+            return back()->withErrors(['current_password' => 'Password saat ini salah / tidak cocok.']);
         }
 
-        $user->password = Hash::make($request->new_password);
+        $newPassword = $request->input($field);
+        $user->password = Hash::make($newPassword);
         $user->save();
 
-        return back()->with('success', 'Password berhasil diubah.');
+        return back()->with('success', 'Password berhasil diubah! Gunakan password baru ini untuk login berikutnya.');
     }
 }

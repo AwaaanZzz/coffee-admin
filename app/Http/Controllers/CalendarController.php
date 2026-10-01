@@ -41,13 +41,23 @@ class CalendarController extends Controller
             ];
         }
 
-        $reports = FinanceReport::whereMonth('periode_mulai', $month)->whereYear('periode_mulai', $year)->get();
+        $reports = FinanceReport::whereMonth('periode_awal', $month)->whereYear('periode_awal', $year)->get();
         foreach ($reports as $report) {
             $events[] = [
                 'title' => 'Laporan Keuangan',
-                'date' => Carbon::parse($report->periode_mulai)->format('Y-m-d'),
+                'date' => Carbon::parse($report->periode_awal)->format('Y-m-d'),
                 'type' => 'success',
                 'description' => 'Awal periode laporan keuangan.'
+            ];
+        }
+
+        $opnames = \App\Models\StockOpname::with('store')->whereMonth('tanggal_audit', $month)->whereYear('tanggal_audit', $year)->get();
+        foreach ($opnames as $opname) {
+            $events[] = [
+                'title' => 'Audit Mitra: ' . ($opname->store->name ?? 'Toko'),
+                'date' => Carbon::parse($opname->tanggal_audit)->format('Y-m-d'),
+                'type' => 'warning',
+                'description' => 'Audit fisik stok ' . $opname->total_fisik_terhitung . ' pcs (' . $opname->total_selisih_laku . ' laku).'
             ];
         }
 
