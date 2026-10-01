@@ -188,11 +188,6 @@
                                             data-edit-url="{{ route('stock.edit', $batch) }}">
                                             <i data-lucide="edit" style="pointer-events:none;"></i>
                                         </button>
-                                        <form action="{{ route('stock.tambah', $batch) }}" method="POST" class="d-inline-flex gap-1" onsubmit="return confirmTambah(event, this)">
-                                            @csrf
-                                            <input type="number" name="jumlah_tambahan" min="1" class="form-control form-control-sm tabular-nums" style="width:52px; height: 32px; font-size:0.8125rem;" placeholder="+qty">
-                                            <button type="submit" class="btn btn-table-action" title="Tambah Stock Cepat"><i data-lucide="plus"></i></button>
-                                        </form>
                                         <form action="{{ route('stock.destroy', $batch) }}" method="POST" onsubmit="return confirm('Yakin hapus batch stock ini?')" class="d-inline">
                                             @csrf
                                             @method('DELETE')
