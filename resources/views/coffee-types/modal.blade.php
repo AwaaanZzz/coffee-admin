@@ -143,9 +143,13 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <span class="badge-modern badge-neutral" style="text-transform:capitalize;">
-                                        {{ $coffee->category }}
-                                    </span>
+                                    @if(strtolower($coffee->category) === 'robusta')
+                                        <span class="badge-robusta">Robusta</span>
+                                    @elseif(strtolower($coffee->category) === 'arabika')
+                                        <span class="badge-arabika">Arabika</span>
+                                    @else
+                                        <span class="badge-neutral">{{ ucfirst($coffee->category) }}</span>
+                                    @endif
                                 </td>
                                 <td class="text-end">
                                     <div class="input-group input-group-sm ms-auto" style="max-width: 175px;">

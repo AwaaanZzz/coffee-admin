@@ -76,8 +76,8 @@
                                 &check; Dibaca
                             </button>
                         @endif
-                        <button type="button" class="btn btn-sm btn-outline-modern text-danger py-1 px-2 btn-delete-notif" data-url="{{ route('notifications.destroy', $item->id) }}" data-id="{{ $item->id }}" title="Hapus notifikasi ini">
-                            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                        <button type="button" class="btn btn-table-action text-danger btn-delete-notif" data-url="{{ route('notifications.destroy', $item->id) }}" data-id="{{ $item->id }}" title="Hapus notifikasi ini">
+                            <i data-lucide="trash-2"></i>
                         </button>
                     </div>
                 </div>

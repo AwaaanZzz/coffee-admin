@@ -158,7 +158,14 @@
                         </td>
                         <td>
                             <div class="fw-bold text-dark">{{ $it->coffeeType->name ?? 'Belum diisi' }}</div>
-                            <span class="badge-modern badge-neutral" style="font-size: 0.7rem;">{{ ucfirst($it->coffeeType->category ?? 'robusta') }}</span>
+                            @php $rcpCat = strtolower($it->coffeeType->category ?? 'robusta'); @endphp
+                            @if($rcpCat === 'robusta')
+                                <span class="badge-robusta" style="font-size: 0.7rem;">Robusta</span>
+                            @elseif($rcpCat === 'arabika')
+                                <span class="badge-arabika" style="font-size: 0.7rem;">Arabika</span>
+                            @else
+                                <span class="badge-neutral" style="font-size: 0.7rem;">{{ ucfirst($it->coffeeType->category ?? '-') }}</span>
+                            @endif
                         </td>
                         <td class="text-end tabular-nums font-monospace">{{ $it->stok_sistem }}</td>
                         <td class="text-end tabular-nums font-monospace fw-semibold">{{ $it->fisik_terhitung }}</td>

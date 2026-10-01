@@ -67,18 +67,18 @@
                                 <td class="text-end text-muted" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($sale->harga, 0, ',', '.') }}</td>
                                 <td class="text-end fw-bold" style="font-variant-numeric: tabular-nums; color: var(--text-main);">Rp {{ number_format($sale->total, 0, ',', '.') }}</td>
                                 <td class="text-end">
-                                    <div class="d-inline-flex align-items-center gap-1">
-                                        <a href="{{ route('sales.thermal', $sale) }}" target="_blank" class="btn btn-sm btn-outline-modern p-1" title="Cetak struk thermal (58/80mm)">
-                                            <i data-lucide="receipt" style="width: 14px; height: 14px;"></i>
+                                    <div class="d-inline-flex align-items-center gap-1.5">
+                                        <a href="{{ route('sales.thermal', $sale) }}" target="_blank" class="btn btn-table-action" title="Cetak struk thermal (58/80mm)">
+                                            <i data-lucide="receipt"></i>
                                         </a>
-                                        <a href="{{ route('sales.invoice', $sale) }}" target="_blank" class="btn btn-sm btn-outline-modern p-1" title="Faktur A4 & nota WhatsApp">
-                                            <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
+                                        <a href="{{ route('sales.invoice', $sale) }}" target="_blank" class="btn btn-table-action" title="Faktur A4 & nota WhatsApp">
+                                            <i data-lucide="printer"></i>
                                         </a>
                                         <form action="{{ route('sales.destroy', $sale) }}" method="POST" onsubmit="return confirm('Hapus data penjualan ini? Stok akan dikembalikan.')" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-modern text-danger p-1" title="Hapus transaksi">
-                                                <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                                            <button type="submit" class="btn btn-table-action text-danger" title="Hapus transaksi">
+                                                <i data-lucide="trash-2"></i>
                                             </button>
                                         </form>
                                     </div>

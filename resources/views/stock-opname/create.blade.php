@@ -336,9 +336,14 @@
                                     <div class="fw-bold text-dark">
                                         {{ $item['coffee_name'] }}
                                     </div>
-                                    <span class="badge-modern badge-neutral" style="font-size: 0.65rem;">
-                                        {{ ucfirst($item['category']) }}
-                                    </span>
+                                    @php $opCat = strtolower($item['category'] ?? ''); @endphp
+                                    @if($opCat === 'robusta')
+                                        <span class="badge-robusta" style="font-size: 0.68rem;">Robusta</span>
+                                    @elseif($opCat === 'arabika')
+                                        <span class="badge-arabika" style="font-size: 0.68rem;">Arabika</span>
+                                    @else
+                                        <span class="badge-neutral" style="font-size: 0.68rem;">{{ ucfirst($item['category']) }}</span>
+                                    @endif
                                 </td>
                                 <td class="text-center">
                                     <span class="tabular-nums small {{ $item['is_expired'] ? 'text-danger fw-bold' : ($item['is_expiring_soon'] ? 'text-warning fw-bold' : 'text-muted') }}">

@@ -70,8 +70,8 @@
                                     <form action="{{ route('finance.destroy', $r) }}" method="POST" onsubmit="return confirm('Hapus laporan keuangan ini?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-modern text-danger p-1" title="Hapus laporan">
-                                            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                                        <button type="submit" class="btn btn-table-action text-danger ms-auto" title="Hapus laporan">
+                                            <i data-lucide="trash-2"></i>
                                         </button>
                                     </form>
                                 </td>

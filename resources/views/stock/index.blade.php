@@ -120,9 +120,14 @@
                                 </td>
                                 <td>
                                     <div class="fw-semibold text-dark">{{ $batch->coffeeType->name }}</div>
-                                    <span class="badge-modern badge-neutral" style="font-size: 0.65rem;">
-                                        {{ ucfirst($batch->coffeeType->category) }}
-                                    </span>
+                                    @php $stkCat = strtolower($batch->coffeeType->category ?? ''); @endphp
+                                    @if($stkCat === 'robusta')
+                                        <div class="mt-1"><span class="badge-robusta" style="font-size: 0.7rem;">Robusta</span></div>
+                                    @elseif($stkCat === 'arabika')
+                                        <div class="mt-1"><span class="badge-arabika" style="font-size: 0.7rem;">Arabika</span></div>
+                                    @else
+                                        <div class="mt-1"><span class="badge-neutral" style="font-size: 0.7rem;">{{ ucfirst($batch->coffeeType->category ?? '-') }}</span></div>
+                                    @endif
                                 </td>
                                 <td class="tabular-nums" style="font-size:0.82rem;">{{ $batch->tgl_stock->format('d/m/Y') }}</td>
                                 <td>
@@ -151,8 +156,8 @@
                                     @endif
                                 </td>
                                 <td class="text-end">
-                                    <div class="d-flex justify-content-end align-items-center gap-1">
-                                        <button type="button" class="btn btn-sm btn-outline-modern py-1 px-2 btn-open-label-modal" 
+                                    <div class="d-flex justify-content-end align-items-center gap-1.5">
+                                        <button type="button" class="btn btn-table-action btn-open-label-modal" 
                                             title="Cetak Label Stiker Kemasan"
                                             data-id="{{ $batch->id }}"
                                             data-code="{{ $batch->barcode }}"
@@ -162,9 +167,9 @@
                                             data-category="{{ ucfirst($batch->coffeeType->category) }}"
                                             data-stock="{{ $batch->tgl_stock->format('d/m/Y') }}"
                                             data-exp="{{ $batch->tgl_exp->format('d/m/Y') }}">
-                                            <i data-lucide="tag" style="width:13px;height:13px;"></i>
+                                            <i data-lucide="tag"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-modern py-1 px-2 btn-open-quick-edit" 
+                                        <button type="button" class="btn btn-table-action btn-open-quick-edit" 
                                             data-bs-toggle="modal"
                                             data-bs-target="#quickEditStockModal"
                                             title="Edit Kode Produksi, Tanggal & Stok"
@@ -181,17 +186,17 @@
                                             data-ket="{{ $batch->keterangan ?? '' }}"
                                             data-url="{{ route('stock.update', $batch) }}"
                                             data-edit-url="{{ route('stock.edit', $batch) }}">
-                                            <i data-lucide="edit" style="width:13px;height:13px;pointer-events:none;"></i>
+                                            <i data-lucide="edit" style="pointer-events:none;"></i>
                                         </button>
                                         <form action="{{ route('stock.tambah', $batch) }}" method="POST" class="d-inline-flex gap-1" onsubmit="return confirmTambah(event, this)">
                                             @csrf
-                                            <input type="number" name="jumlah_tambahan" min="1" class="form-control form-control-sm tabular-nums" style="width:52px; height: 28px; font-size:0.75rem;" placeholder="+qty">
-                                            <button type="submit" class="btn btn-sm btn-outline-modern py-1 px-2" title="Tambah Stock Cepat"><i data-lucide="plus" style="width:12px;height:12px;"></i></button>
+                                            <input type="number" name="jumlah_tambahan" min="1" class="form-control form-control-sm tabular-nums" style="width:52px; height: 32px; font-size:0.8125rem;" placeholder="+qty">
+                                            <button type="submit" class="btn btn-table-action" title="Tambah Stock Cepat"><i data-lucide="plus"></i></button>
                                         </form>
                                         <form action="{{ route('stock.destroy', $batch) }}" method="POST" onsubmit="return confirm('Yakin hapus batch stock ini?')" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-2" title="Hapus Batch"><i data-lucide="trash-2" style="width:12px;height:12px;"></i></button>
+                                            <button type="submit" class="btn btn-table-action text-danger" title="Hapus Batch"><i data-lucide="trash-2"></i></button>
                                         </form>
                                     </div>
                                 </td>

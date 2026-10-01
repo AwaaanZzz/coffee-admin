@@ -789,6 +789,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update Header
         resCoffeeName.innerText = data.coffee_name;
         resCategory.innerText = data.coffee_category;
+        if ((data.coffee_category || '').toLowerCase() === 'robusta') {
+            resCategory.className = 'badge-robusta';
+        } else if ((data.coffee_category || '').toLowerCase() === 'arabika') {
+            resCategory.className = 'badge-arabika';
+        } else {
+            resCategory.className = 'badge-neutral';
+        }
         resStoreName.innerHTML = '<i data-lucide="store" style="width:12px;height:12px;" class="me-1"></i>' + data.store_name;
         resKodeProduksi.innerText = data.kode_produksi || '-';
         const elBarcode = document.getElementById('resBarcodeVal');

@@ -146,9 +146,13 @@
                         <tr>
                             <td class="fw-bold">{{ $price->coffeeType->name }}</td>
                             <td>
-                                <span class="badge-modern badge-neutral">
-                                    {{ ucfirst($price->coffeeType->category) }}
-                                </span>
+                                @if(strtolower($price->coffeeType->category ?? '') === 'robusta')
+                                    <span class="badge-robusta">Robusta</span>
+                                @elseif(strtolower($price->coffeeType->category ?? '') === 'arabika')
+                                    <span class="badge-arabika">Arabika</span>
+                                @else
+                                    <span class="badge-neutral">{{ ucfirst($price->coffeeType->category ?? '-') }}</span>
+                                @endif
                             </td>
                             <td class="text-end tabular-nums">Rp {{ number_format($price->price, 0, ',', '.') }}</td>
                         </tr>
@@ -203,7 +207,14 @@
                                         </td>
                                         <td>
                                             <div class="fw-bold">{{ $p['name'] }}</div>
-                                            <span class="badge-modern badge-neutral" style="font-size:0.7rem;">{{ ucfirst($p['category']) }}</span>
+                                            @php $prodCat = strtolower($p['category'] ?? ''); @endphp
+                                            @if($prodCat === 'robusta')
+                                                <span class="badge-robusta" style="font-size:0.7rem;">Robusta</span>
+                                            @elseif($prodCat === 'arabika')
+                                                <span class="badge-arabika" style="font-size:0.7rem;">Arabika</span>
+                                            @else
+                                                <span class="badge-neutral" style="font-size:0.7rem;">{{ ucfirst($p['category']) }}</span>
+                                            @endif
                                         </td>
                                         <td class="text-end tabular-nums">{{ $p['qty'] }} pcs</td>
                                         <td class="text-end tabular-nums">Rp {{ number_format($p['revenue'], 0, ',', '.') }}</td>
