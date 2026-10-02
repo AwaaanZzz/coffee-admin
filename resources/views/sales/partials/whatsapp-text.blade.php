@@ -60,9 +60,6 @@
     if ($hasDueDate) {
         $lines[] = "Jatuh tempo : " . formatDocDate($sale->jatuh_tempo);
     }
-    
-    $lines[] = "";
-    $lines[] = "Faktur lengkap (PDF): " . $publicUrl;
     $lines[] = "";
     
     if ($hasBank) {
@@ -72,6 +69,7 @@
         }
         $bankLine .= ".";
         $lines[] = $bankLine;
+        $lines[] = "";
     }
     
     $lines[] = "Terima kasih.";
