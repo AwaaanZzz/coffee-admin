@@ -32,11 +32,12 @@
         font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         font-size: 9pt;
         line-height: 1.45;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        border: 1px solid #d1d5db;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
         padding: 15mm;
         position: relative;
         min-height: 297mm;
+        border-radius: 0;
     }
 
     /* Conditional DRAFT Watermark */
@@ -338,9 +339,8 @@
 
     /* Terms */
     .doc-terms {
-        margin-top: 20px;
-        padding-top: 12px;
-        border-top: 1px solid #f1f5f9;
+        margin-top: 24px;
+        padding-top: 0;
         font-size: 7.5pt;
         color: #6b7280;
         page-break-inside: avoid;

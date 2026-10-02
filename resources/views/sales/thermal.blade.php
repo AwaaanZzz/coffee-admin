@@ -110,13 +110,11 @@
             width: 400px; /* 80mm standard */
         }
 
-        /* Lineart Logo (Ink-saving, no solid black block) */
+        /* Lineart Logo (Ink-saving, borderless clean icon mark) */
         .receipt-logo-lineart {
-            width: 42px;
-            height: 42px;
-            margin: 0 auto 6px auto;
-            border: 1.5px solid #000000;
-            border-radius: 4px;
+            width: 32px;
+            height: 32px;
+            margin: 0 auto 4px auto;
             display: flex;
             align-items: center;
             justify-content: center;
