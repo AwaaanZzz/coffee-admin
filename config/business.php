@@ -18,6 +18,7 @@ return [
     'phone' => env('BUSINESS_PHONE', '0889-5744-289'),
     'email' => env('BUSINESS_EMAIL', 'halo@kopihikuhimu.id'),
     'website' => env('BUSINESS_WEBSITE', 'kopihikuhimu.id'),
+    'public_url' => env('BUSINESS_PUBLIC_URL', 'https://kopihikuhimu.id'),
 
     /*
     |--------------------------------------------------------------------------

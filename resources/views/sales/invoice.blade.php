@@ -725,7 +725,7 @@
                     <label class="form-label fw-bold text-dark small">
                         <span>Pratinjau pesan nota WhatsApp:</span>
                     </label>
-                    <textarea id="waMessageText" class="form-control font-monospace" rows="12" style="font-size: 0.82rem; background: #f8fafc; border: 1px solid #cbd5e1; white-space: pre-wrap;" readonly>{{ $formattedWhatsAppText }}</textarea>
+                    <textarea id="waMessageText" class="form-control font-monospace" rows="14" style="font-size: 0.85rem; line-height: 1.5; padding: 12px 14px; background: #f8fafc; border: 1px solid #cbd5e1; white-space: pre-wrap;" readonly>{{ trim($formattedWhatsAppText) }}</textarea>
                 </div>
             </div>
             <div class="modal-footer bg-light" style="border-bottom-left-radius: var(--radius-sm, 8px); border-bottom-right-radius: var(--radius-sm, 8px);">
@@ -757,6 +757,18 @@
             setTimeout(function() {
                 window.print();
             }, 600);
+        }
+
+        const waModal = document.getElementById('whatsappModal');
+        if (waModal) {
+            waModal.addEventListener('shown.bs.modal', function () {
+                const textarea = document.getElementById('waMessageText');
+                if (textarea) {
+                    textarea.scrollTop = 0;
+                    textarea.selectionStart = 0;
+                    textarea.selectionEnd = 0;
+                }
+            });
         }
     });
 

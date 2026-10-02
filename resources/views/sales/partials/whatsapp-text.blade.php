@@ -1,13 +1,36 @@
-@include('sales.partials.doc-helpers')@php
+@php
+    if (!function_exists('formatDocDate')) {
+        function formatDocDate($date) {
+            if (!$date) return '-';
+            try {
+                $c = $date instanceof \Carbon\Carbon ? $date : \Carbon\Carbon::parse($date);
+                $monthNames = [
+                    1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'Mei', 6 => 'Jun',
+                    7 => 'Jul', 8 => 'Agu', 9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Des'
+                ];
+                return $c->day . ' ' . ($monthNames[$c->month] ?? $c->format('M')) . ' ' . $c->year;
+            } catch (\Exception $e) {
+                return $date;
+            }
+        }
+    }
+
     $storeName = $sale->store->name ?? 'Pelanggan';
     $tglStr = formatDocDate($sale->tanggal);
-    $totalFormatted = (float)$grandTotal > 0 ? ('Rp ' . number_format($grandTotal, 0, ',', '.')) : '-';
+    $totalFormatted = 'Rp ' . number_format((float)$grandTotal, 0, ',', '.');
     $hasDueDate = !empty($sale->jatuh_tempo ?? null);
     $bankName = config('business.bank.name');
     $bankAcc = config('business.bank.account_number');
     $bankHolder = config('business.bank.account_name');
     $hasBank = !empty($bankName) && !empty($bankAcc);
-    $publicUrl = route('sales.invoice', $sale->id) . ($isBatch ? '?mode=batch' : '');
+
+    $publicBase = config('business.public_url');
+    if (empty($publicBase)) {
+        $website = config('business.website', 'kopihikuhimu.id');
+        $publicBase = 'https://' . preg_replace('#^https?://#', '', $website);
+    }
+    $publicBase = rtrim($publicBase, '/');
+    $publicUrl = $publicBase . '/sales/' . $sale->id . '/invoice' . ($isBatch ? '?mode=batch' : '');
     
     $lines = [];
     $lines[] = "Yth. " . $storeName . ",";
@@ -54,5 +77,5 @@
     $lines[] = "Terima kasih.";
     $lines[] = config('business.name') . ", " . config('business.phone');
     
-    echo implode("\n", $lines);
+    echo trim(implode("\n", $lines));
 @endphp

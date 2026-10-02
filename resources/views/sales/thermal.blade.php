@@ -9,7 +9,13 @@
         'isBatch' => $isBatch,
     ])->render();
     $waUrl = 'https://api.whatsapp.com/send?text=' . urlencode($waText);
-    $publicInvoiceUrl = route('sales.invoice', $sale->id) . ($isBatch ? '?mode=batch' : '');
+    $publicBase = config('business.public_url');
+    if (empty($publicBase)) {
+        $website = config('business.website', 'kopihikuhimu.id');
+        $publicBase = 'https://' . preg_replace('#^https?://#', '', $website);
+    }
+    $publicBase = rtrim($publicBase, '/');
+    $publicInvoiceUrl = $publicBase . '/sales/' . $sale->id . '/invoice' . ($isBatch ? '?mode=batch' : '');
 @endphp
 <!DOCTYPE html>
 <html lang="id">
