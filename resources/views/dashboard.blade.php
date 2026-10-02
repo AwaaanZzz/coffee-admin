@@ -1,863 +1,905 @@
 @extends('layouts.app')
 
-@section('title', 'Beranda')
+@section('title', 'Beranda Operasional')
 
 @section('breadcrumbs')
     <a href="{{ route('dashboard') }}">Beranda</a>
 @endsection
 
+@section('styles')
+<style>
+    /* Design Tokens Integration & Operational Style */
+    .op-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
+
+    .op-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        margin: 0 0 4px 0;
+        line-height: 1.2;
+    }
+
+    .op-subtitle {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        margin: 0;
+    }
+
+    .op-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    /* Metric Cards (Calm, Typographic, No Icon Boxes) */
+    .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 991px) {
+        .metric-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 575px) {
+        .metric-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .metric-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-decoration: none;
+        color: inherit;
+        transition: border-color var(--transition);
+    }
+
+    .metric-card:hover {
+        color: inherit;
+        border-color: var(--text-secondary);
+    }
+
+    .metric-value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        line-height: 1.2;
+        color: var(--text-primary);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .metric-label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+        font-weight: 500;
+    }
+
+    /* Attention Box */
+    .attention-box {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--warning);
+        border-radius: var(--radius);
+        padding: 12px 18px;
+        margin-bottom: 20px;
+    }
+
+    .attention-header {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+    }
+
+    .attention-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .attention-item {
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 3px 0;
+        gap: 12px;
+    }
+
+    .attention-link {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-decoration: underline;
+        white-space: nowrap;
+    }
+
+    .attention-link:hover {
+        color: var(--text-primary);
+    }
+
+    /* Summary Bar */
+    .period-summary-bar {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 12px 18px;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin-bottom: 20px;
+    }
+
+    .period-summary-bar strong {
+        color: var(--text-primary);
+    }
+
+    /* Section Containers */
+    .section-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        margin-bottom: 24px;
+        overflow: hidden;
+    }
+
+    .section-header {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .section-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+    }
+
+    .section-body {
+        padding: 18px;
+    }
+
+    /* Operational Table */
+    .table-operational {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.84rem;
+        color: var(--text-primary);
+    }
+
+    .table-operational thead th {
+        padding: 10px 12px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        border-bottom: 1px solid var(--border);
+        background: transparent;
+        white-space: nowrap;
+    }
+
+    .table-operational thead th.text-end {
+        text-align: right;
+    }
+
+    .table-operational thead th.text-center {
+        text-align: center;
+    }
+
+    .table-operational tbody tr {
+        border-bottom: 1px solid var(--border);
+    }
+
+    .table-operational tbody td {
+        padding: 11px 12px;
+        vertical-align: middle;
+    }
+
+    .font-tabular {
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* Portion Bar */
+    .portion-bar-container {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: flex-end;
+    }
+
+    .portion-bar-track {
+        width: 44px;
+        height: 5px;
+        background: var(--border);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    .portion-bar-fill {
+        height: 100%;
+        background: #B8742F;
+        border-radius: 2px;
+    }
+
+    .portion-pct {
+        font-size: 0.78rem;
+        font-variant-numeric: tabular-nums;
+        min-width: 40px;
+        text-align: right;
+        color: var(--text-secondary);
+    }
+
+    /* Total Row */
+    .table-total-row td {
+        font-weight: 700;
+        color: var(--text-primary);
+        border-top: 1px solid var(--border);
+        border-bottom: 3px double var(--border);
+        padding-top: 12px;
+        padding-bottom: 12px;
+        background: transparent;
+    }
+
+    /* Store Sub-row Breakdown */
+    .store-subrow {
+        background: var(--bg-subtle);
+    }
+
+    .store-subrow-inner {
+        padding: 14px 16px;
+    }
+
+    .store-toggle-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        color: inherit;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .store-toggle-btn:hover {
+        color: var(--accent);
+    }
+
+    /* Tooltip helper */
+    .info-tooltip-icon {
+        display: inline-block;
+        color: var(--text-muted);
+        cursor: help;
+        margin-left: 3px;
+        vertical-align: -2px;
+    }
+
+    .info-tooltip-icon:hover {
+        color: var(--text-primary);
+    }
+</style>
+@endsection
+
 @section('content')
-    {{-- Page Header --}}
-    <div class="page-header">
+    {{-- 1. Header --}}
+    <div class="op-header">
         <div>
-            <h1 class="page-title">Beranda Operasional</h1>
-            <p class="page-subtitle">Ringkasan stok kopi, penjualan mitra, dan pergerakan persediaan.</p>
+            <h1 class="op-title">Beranda operasional</h1>
+            <p class="op-subtitle">Monitoring persediaan, kinerja penjualan toko mitra, dan laba operasional.</p>
             <span id="realtimeGreeting" class="d-none"></span>
             <span id="realtimeDateSubtitle" class="d-none"></span>
         </div>
-        <div class="page-actions">
+        <div class="op-actions">
             <a href="{{ route('sales.create') }}" class="btn btn-accent">
-                <i data-lucide="plus"></i> Catat Penjualan
+                <i data-lucide="plus" style="width: 15px; height: 15px;"></i>
+                <span>Catat penjualan</span>
             </a>
             <a href="{{ route('stock.index') }}" class="btn btn-outline-modern">
-                <i data-lucide="printer"></i> Cetak Barcode
+                <i data-lucide="printer" style="width: 15px; height: 15px;"></i>
+                <span>Cetak barcode</span>
             </a>
             <button type="button" class="btn btn-outline-modern" onclick="window.location.reload()">
-                <i data-lucide="refresh-cw"></i> Segarkan Data
+                <i data-lucide="refresh-cw" style="width: 15px; height: 15px;"></i>
+                <span>Segarkan data</span>
             </button>
         </div>
     </div>
 
-    {{-- Stats Row (Maksimal 4 KPI untuk Keputusan Operasional) --}}
-    <div class="row g-3 mb-4">
-        <div class="col-12 col-sm-6 col-xl-3">
-            <div class="stat-card">
-                <div class="stat-icon"><i data-lucide="store"></i></div>
-                <div class="stat-info">
-                    <div class="stat-value tabular-nums">{{ $totalToko ?? 0 }}</div>
-                    <div class="stat-label">Toko mitra aktif</div>
-                </div>
+    {{-- 2. Baris Metrik (Maksimal 4, Tanpa Kotak Ikon) --}}
+    <div class="metric-grid">
+        <div class="metric-card">
+            <div class="metric-value">{{ $totalToko ?? 0 }}</div>
+            <div class="metric-label">Toko mitra aktif</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value">{{ number_format($totalStock ?? 0, 0, ',', '.') }}</div>
+            <div class="metric-label">Stok tersedia (pcs)</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value">{{ number_format($totalLaku ?? 0, 0, ',', '.') }}</div>
+            <div class="metric-label">Terjual periode ini (pcs)</div>
+        </div>
+        <a href="{{ route('stock.index') }}" class="metric-card">
+            <div class="metric-value {{ ($expiringSoon ?? 0) > 0 ? 'text-danger' : '' }}">
+                {{ $expiringSoon ?? 0 }}
+            </div>
+            <div class="metric-label">Mendekati kedaluwarsa</div>
+        </a>
+    </div>
+
+    {{-- 3. Perlu Perhatian (Hanya tampil jika ada isinya) --}}
+    @php
+        $attentionItems = [];
+        if (($expiringSoon ?? 0) > 0) {
+            $attentionItems[] = [
+                'text' => ($expiringSoon) . ' batch stok mendekati tanggal kedaluwarsa dalam 7 hari ke depan.',
+                'link' => route('stock.index'),
+                'link_text' => 'Periksa stok',
+            ];
+        }
+
+        $zeroSaleStores = [];
+        foreach ($storeAnalytics ?? [] as $sa) {
+            if (($sa['total_qty'] ?? 0) === 0) {
+                $zeroSaleStores[] = $sa['store_name'];
+            }
+        }
+        if (count($zeroSaleStores) > 0) {
+            $storeNamesStr = implode(', ', array_slice($zeroSaleStores, 0, 3));
+            if (count($zeroSaleStores) > 3) {
+                $storeNamesStr .= ' dan ' . (count($zeroSaleStores) - 3) . ' toko lainnya';
+            }
+            $attentionItems[] = [
+                'text' => count($zeroSaleStores) . ' toko mitra belum memiliki catatan penjualan periode ini (' . $storeNamesStr . ').',
+                'link' => route('sales.create'),
+                'link_text' => 'Catat penjualan',
+            ];
+        }
+
+        $hasZeroPriceOrModal = false;
+        foreach ($storeAnalytics ?? [] as $sa) {
+            foreach ($sa['products'] ?? [] as $pr) {
+                if ($pr['qty'] > 0 && ($pr['price'] <= 0)) {
+                    $hasZeroPriceOrModal = true;
+                    break 2;
+                }
+            }
+        }
+        if ($hasZeroPriceOrModal) {
+            $attentionItems[] = [
+                'text' => 'Terdapat varian kopi terjual dengan harga satuan Rp 0.',
+                'link' => route('sales.index'),
+                'link_text' => 'Periksa data penjualan',
+            ];
+        }
+    @endphp
+
+    @if(count($attentionItems) > 0)
+    <div class="attention-box">
+        <div class="attention-header">
+            <i data-lucide="alert-circle" style="width: 14px; height: 14px; color: var(--warning);"></i>
+            <span>Perlu perhatian</span>
+        </div>
+        <ul class="attention-list">
+            @foreach($attentionItems as $item)
+            <li class="attention-item">
+                <span>{{ $item['text'] }}</span>
+                <a href="{{ $item['link'] }}" class="attention-link">{{ $item['link_text'] }}</a>
+            </li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    {{-- 4. Kalimat Ringkasan Periode (Satu Baris) --}}
+    @php
+        $periodeStr = $profitLossData->first()?->periode ?? \Carbon\Carbon::now()->locale('id')->isoFormat('MMMM YYYY');
+        $sumPemasukan = $financeSummary['total_pemasukan'] ?? 0;
+        $sumLaba = $financeSummary['total_laba'] ?? 0;
+        $sumMargin = $financeSummary['average_margin'] ?? 0;
+        $sumPcs = $totalLaku ?? 0;
+    @endphp
+    <div class="period-summary-bar">
+        <strong>{{ $periodeStr }}:</strong> {{ number_format($sumPcs, 0, ',', '.') }} pcs terjual, penjualan Rp {{ number_format($sumPemasukan, 0, ',', '.') }}, laba kotor Rp {{ number_format($sumLaba, 0, ',', '.') }} ({{ number_format($sumMargin, 1, ',', '.') }}%).
+    </div>
+
+    {{-- 5. Tabel Penjualan dan Laba per Toko --}}
+    @php
+        $plMap = ($profitLossData ?? collect())->keyBy('store_name');
+        $totalAllRevenue = $sumPemasukan;
+        if ($totalAllRevenue <= 0 && !empty($storeAnalytics)) {
+            $totalAllRevenue = collect($storeAnalytics)->sum('total_revenue');
+        }
+
+        $sortedStoreAnalytics = collect($storeAnalytics ?? [])->sortByDesc('total_revenue');
+
+        $calcTotalQty = 0;
+        $calcTotalRev = 0;
+        $calcTotalHpp = 0;
+        $calcTotalLaba = 0;
+    @endphp
+
+    <div class="section-card">
+        <div class="section-header">
+            <h2 class="section-title">Penjualan dan laba per toko</h2>
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-muted small">Periode: <strong>{{ $periodeStr }}</strong></span>
+                <a href="{{ route('coffee-types.modal') }}" class="btn btn-sm btn-outline-modern" title="Kelola modal HPP tiap jenis kopi">
+                    Kelola modal HPP
+                </a>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-xl-3">
-            <div class="stat-card">
-                <div class="stat-icon"><i data-lucide="package"></i></div>
-                <div class="stat-info">
-                    <div class="stat-value tabular-nums">{{ number_format($totalStock ?? 0) }}</div>
-                    <div class="stat-label">Total stok tersedia (pcs)</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-xl-3">
-            <div class="stat-card">
-                <div class="stat-icon"><i data-lucide="shopping-cart"></i></div>
-                <div class="stat-info">
-                    <div class="stat-value tabular-nums">{{ number_format($totalLaku ?? 0) }}</div>
-                    <div class="stat-label">Total produk terjual (pcs)</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-xl-3">
-            <div class="stat-card">
-                <div class="stat-icon"><i data-lucide="alert-triangle"></i></div>
-                <div class="stat-info">
-                    <div class="stat-value tabular-nums {{ ($expiringSoon ?? 0) > 0 ? 'text-danger' : '' }}">{{ $expiringSoon ?? 0 }}</div>
-                    <div class="stat-label">Stok mendekati kedaluwarsa</div>
-                </div>
-            </div>
+
+        <div class="table-responsive">
+            <table class="table-operational">
+                <thead>
+                    <tr>
+                        <th>Toko mitra</th>
+                        <th>Penanggung jawab</th>
+                        <th class="text-end">Terjual (pcs)</th>
+                        <th class="text-end">Penjualan</th>
+                        <th class="text-end">HPP & kemasan</th>
+                        <th class="text-end">
+                            Laba kotor
+                            <span class="info-tooltip-icon" title="Laba kotor = Penjualan dikurangi HPP dan kemasan" data-bs-toggle="tooltip">
+                                <i data-lucide="info" style="width: 12px; height: 12px;"></i>
+                            </span>
+                        </th>
+                        <th class="text-end">
+                            Margin
+                            <span class="info-tooltip-icon" title="Margin = Laba kotor dibagi Penjualan" data-bs-toggle="tooltip">
+                                <i data-lucide="info" style="width: 12px; height: 12px;"></i>
+                            </span>
+                        </th>
+                        <th class="text-end">
+                            Porsi
+                            <span class="info-tooltip-icon" title="Porsi = Penjualan toko dibagi total penjualan semua toko" data-bs-toggle="tooltip">
+                                <i data-lucide="info" style="width: 12px; height: 12px;"></i>
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($sortedStoreAnalytics as $sid => $sa)
+                        @php
+                            $qty = (int) ($sa['total_qty'] ?? 0);
+                            $rev = (float) ($sa['total_revenue'] ?? 0);
+                            $pl = $plMap->get($sa['store_name']);
+                            $hpp = (float) ($pl?->pengeluaran ?? 0);
+                            $laba = (float) ($pl?->laba ?? ($rev - $hpp));
+                            $margin = $rev > 0 ? (($laba / $rev) * 100) : null;
+                            $porsi = $totalAllRevenue > 0 ? (($rev / $totalAllRevenue) * 100) : 0;
+
+                            $calcTotalQty += $qty;
+                            $calcTotalRev += $rev;
+                            $calcTotalHpp += $hpp;
+                            $calcTotalLaba += $laba;
+                        @endphp
+
+                        @if($qty === 0 && $rev <= 0)
+                            <tr>
+                                <td>
+                                    <span class="text-muted fw-medium">{{ $sa['store_name'] }}</span>
+                                </td>
+                                <td colspan="7" class="text-muted">Belum ada penjualan</td>
+                            </tr>
+                        @else
+                            <tr>
+                                <td>
+                                    <button type="button" class="store-toggle-btn store-row-toggle" data-target="breakdown{{ $sid }}" aria-expanded="false" title="Klik untuk lihat rincian varian">
+                                        <i data-lucide="chevron-right" style="width: 13px; height: 13px;"></i>
+                                        <span>{{ $sa['store_name'] }}</span>
+                                    </button>
+                                </td>
+                                <td class="text-muted">{{ $sa['penanggung_jawab'] ?: '-' }}</td>
+                                <td class="text-end font-tabular">{{ number_format($qty, 0, ',', '.') }}</td>
+                                <td class="text-end font-tabular">{{ number_format($rev, 0, ',', '.') }}</td>
+                                <td class="text-end font-tabular">{{ number_format($hpp, 0, ',', '.') }}</td>
+                                <td class="text-end font-tabular {{ $laba < 0 ? 'text-danger' : '' }}">{{ number_format($laba, 0, ',', '.') }}</td>
+                                <td class="text-end font-tabular">{{ $margin !== null ? (number_format($margin, 1, ',', '.') . '%') : '-' }}</td>
+                                <td class="text-end">
+                                    <div class="portion-bar-container">
+                                        <div class="portion-bar-track">
+                                            <div class="portion-bar-fill" style="width: {{ min(100, $porsi) }}%;"></div>
+                                        </div>
+                                        <span class="portion-pct">{{ number_format($porsi, 1, ',', '.') }}%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{-- Expandable Product Breakdown Subrow --}}
+                            <tr id="breakdown{{ $sid }}" class="store-subrow d-none">
+                                <td colspan="8" class="p-0">
+                                    <div class="store-subrow-inner">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="small text-muted fw-semibold">Rincian varian kopi di {{ $sa['store_name'] }}:</span>
+                                            <button type="button" class="btn btn-sm btn-link p-0 text-decoration-none switch-store-chart" data-store-id="{{ $sid }}" style="font-size: 0.78rem;">
+                                                Tampilkan di grafik varian
+                                            </button>
+                                        </div>
+                                        <table class="table table-sm table-borderless mb-0" style="font-size: 0.8rem;">
+                                            <thead>
+                                                <tr class="text-muted border-bottom">
+                                                    <th>Varian</th>
+                                                    <th>Kategori</th>
+                                                    <th class="text-end">Terjual (pcs)</th>
+                                                    <th class="text-end">Harga satuan (Rp)</th>
+                                                    <th class="text-end">Penjualan (Rp)</th>
+                                                    <th class="text-end">Sisa stok</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($sa['products'] as $p)
+                                                <tr>
+                                                    <td class="fw-semibold">{{ $p['name'] }}</td>
+                                                    <td class="text-muted">{{ ucfirst($p['category']) }}</td>
+                                                    <td class="text-end font-tabular">{{ number_format($p['qty'], 0, ',', '.') }}</td>
+                                                    <td class="text-end font-tabular">{{ number_format($p['price'], 0, ',', '.') }}</td>
+                                                    <td class="text-end font-tabular">{{ number_format($p['revenue'], 0, ',', '.') }}</td>
+                                                    <td class="text-end font-tabular text-muted">{{ number_format($p['sisa_stock'], 0, ',', '.') }} pcs</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endif
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">Belum ada data toko mitra.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+                @if($sortedStoreAnalytics->isNotEmpty())
+                <tfoot>
+                    <tr class="table-total-row">
+                        <td colspan="2">Total</td>
+                        <td class="text-end font-tabular">{{ number_format($calcTotalQty, 0, ',', '.') }}</td>
+                        <td class="text-end font-tabular">{{ number_format($calcTotalRev, 0, ',', '.') }}</td>
+                        <td class="text-end font-tabular">{{ number_format($calcTotalHpp, 0, ',', '.') }}</td>
+                        <td class="text-end font-tabular {{ $calcTotalLaba < 0 ? 'text-danger' : '' }}">{{ number_format($calcTotalLaba, 0, ',', '.') }}</td>
+                        <td class="text-end font-tabular">{{ $calcTotalRev > 0 ? (number_format(($calcTotalLaba / $calcTotalRev) * 100, 1, ',', '.') . '%') : '-' }}</td>
+                        <td class="text-end font-tabular">{{ $calcTotalRev > 0 ? '100,0%' : '-' }}</td>
+                    </tr>
+                </tfoot>
+                @endif
+            </table>
         </div>
     </div>
 
-    {{-- Section: Analisis Produk Paling Laku Tiap Toko --}}
-    <div class="card-modern mb-4">
-        <div class="card-header-modern d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <div>
-                <h5 class="card-title-modern m-0">Analisis Produk Terlaris Tiap Toko</h5>
-                <p class="text-muted small m-0 mt-1">Performa dan peringkat varian kopi di setiap toko mitra</p>
-            </div>
+    {{-- 6. Bagian Varian Terlaris (Dropdown Toko + Switch Pcs/Rp + Tabel Peringkat & Grafik Batang Bersyarat) --}}
+    <div class="section-card" id="variantSection">
+        <div class="section-header">
+            <h2 class="section-title">Varian terlaris</h2>
             <div class="d-flex align-items-center gap-2 flex-wrap">
+                {{-- Store Selector Dropdown --}}
+                <select id="storeSelectDropdown" class="form-select form-select-sm" style="width: auto; min-width: 170px;">
+                    <option value="all">Semua toko</option>
+                    @foreach($storeAnalytics ?? [] as $sid => $sa)
+                        <option value="{{ $sid }}">{{ $sa['store_name'] }}</option>
+                    @endforeach
+                </select>
+
+                {{-- Metric Switcher --}}
                 <div class="btn-group btn-group-sm" role="group">
                     <button type="button" class="btn btn-sm btn-outline-modern active" id="btnMetricQty">
-                        Unit Terjual (Pcs)
+                        Pcs
                     </button>
                     <button type="button" class="btn btn-sm btn-outline-modern" id="btnMetricRev">
-                        Omzet (Rp)
+                        Rupiah
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="card-body-modern">
-            {{-- Highlight Juara 1 Best Seller per Toko Mitra --}}
-            <div class="row g-3 mb-4">
-                @foreach($storeAnalytics ?? [] as $sid => $sa)
-                    <div class="col-md-6 col-xl-4">
-                        <div class="p-3 border h-100 position-relative" style="background: var(--bg-card); border-color: var(--border); border-radius: var(--radius-sm);">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <h6 class="fw-semibold m-0 text-dark">{{ $sa['store_name'] }}</h6>
-                                    <small class="text-muted" style="font-size: 0.75rem;">Penanggung jawab: {{ $sa['penanggung_jawab'] ?: 'Belum diisi' }}</small>
-                                </div>
-                                <span class="badge badge-secondary" style="font-size:0.7rem;">
-                                    Terlaris
-                                </span>
-                            </div>
+        <div class="section-body">
+            {{-- Hidden elements preserved for JS safety --}}
+            <span id="kpiStoreName" class="d-none"></span>
+            <span id="kpiTopCoffee" class="d-none"></span>
+            <span id="kpiTotalQty" class="d-none"></span>
+            <span id="kpiTotalRevenue" class="d-none"></span>
+            <span id="chartStoreTitle" class="d-none"></span>
+            <span id="chartMetricTitle" class="d-none"></span>
+            <span id="tableStoreTitle" class="d-none"></span>
+            <span id="colMetricHeader" class="d-none"></span>
 
-                            @if($sa['top_product'])
-                                <div class="mt-2 pt-2 border-top">
-                                    <div class="d-flex justify-content-between align-items-baseline">
-                                        <div class="fw-semibold text-dark" style="font-size: 0.95rem;">{{ $sa['top_product']['name'] }}</div>
-                                        <span class="badge badge-secondary">
-                                            {{ ucfirst($sa['top_product']['category']) }}
-                                        </span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mt-2 small">
-                                        <span class="text-muted">Terjual: <strong class="text-dark tabular-nums">{{ $sa['top_product']['qty'] }} pcs</strong></span>
-                                        <span class="text-muted">Omzet: <strong class="text-dark tabular-nums">Rp {{ number_format($sa['top_product']['revenue'], 0, ',', '.') }}</strong></span>
-                                    </div>
-                                    <div class="progress mt-2" style="height: 4px; background: var(--border); border-radius: 2px;">
-                                        <div class="progress-bar bg-accent" role="progressbar" style="width: {{ $sa['top_product']['share_pct'] }}%;" aria-valuenow="{{ $sa['top_product']['share_pct'] }}" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <div class="d-flex justify-content-between mt-1" style="font-size:0.7rem; color:var(--text-muted);">
-                                        <span>Pangsa penjualan toko</span>
-                                        <span class="tabular-nums">{{ $sa['top_product']['share_pct'] }}%</span>
-                                    </div>
-                                </div>
-                            @else
-                                <div class="mt-2 pt-2 border-top text-center py-3 text-muted">
-                                    <small class="text-empty">Belum ada transaksi penjualan tercatat di toko ini.</small>
-                                </div>
-                            @endif
-
-                            <div class="mt-3 pt-2 border-top d-flex justify-content-between align-items-center">
-                                <small class="text-muted">Total penjualan: <strong class="tabular-nums">{{ $sa['total_qty'] }} pcs</strong></small>
-                                <button type="button" class="btn btn-sm btn-link p-0 text-decoration-none fw-semibold text-secondary switch-store-chart" data-store-id="{{ $sid }}" style="font-size:0.75rem;">
-                                    Tampilkan di grafik &rarr;
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            {{-- Store Filter Pills --}}
-            <div class="d-flex align-items-center gap-2 overflow-x-auto pb-2 mb-3 border-bottom">
-                <span class="text-muted small fw-bold text-nowrap">Pilih Toko:</span>
-                <button type="button" class="btn btn-sm btn-outline-modern store-tab-btn active text-nowrap" data-store-id="all">
-                    Semua Toko (Perbandingan)
-                </button>
-                @foreach($storeAnalytics ?? [] as $sid => $sa)
-                    <button type="button" class="btn btn-sm btn-outline-modern store-tab-btn text-nowrap" data-store-id="{{ $sid }}">
-                        {{ $sa['store_name'] }} ({{ $sa['total_qty'] }} pcs)
-                    </button>
-                @endforeach
-            </div>
-
-            {{-- Dynamic Quick KPI Mini-Summary for Selected Store --}}
-            <div class="row g-2 mb-3">
-                <div class="col-6 col-md-3">
-                    <div class="p-2 px-3 rounded-3 border" style="background: var(--bg-hover);">
-                        <small class="text-muted d-block" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">Fokus Toko</small>
-                        <strong class="text-dark fs-6" id="kpiStoreName">Semua Toko</strong>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="p-2 px-3 rounded-3 border" style="background: var(--bg-hover);">
-                        <small class="text-muted d-block" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">Terlaris #1</small>
-                        <strong class="text-accent fs-6 text-truncate d-block" id="kpiTopCoffee">-</strong>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="p-2 px-3 rounded-3 border" style="background: var(--bg-hover);">
-                        <small class="text-muted d-block" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">Total Terjual</small>
-                        <strong class="text-success fs-6" id="kpiTotalQty">0 pcs</strong>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="p-2 px-3 rounded-3 border" style="background: var(--bg-hover);">
-                        <small class="text-muted d-block" style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;">Total Omset</small>
-                        <strong class="text-primary fs-6" id="kpiTotalRevenue">Rp 0</strong>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Main Chart & Leaderboard Table --}}
-            <div class="row g-4">
-                <div class="col-lg-8">
-                    <div class="p-3 rounded-3 border" style="background: var(--bg-card); min-height: 380px; position: relative;">
+            <div class="row g-4 align-items-start">
+                {{-- Conditional Bar Chart Container (Only shown when >= 3 variants sold) --}}
+                <div class="col-lg-7 d-none" id="chartCol">
+                    <div style="height: 320px; position: relative;">
                         <canvas id="storeBestSellerChart"></canvas>
                     </div>
-                    <div id="chartSummaryNote" class="text-muted small mt-2 d-flex flex-wrap justify-content-between align-items-center gap-2">
-                        <span id="chartStoreTitle">Menampilkan data: <strong>Semua Toko</strong></span>
-                        <div class="d-flex align-items-center gap-2">
-                            <span class="badge bg-light text-muted border" style="font-size:0.7rem;">
-                                Angka langsung tertera di atas bar grafik
-                            </span>
-                            <span id="chartMetricTitle" class="fw-semibold">Metrik: Unit Terjual (Pcs)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="border rounded-3 p-3 h-100 d-flex flex-column" style="background: var(--bg-card);">
-                        <h6 class="fw-bold mb-3 text-dark">
-                            <span id="tableStoreTitle">Peringkat Produk</span>
-                        </h6>
-                        <div class="table-responsive flex-grow-1" style="max-height: 290px; overflow-y: auto;">
-                            <table class="table table-sm table-hover align-middle mb-0" style="font-size: 0.82rem;">
-                                <thead>
-                                    <tr class="text-muted">
-                                        <th style="width: 32px;">#</th>
-                                        <th>Kopi</th>
-                                        <th class="text-end" id="colMetricHeader">Terjual</th>
-                                        <th class="text-end">Omset</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="storeLeaderboardBody">
-                                    {{-- Generated dynamically via JS --}}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Financial Summary & Best Seller Doughnut --}}
-    <div class="row g-4 mb-4">
-        {{-- Section: Ringkasan Keuntungan & Kerugian (Balanced & Real-time) --}}
-        <div class="col-lg-8">
-            <div class="card-modern" style="height:100%">
-                <div class="card-header-modern d-flex flex-wrap justify-content-between align-items-center gap-2">
-                    <div>
-                        <h5 class="card-title-modern m-0">Ringkasan Keuntungan & Kerugian</h5>
-                        <p class="text-muted small m-0 mt-1">Laporan keuangan berbasis Modal/HPP riil tiap jenis kopi (Pemasukan, Beban Pokok Roastery, & Laba Bersih)</p>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <a href="{{ route('coffee-types.modal') }}" class="btn btn-sm btn-outline-accent d-inline-flex align-items-center gap-1" style="font-size:0.75rem;">
-                            <i data-lucide="coins" style="width:13px;height:13px;"></i> Kelola Modal HPP &rarr;
-                        </a>
-                        <span class="badge badge-success px-2 py-1">
-                            <i data-lucide="check" style="width:12px;height:12px;display:inline-block;vertical-align:-1px;"></i> Data seimbang
-                        </span>
-                    </div>
                 </div>
 
-                <div class="card-body-modern p-3">
-                    {{-- 4 Financial KPI Cards --}}
-                    <div class="row g-3 mb-4">
-                        <div class="col-sm-6 col-xl-3">
-                            <div class="p-3 border" style="background: var(--bg-card); border-color: var(--border); border-radius: var(--radius-sm);">
-                                <div class="text-secondary small fw-medium mb-1">Total pemasukan</div>
-                                <div class="fs-5 fw-semibold text-dark tabular-nums">Rp {{ number_format($financeSummary['total_pemasukan'] ?? 0, 0, ',', '.') }}</div>
-                                <small class="text-muted" style="font-size:0.75rem;">Omzet kotor mitra</small>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-xl-3">
-                            <div class="p-3 border" style="background: var(--bg-card); border-color: var(--border); border-radius: var(--radius-sm);">
-                                <div class="text-secondary small fw-medium mb-1">Total pengeluaran</div>
-                                <div class="fs-5 fw-semibold text-danger tabular-nums">Rp {{ number_format($financeSummary['total_pengeluaran'] ?? 0, 0, ',', '.') }}</div>
-                                <small class="text-muted" style="font-size:0.75rem;">Beban HPP & kemasan</small>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-xl-3">
-                            <div class="p-3 border" style="background: var(--bg-card); border-color: var(--border); border-radius: var(--radius-sm);">
-                                <div class="text-secondary small fw-medium mb-1">Laba bersih</div>
-                                <div class="fs-5 fw-semibold text-success tabular-nums">Rp {{ number_format($financeSummary['total_laba'] ?? 0, 0, ',', '.') }}</div>
-                                <small class="text-muted" style="font-size:0.75rem;">Pemasukan - beban</small>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-xl-3">
-                            <div class="p-3 border" style="background: var(--bg-card); border-color: var(--border); border-radius: var(--radius-sm);">
-                                <div class="text-secondary small fw-medium mb-1">Margin keuntungan</div>
-                                <div class="fs-5 fw-semibold text-dark tabular-nums">{{ number_format($financeSummary['average_margin'] ?? 0, 1) }}%</div>
-                                <small class="text-muted" style="font-size:0.75rem;">Rata-rata profit margin</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Financial Table per Store --}}
-                    <div class="table-responsive border" style="border-radius: var(--radius-sm);">
-                        <table class="table-modern mb-0">
+                {{-- Leaderboard Table --}}
+                <div class="col-12" id="tableCol">
+                    <div class="table-responsive">
+                        <table class="table-operational">
                             <thead>
                                 <tr>
-                                    <th>Toko mitra</th>
-                                    <th>Periode</th>
-                                    <th class="text-end">Pemasukan</th>
-                                    <th class="text-end">Pengeluaran</th>
-                                    <th class="text-end">Laba bersih</th>
-                                    <th class="text-center">Margin</th>
-                                    <th class="text-center">Status</th>
+                                    <th style="width: 38px;">#</th>
+                                    <th>Varian</th>
+                                    <th class="text-end">Terjual (pcs)</th>
+                                    <th class="text-end">Penjualan (Rp)</th>
+                                    <th class="text-end" style="width: 120px;">
+                                        Porsi
+                                        <span class="info-tooltip-icon" title="Porsi = Penjualan varian dibagi total penjualan" data-bs-toggle="tooltip">
+                                            <i data-lucide="info" style="width: 12px; height: 12px;"></i>
+                                        </span>
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @forelse($profitLossData ?? [] as $report)
-                                    <tr>
-                                        <td>
-                                            <div class="fw-bold text-dark">
-                                                {{ $report->store_name }}
-                                            </div>
-                                        </td>
-                                        <td class="text-muted small">{{ $report->periode }}</td>
-                                        <td class="text-end fw-semibold text-info">
-                                            Rp {{ number_format($report->pemasukan, 0, ',', '.') }}
-                                        </td>
-                                        <td class="text-end fw-semibold text-danger">
-                                            Rp {{ number_format($report->pengeluaran, 0, ',', '.') }}
-                                        </td>
-                                        <td class="text-end fw-bold {{ $report->laba >= 0 ? 'text-success' : 'text-danger' }}">
-                                            Rp {{ number_format($report->laba, 0, ',', '.') }}
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="badge {{ $report->margin >= 25 ? 'bg-success' : ($report->margin > 0 ? 'bg-warning text-dark' : 'bg-secondary') }}">
-                                                {{ number_format($report->margin, 1) }}%
-                                            </span>
-                                        </td>
-                                        <td class="text-center">
-                                            @if($report->pemasukan > 0)
-                                                <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
-                                                    Surplus
-                                                </span>
-                                            @else
-                                                <span class="badge bg-light text-muted border px-2 py-1">
-                                                    Aktif
-                                                </span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="7" class="text-center text-muted py-4">Belum ada data laporan keuangan per toko.</td>
-                                    </tr>
-                                @endforelse
+                            <tbody id="storeLeaderboardBody">
+                                {{-- Dynamically populated via JS --}}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-
-        {{-- Section: Top 5 Kopi Terlaris (Doughnut) --}}
-        <div class="col-lg-4">
-            <div class="card-modern" style="height:100%">
-                <div class="card-header-modern">
-                    <h5 class="card-title-modern m-0">Top 5 Kopi Terlaris</h5>
-                </div>
-                <div class="card-body-modern d-flex flex-column justify-content-between">
-                    <div style="height: 270px; position: relative;">
-                        <canvas id="topCoffeeChart"></canvas>
-                    </div>
-                    <div class="border-top pt-3 mt-3">
-                        <small class="text-muted d-block text-center mb-2">Pangsa volume penjualan antar varian kopi</small>
-                        <div class="d-flex flex-column gap-1" style="font-size:0.8rem;">
-                            @foreach(($topProducts ?? []) as $i => $tp)
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-truncate" style="max-width:180px;">{{ $i+1 }}. {{ $tp->coffeeType->name ?? '-' }}</span>
-                                    <strong class="text-dark">{{ $tp->total_qty }} pcs</strong>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-
-    {{-- Section: Rekomendasi Restock Toko Mitra (Smart Inventory Insights) --}}
-    @if(isset($lowStockBatches) && $lowStockBatches->count() > 0)
-    <div class="card-modern mb-4" style="background: #ffffff; border: 1px solid rgba(212, 160, 23, 0.3);">
-        <div class="card-header-modern d-flex flex-wrap justify-content-between align-items-center gap-2" style="background: rgba(212, 160, 23, 0.04);">
-            <div class="d-flex align-items-center gap-2">
-                <span class="badge bg-warning text-dark px-2.5 py-1 fw-bold" style="font-size:0.72rem;">Perlu Tindakan Segera</span>
-                <h5 class="card-title-modern m-0">Rekomendasi Restock Toko Mitra</h5>
-            </div>
-            <div>
-                <a href="{{ route('stock.create') }}" class="btn btn-sm btn-accent">
-                    + Tambah Pasokan Batch Baru
-                </a>
-            </div>
-        </div>
-        <div class="card-body-modern p-3">
-            <div class="row g-3">
-                @foreach($lowStockBatches as $lb)
-                    <div class="col-md-6 col-xl-4">
-                        <div class="p-3 rounded-3 border d-flex justify-content-between align-items-center" style="background: #FFFDF8; border-color: rgba(212, 160, 23, 0.25) !important;">
-                            <div>
-                                <div class="fw-bold text-dark fs-6">{{ $lb->coffeeType->name ?? 'Kopi' }}</div>
-                                <div class="text-muted small">Toko: <strong>{{ $lb->store->name ?? '-' }}</strong></div>
-                                <small class="text-muted font-monospace" style="font-size:0.72rem;">Batch: {{ $lb->kode_produksi }}</small>
-                            </div>
-                            <div class="text-end">
-                                <div class="badge bg-danger-subtle text-danger border border-danger-subtle mb-1.5" style="font-size:0.8rem; font-weight:700;">
-                                    Sisa {{ $lb->sisa }} pcs
-                                </div>
-                                <div>
-                                    <a href="{{ route('stock.index', ['store_id' => $lb->store_id, 'search' => $lb->kode_produksi]) }}" class="btn btn-sm btn-outline-accent py-0.5 px-2" style="font-size:0.72rem;">
-                                        Restock &rarr;
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-    @endif
 @endsection
 
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    lucide.createIcons();
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+
+    // Initialize Bootstrap tooltips
+    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+            new bootstrap.Tooltip(el);
+        });
+    }
 
     function checkIsDark() {
         return document.documentElement.getAttribute('data-theme') === 'dark';
     }
+
     if (typeof Chart !== 'undefined') {
         Chart.defaults.font.family = "'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        Chart.defaults.animation = false; // No bouncing / jumping
     }
 
-    let isDark = checkIsDark();
-    let gridColor = isDark ? '#334155' : '#e2e8f0';
-
-    const coffeePalette = [
-        '#C88A4E', // Caramel Amber
-        '#1E3A5F', // Dark Espresso Navy
-        '#4A7C59', // Sage Green
-        '#2E86AB', // Ocean Blue
-        '#A67261', // Terracotta
-        '#8C6D58', // Warm Bronze
-        '#6C4F82', // Berry Velvet
-        '#D4A017'  // Golden Honey
-    ];
-
-    // ==========================================
-    // 1. Top 5 Kopi Terlaris Doughnut Chart
-    // ==========================================
-    const ctxCoffee = document.getElementById('topCoffeeChart');
-    let topCoffeeChartInstance = null;
-
-    if (ctxCoffee) {
-        const topLabels = [];
-        const topData = [];
-        @foreach(($topProducts ?? []) as $p)
-            topLabels.push({!! json_encode($p->coffeeType->name ?? 'Unknown') !!});
-            topData.push({{ $p->total_qty ?? 0 }});
-        @endforeach
-
-        const totalTopVolume = topData.reduce((acc, curr) => acc + curr, 0);
-
-        const centerTextPlugin = {
-            id: 'doughnutCenterText',
-            beforeDraw(chart) {
-                if (chart.config.type !== 'doughnut') return;
-                const { width, height, ctx } = chart;
-                ctx.save();
-                
-                const fontSizeNum = Math.min(Math.round(height / 7), 24);
-                ctx.font = `700 ${fontSizeNum}px 'Manrope', sans-serif`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillStyle = checkIsDark() ? '#f8fafc' : '#1e293b';
-                ctx.fillText(totalTopVolume.toLocaleString('id-ID'), width / 2, height / 2 - 8);
-
-                ctx.font = `600 11px 'Manrope', sans-serif`;
-                ctx.fillStyle = checkIsDark() ? '#94a3b8' : '#64748b';
-                ctx.fillText('Total Unit', width / 2, height / 2 + 12);
-
-                ctx.restore();
-            }
-        };
-
-        topCoffeeChartInstance = new Chart(ctxCoffee, {
-            type: 'doughnut',
-            data: {
-                labels: topLabels.length ? topLabels : ['Belum ada data'],
-                datasets: [{
-                    data: topData.length ? topData : [1],
-                    backgroundColor: coffeePalette,
-                    borderWidth: 2,
-                    borderColor: checkIsDark() ? '#1e293b' : '#ffffff',
-                    hoverOffset: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            boxWidth: 10,
-                            padding: 10,
-                            color: checkIsDark() ? '#cbd5e1' : '#475569',
-                            font: { family: "'Manrope', sans-serif", size: 11, weight: '500' }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: '#0f172a',
-                        borderColor: '#334155',
-                        borderWidth: 1,
-                        padding: 10,
-                        cornerRadius: 8,
-                        titleFont: { family: "'Manrope', sans-serif", weight: 'bold' },
-                        bodyFont: { family: "'Manrope', sans-serif", size: 12 },
-                        callbacks: {
-                            label: function(ctx) {
-                                const val = ctx.raw || 0;
-                                const pct = totalTopVolume > 0 ? ((val / totalTopVolume) * 100).toFixed(1) : 0;
-                                return ` Terjual: ${val} pcs (${pct}%)`;
-                            }
-                        }
+    // Expand / collapse store breakdown rows
+    document.querySelectorAll('.store-row-toggle').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const targetId = this.dataset.target;
+            const targetRow = document.getElementById(targetId);
+            if (targetRow) {
+                const isHidden = targetRow.classList.contains('d-none');
+                targetRow.classList.toggle('d-none');
+                this.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+                const chevron = this.querySelector('[data-lucide="chevron-right"], [data-lucide="chevron-down"]');
+                if (chevron) {
+                    chevron.setAttribute('data-lucide', isHidden ? 'chevron-down' : 'chevron-right');
+                    if (typeof lucide !== 'undefined') {
+                        lucide.createIcons();
                     }
-                },
-                cutout: '70%'
-            },
-            plugins: [centerTextPlugin]
+                }
+            }
         });
-    }
+    });
 
     // ==========================================
-    // 2. Analisis Produk Paling Laku Tiap Toko
+    // Analisis Varian Terlaris (Chart & Leaderboard)
     // ==========================================
     const storeAnalyticsData = {!! json_encode($storeAnalytics ?? []) !!};
     const globalProductsAgg = {!! json_encode($allStoreProductsAgg ?? []) !!};
-    
+
     let activeStoreId = 'all';
     let activeMetric = 'qty'; // 'qty' | 'revenue'
     let storeChartInstance = null;
-    let currentChartItems = [];
 
     const ctxStoreBest = document.getElementById('storeBestSellerChart');
     const storeLeaderboardBody = document.getElementById('storeLeaderboardBody');
-    const chartStoreTitle = document.getElementById('chartStoreTitle');
-    const chartMetricTitle = document.getElementById('chartMetricTitle');
-    const tableStoreTitle = document.getElementById('tableStoreTitle');
-    const colMetricHeader = document.getElementById('colMetricHeader');
+    const chartCol = document.getElementById('chartCol');
+    const tableCol = document.getElementById('tableCol');
+    const storeSelectDropdown = document.getElementById('storeSelectDropdown');
     const btnMetricQty = document.getElementById('btnMetricQty');
     const btnMetricRev = document.getElementById('btnMetricRev');
 
-    // Quick KPI Elements
-    const kpiStoreName = document.getElementById('kpiStoreName');
-    const kpiTopCoffee = document.getElementById('kpiTopCoffee');
-    const kpiTotalQty = document.getElementById('kpiTotalQty');
-    const kpiTotalRevenue = document.getElementById('kpiTotalRevenue');
-
-    // Custom Chart.js Plugin for Direct Value Labels on Bars (Vertical Columns)
-    const barValueLabelsPlugin = {
-        id: 'barValueLabelsPlugin',
-        afterDatasetsDraw(chart) {
-            const { ctx, chartArea: { top, bottom, left, right } } = chart;
-            const dark = checkIsDark();
-
-            chart.data.datasets.forEach((dataset, datasetIdx) => {
-                const meta = chart.getDatasetMeta(datasetIdx);
-                meta.data.forEach((bar, index) => {
-                    const val = dataset.data[index];
-                    if (val === undefined || val === null) return;
-
-                    const item = currentChartItems[index] || {};
-                    const isZero = (val === 0);
-                    
-                    let mainText = '';
-                    let subText = '';
-
-                    if (activeMetric === 'qty') {
-                        mainText = `${Number(val).toLocaleString('id-ID')} pcs`;
-                        const rev = item.revenue || item.total_revenue || 0;
-                        if (rev > 0) {
-                            subText = `Rp ${Number(rev).toLocaleString('id-ID')}`;
-                        }
-                    } else {
-                        mainText = `Rp ${Number(val).toLocaleString('id-ID')}`;
-                        const q = item.qty || item.total_qty || 0;
-                        if (q > 0) {
-                            subText = `${Number(q).toLocaleString('id-ID')} pcs`;
-                        }
-                    }
-
-                    ctx.save();
-                    const barCenterX = bar.x;
-                    const barTopY = bar.y;
-
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'bottom';
-
-                    if (isZero) {
-                        ctx.font = '500 11px "Manrope", sans-serif';
-                        ctx.fillStyle = dark ? '#64748b' : '#94a3b8';
-                        ctx.fillText('0 pcs', barCenterX, Math.min(barTopY - 4, bottom - 4));
-                    } else {
-                        // Main Bold Text (Quantity or Revenue)
-                        ctx.font = '700 12px "Manrope", sans-serif';
-                        ctx.fillStyle = dark ? '#f8fafc' : '#0f172a';
-                        
-                        if (subText) {
-                            // Two-line layout above the column
-                            ctx.fillText(mainText, barCenterX, barTopY - 15);
-                            ctx.font = '500 10px "Manrope", sans-serif';
-                            ctx.fillStyle = dark ? '#94a3b8' : '#64748b';
-                            ctx.fillText(subText, barCenterX, barTopY - 3);
-                        } else {
-                            ctx.fillText(mainText, barCenterX, barTopY - 6);
-                        }
-                    }
-
-                    ctx.restore();
-                });
-            });
-        }
-    };
-
     function updateStoreBestSellerView() {
-        if (!ctxStoreBest) return;
+        let isDark = checkIsDark();
+        let gridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)';
 
-        isDark = checkIsDark();
-        gridColor = isDark ? 'rgba(255, 255, 255, 0.07)' : 'rgba(0, 0, 0, 0.05)';
-
-        let labels = [];
-        let dataValues = [];
-        let tableRowsHtml = '';
-        currentChartItems = [];
-
-        let currentStoreName = '';
-        let currentTopCoffee = '-';
-        let currentTotalQty = 0;
-        let currentTotalRev = 0;
+        let items = [];
+        let totalRev = 0;
 
         if (activeStoreId === 'all') {
-            currentStoreName = 'Semua Toko (Komparasi)';
-            chartStoreTitle.innerHTML = 'Menampilkan data: <strong>Semua Toko Mitra</strong>';
-            tableStoreTitle.innerText = 'Peringkat Produk (Semua Toko)';
-            colMetricHeader.innerText = activeMetric === 'qty' ? 'Total Terjual' : 'Total Omset';
-
-            if (!globalProductsAgg || globalProductsAgg.length === 0) {
-                labels = ['Belum ada data penjualan'];
-                dataValues = [0];
-                tableRowsHtml = '<tr><td colspan="4" class="text-center text-muted py-3">Belum ada transaksi penjualan di toko manapun.</td></tr>';
-            } else {
-                currentChartItems = [...globalProductsAgg];
-                currentTopCoffee = globalProductsAgg[0]?.name ? `${globalProductsAgg[0].name} (${globalProductsAgg[0].total_qty} pcs)` : '-';
-                currentTotalQty = globalProductsAgg.reduce((acc, curr) => acc + (curr.total_qty || 0), 0);
-                currentTotalRev = globalProductsAgg.reduce((acc, curr) => acc + (curr.total_revenue || 0), 0);
-
-                globalProductsAgg.forEach((item, index) => {
-                    labels.push(item.name);
-                    const val = activeMetric === 'qty' ? item.total_qty : item.total_revenue;
-                    dataValues.push(val);
-
-                    const color = coffeePalette[index % coffeePalette.length];
-                    let medal = `<span class="badge rounded-pill bg-light text-muted border fw-semibold" style="font-size:0.75rem; min-width:22px;">${index + 1}</span>`;
-                    if (index === 0) medal = `<span class="badge rounded-pill bg-warning text-dark fw-bold" style="font-size:0.75rem; min-width:22px;">1</span>`;
-                    else if (index === 1) medal = `<span class="badge rounded-pill bg-secondary text-white fw-bold" style="font-size:0.75rem; min-width:22px;">2</span>`;
-                    else if (index === 2) medal = `<span class="badge rounded-pill border fw-bold text-dark" style="font-size:0.75rem; min-width:22px; background:#F5E5D3;">3</span>`;
-
-                    const formattedMetric = activeMetric === 'qty' 
-                        ? `<strong class="text-success">${item.total_qty} pcs</strong>`
-                        : `<strong class="text-dark">Rp ${Number(item.total_revenue).toLocaleString('id-ID')}</strong>`;
-
-                    const omsetFormatted = `Rp ${Number(item.total_revenue).toLocaleString('id-ID')}`;
-
-                    tableRowsHtml += `
-                        <tr>
-                            <td class="text-center">${medal}</td>
-                            <td>
-                                <div class="d-flex align-items-center gap-1">
-                                    <span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block;"></span>
-                                    <span class="fw-bold">${item.name}</span>
-                                </div>
-                                <span class="badge ${item.category === 'robusta' ? 'badge-info' : 'badge-warning'}" style="font-size:0.65rem;">${item.category}</span>
-                            </td>
-                            <td class="text-end">${formattedMetric}</td>
-                            <td class="text-end text-muted small">${omsetFormatted}</td>
-                        </tr>
-                    `;
-                });
-            }
+            items = globalProductsAgg ? [...globalProductsAgg] : [];
+            totalRev = items.reduce((acc, curr) => acc + (curr.total_revenue || 0), 0);
         } else {
-            const storeData = storeAnalyticsData[activeStoreId];
-            currentStoreName = storeData ? storeData.store_name : 'Toko';
-            chartStoreTitle.innerHTML = `Menampilkan data: <strong>${currentStoreName}</strong>`;
-            tableStoreTitle.innerText = `Peringkat Produk (${currentStoreName})`;
-            colMetricHeader.innerText = activeMetric === 'qty' ? 'Terjual' : 'Omset';
+            const sData = storeAnalyticsData[activeStoreId];
+            items = (sData && sData.products) ? [...sData.products] : [];
+            totalRev = sData ? (sData.total_revenue || 0) : 0;
+        }
 
-            if (!storeData || !storeData.products || storeData.products.length === 0) {
-                labels = ['Belum ada penjualan di toko ini'];
-                dataValues = [0];
-                tableRowsHtml = `<tr><td colspan="4" class="text-center text-muted py-4">Belum ada transaksi penjualan di toko ${currentStoreName}.</td></tr>`;
-            } else {
-                currentChartItems = [...storeData.products];
-                currentTotalQty = storeData.total_qty || 0;
-                currentTotalRev = storeData.total_revenue || 0;
-                currentTopCoffee = storeData.top_product ? `${storeData.top_product.name} (${storeData.top_product.qty} pcs)` : '-';
+        // Sort items by active metric
+        items.sort(function(a, b) {
+            const valA = activeMetric === 'qty' ? (a.qty ?? a.total_qty ?? 0) : (a.revenue ?? a.total_revenue ?? 0);
+            const valB = activeMetric === 'qty' ? (b.qty ?? b.total_qty ?? 0) : (b.revenue ?? b.total_revenue ?? 0);
+            return valB - valA;
+        });
 
-                storeData.products.forEach((p, index) => {
-                    labels.push(p.name);
-                    const val = activeMetric === 'qty' ? p.qty : p.revenue;
-                    dataValues.push(val);
+        // Filter variants that have sales
+        const activeSoldItems = items.filter(function(it) {
+            const q = it.qty ?? it.total_qty ?? 0;
+            return q > 0;
+        });
 
-                    const color = coffeePalette[index % coffeePalette.length];
-                    let medal = `<span class="badge rounded-pill bg-light text-muted border fw-semibold" style="font-size:0.75rem; min-width:22px;">${index + 1}</span>`;
-                    if (index === 0) medal = `<span class="badge rounded-pill bg-warning text-dark fw-bold" style="font-size:0.75rem; min-width:22px;">1</span>`;
-                    else if (index === 1) medal = `<span class="badge rounded-pill bg-secondary text-white fw-bold" style="font-size:0.75rem; min-width:22px;">2</span>`;
-                    else if (index === 2) medal = `<span class="badge rounded-pill border fw-bold text-dark" style="font-size:0.75rem; min-width:22px; background:#F5E5D3;">3</span>`;
+        // Render Leaderboard Table
+        let tableHtml = '';
+        if (items.length === 0 || activeSoldItems.length === 0) {
+            tableHtml = '<tr><td colspan="5" class="text-center text-muted py-4">Belum ada penjualan tercatat pada pilihan ini.</td></tr>';
+        } else {
+            items.forEach(function(item, idx) {
+                const qty = item.qty ?? item.total_qty ?? 0;
+                const rev = item.revenue ?? item.total_revenue ?? 0;
+                const sharePct = totalRev > 0 ? ((rev / totalRev) * 100).toFixed(1) : 0;
+                const catStr = item.category ? (item.category.charAt(0).toUpperCase() + item.category.slice(1)) : '';
 
-                    const formattedMetric = activeMetric === 'qty' 
-                        ? `<strong class="text-success">${p.qty} pcs</strong>`
-                        : `<strong class="text-dark">Rp ${Number(p.revenue).toLocaleString('id-ID')}</strong>`;
-
-                    const omsetFormatted = `Rp ${Number(p.revenue).toLocaleString('id-ID')}`;
-
-                    tableRowsHtml += `
-                        <tr>
-                            <td class="text-center">${medal}</td>
-                            <td>
-                                <div class="d-flex align-items-center gap-1">
-                                    <span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block;"></span>
-                                    <span class="fw-bold">${p.name}</span>
+                tableHtml += `
+                    <tr>
+                        <td class="text-muted font-tabular" style="font-size: 0.8rem;">${idx + 1}</td>
+                        <td>
+                            <div class="fw-semibold text-dark">${item.name}</div>
+                            <div class="text-muted" style="font-size: 0.74rem;">${catStr}</div>
+                        </td>
+                        <td class="text-end font-tabular">${Number(qty).toLocaleString('id-ID')}</td>
+                        <td class="text-end font-tabular">${Number(rev).toLocaleString('id-ID')}</td>
+                        <td class="text-end">
+                            <div class="portion-bar-container">
+                                <div class="portion-bar-track">
+                                    <div class="portion-bar-fill" style="width: ${Math.min(100, sharePct)}%;"></div>
                                 </div>
-                                <div class="d-flex align-items-center gap-1">
-                                    <span class="badge ${p.category === 'robusta' ? 'badge-info' : 'badge-warning'}" style="font-size:0.65rem;">${p.category}</span>
-                                    <small class="text-muted" style="font-size:0.7rem;">(${p.share_pct}%)</small>
-                                </div>
-                            </td>
-                            <td class="text-end">${formattedMetric}</td>
-                            <td class="text-end text-muted small">${omsetFormatted}</td>
-                        </tr>
-                    `;
-                });
+                                <span class="portion-pct">${String(sharePct).replace('.', ',')}%</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        if (storeLeaderboardBody) {
+            storeLeaderboardBody.innerHTML = tableHtml;
+        }
+
+        // Conditional Bar Chart: ONLY rendered if >= 3 sold variants exist
+        if (activeSoldItems.length >= 3 && ctxStoreBest) {
+            if (chartCol) chartCol.classList.remove('d-none');
+            if (tableCol) {
+                tableCol.classList.remove('col-12');
+                tableCol.classList.add('col-lg-5');
             }
-        }
 
-        // Update KPI Strip
-        if (kpiStoreName) kpiStoreName.innerText = currentStoreName;
-        if (kpiTopCoffee) kpiTopCoffee.innerText = currentTopCoffee;
-        if (kpiTotalQty) kpiTotalQty.innerText = `${currentTotalQty.toLocaleString('id-ID')} pcs`;
-        if (kpiTotalRevenue) kpiTotalRevenue.innerText = `Rp ${Number(currentTotalRev).toLocaleString('id-ID')}`;
+            const chartLabels = activeSoldItems.slice(0, 8).map(it => it.name);
+            const chartData = activeSoldItems.slice(0, 8).map(it => activeMetric === 'qty' ? (it.qty ?? it.total_qty ?? 0) : (it.revenue ?? it.total_revenue ?? 0));
 
-        if (storeLeaderboardBody) storeLeaderboardBody.innerHTML = tableRowsHtml;
-        if (chartMetricTitle) chartMetricTitle.innerHTML = `Metrik: <strong>${activeMetric === 'qty' ? 'Unit Terjual (Pcs)' : 'Total Omset (Rp)'}</strong>`;
+            if (storeChartInstance) {
+                storeChartInstance.destroy();
+            }
 
-        if (storeChartInstance) {
-            storeChartInstance.destroy();
-        }
-
-        // Generate bar colors matching our theme palette
-        const barColors = dataValues.map((_, i) => coffeePalette[i % coffeePalette.length]);
-
-        storeChartInstance = new Chart(ctxStoreBest, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: activeMetric === 'qty' ? 'Jumlah Terjual (Pcs)' : 'Total Omset (Rp)',
-                    data: dataValues,
-                    backgroundColor: barColors,
-                    borderRadius: { topLeft: 8, topRight: 8 },
-                    borderSkipped: false,
-                    maxBarThickness: 54
-                }]
-            },
-            options: {
-                indexAxis: 'x', // Grafik bar naik ke atas (vertikal)
-                responsive: true,
-                maintainAspectRatio: false,
-                layout: {
-                    padding: {
-                        top: 32, // Ruang atas agar angka label nilai tidak terpotong
-                        bottom: 4,
-                        left: 10,
-                        right: 10
-                    }
+            storeChartInstance = new Chart(ctxStoreBest, {
+                type: 'bar',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        data: chartData,
+                        backgroundColor: '#B8742F', // Single roasted copper data accent
+                        borderRadius: 4,
+                        maxBarThickness: 38
+                    }]
                 },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: '#0f172a',
-                        borderColor: '#334155',
-                        borderWidth: 1,
-                        padding: 12,
-                        cornerRadius: 8,
-                        titleColor: '#ffffff',
-                        titleFont: { size: 13, weight: 'bold', family: "'Manrope', sans-serif" },
-                        bodyFont: { size: 12, family: "'Manrope', sans-serif" },
-                        bodySpacing: 6,
-                        callbacks: {
-                            title: function(items) {
-                                return items[0].label;
-                            },
-                            label: function(ctx) {
-                                const idx = ctx.dataIndex;
-                                const item = currentChartItems[idx];
-                                if (!item) return ` Nilai: ${ctx.raw}`;
-                                
-                                const lines = [];
-                                const qty = activeStoreId === 'all' ? (item.total_qty || 0) : (item.qty || 0);
-                                const rev = activeStoreId === 'all' ? (item.total_revenue || 0) : (item.revenue || 0);
-                                const share = item.share_pct !== undefined ? item.share_pct : (currentTotalQty > 0 ? ((qty / currentTotalQty) * 100).toFixed(1) : 0);
-                                
-                                lines.push(` Unit Terjual: ${qty} pcs`);
-                                lines.push(` Total Omset: Rp ${Number(rev).toLocaleString('id-ID')}`);
-                                if (share > 0) lines.push(` Pangsa Penjualan: ${share}%`);
-                                if (item.sisa_stock !== undefined) lines.push(` Sisa Stok: ${item.sisa_stock} pcs`);
-                                return lines;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: { display: false },
-                        ticks: {
-                            color: isDark ? '#f1f5f9' : '#1e293b',
-                            font: {
-                                family: "'Manrope', sans-serif",
-                                size: 12,
-                                weight: '600'
-                            },
-                            maxRotation: 0,
-                            autoSkip: false,
-                            callback: function(val) {
-                                if (typeof this.getLabelForValue === 'function') {
-                                    return this.getLabelForValue(val);
+                options: {
+                    animation: false,
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1E293B',
+                            borderColor: '#334155',
+                            borderWidth: 1,
+                            padding: 10,
+                            cornerRadius: 6,
+                            titleFont: { size: 12, weight: 'bold' },
+                            bodyFont: { size: 11 },
+                            callbacks: {
+                                label: function(ctx) {
+                                    const val = ctx.raw || 0;
+                                    return activeMetric === 'qty'
+                                        ? ` Terjual: ${Number(val).toLocaleString('id-ID')} pcs`
+                                        : ` Penjualan: Rp ${Number(val).toLocaleString('id-ID')}`;
                                 }
-                                return labels[val] !== undefined ? labels[val] : val;
                             }
                         }
                     },
-                    y: {
-                        beginAtZero: true,
-                        grace: '25%', // Memberi ruang ekstra di atas bar tertinggi
-                        grid: {
-                            color: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)'
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                color: isDark ? '#94A3B8' : '#64748B',
+                                font: { size: 11, weight: '500' },
+                                maxRotation: 0,
+                                autoSkip: true
+                            }
                         },
-                        ticks: {
-                            color: isDark ? '#94a3b8' : '#64748b',
-                            font: { family: "'Manrope', sans-serif", size: 11 },
-                            callback: function(val) {
-                                if (activeMetric === 'revenue') {
-                                    if (val >= 1000000) return 'Rp ' + (val / 1000000).toFixed(1) + ' jt';
-                                    if (val >= 1000) return 'Rp ' + (val / 1000).toFixed(0) + ' rb';
-                                    return 'Rp ' + val;
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: gridColor },
+                            ticks: {
+                                color: isDark ? '#94A3B8' : '#64748B',
+                                font: { size: 10 },
+                                callback: function(val) {
+                                    if (activeMetric === 'revenue') {
+                                        if (val >= 1000000) return (val / 1000000).toFixed(1) + ' jt';
+                                        if (val >= 1000) return (val / 1000).toFixed(0) + ' rb';
+                                        return val;
+                                    }
+                                    return val;
                                 }
-                                return val + ' pcs';
                             }
                         }
                     }
                 }
-            },
-            plugins: [barValueLabelsPlugin]
+            });
+        } else {
+            // Less than 3 variants sold: Hide chart space completely
+            if (chartCol) chartCol.classList.add('d-none');
+            if (tableCol) {
+                tableCol.classList.remove('col-lg-5');
+                tableCol.classList.add('col-12');
+            }
+            if (storeChartInstance) {
+                storeChartInstance.destroy();
+                storeChartInstance = null;
+            }
+        }
+    }
+
+    // Dropdown change listener
+    if (storeSelectDropdown) {
+        storeSelectDropdown.addEventListener('change', function() {
+            activeStoreId = this.value;
+            updateStoreBestSellerView();
         });
     }
 
+    // Metric toggle listeners
     if (btnMetricQty) {
         btnMetricQty.addEventListener('click', function() {
             activeMetric = 'qty';
-            this.classList.add('btn-accent', 'active');
-            this.classList.remove('btn-outline-modern');
-            btnMetricRev.classList.remove('btn-accent', 'active');
-            btnMetricRev.classList.add('btn-outline-modern');
+            this.classList.add('active');
+            if (btnMetricRev) btnMetricRev.classList.remove('active');
             updateStoreBestSellerView();
         });
     }
@@ -865,68 +907,39 @@ document.addEventListener('DOMContentLoaded', function() {
     if (btnMetricRev) {
         btnMetricRev.addEventListener('click', function() {
             activeMetric = 'revenue';
-            this.classList.add('btn-accent', 'active');
-            this.classList.remove('btn-outline-modern');
-            btnMetricQty.classList.remove('btn-accent', 'active');
-            btnMetricQty.classList.add('btn-outline-modern');
+            this.classList.add('active');
+            if (btnMetricQty) btnMetricQty.classList.remove('active');
             updateStoreBestSellerView();
         });
     }
 
-    document.querySelectorAll('.store-tab-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.store-tab-btn').forEach(b => b.classList.remove('active', 'btn-accent'));
-            this.classList.add('active');
-            activeStoreId = this.dataset.storeId;
-            updateStoreBestSellerView();
-        });
-    });
-
+    // Switch store chart from store table subrows
     document.querySelectorAll('.switch-store-chart').forEach(function(btn) {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
             const sid = this.dataset.storeId;
             activeStoreId = sid;
-            document.querySelectorAll('.store-tab-btn').forEach(b => {
-                b.classList.remove('active', 'btn-accent');
-                if (b.dataset.storeId == sid) b.classList.add('active');
-            });
+            if (storeSelectDropdown) {
+                storeSelectDropdown.value = sid;
+            }
             updateStoreBestSellerView();
-            ctxStoreBest.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const variantSec = document.getElementById('variantSection');
+            if (variantSec) {
+                variantSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
     });
 
-    // Handle Theme Switch dynamically
+    // Dark mode toggle listener
     const themeToggleBtn = document.getElementById('themeToggle');
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', function() {
-            setTimeout(() => {
-                updateStoreBestSellerView();
-                if (topCoffeeChartInstance) {
-                    topCoffeeChartInstance.update();
-                }
-            }, 100);
+            setTimeout(updateStoreBestSellerView, 150);
         });
     }
 
     // Initial render
     updateStoreBestSellerView();
-
-    // Keep greeting and date in sync every 60s
-    setInterval(function() {
-        try {
-            var now = new Date();
-            var h = now.getHours();
-            var g = 'Selamat Malam';
-            if (h >= 4 && h < 11) g = 'Selamat Pagi';
-            else if (h >= 11 && h < 15) g = 'Selamat Siang';
-            else if (h >= 15 && h < 18) g = 'Selamat Sore';
-            var el = document.getElementById('realtimeGreeting');
-            if (el) el.textContent = g;
-            var dt = document.getElementById('realtimeDateSubtitle');
-            if (dt) dt.textContent = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-        } catch(e) {}
-    }, 60000);
 });
 </script>
 @endsection
-
