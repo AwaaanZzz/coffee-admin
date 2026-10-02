@@ -630,15 +630,15 @@
             <span id="colMetricHeader" class="d-none"></span>
 
             <div class="row g-4 align-items-start">
-                {{-- Conditional Bar Chart Container (Only shown when >= 3 variants sold) --}}
-                <div class="col-lg-7 d-none" id="chartCol">
+                {{-- Conditional Bar Chart Container (Tampil jika ada varian terjual) --}}
+                <div class="col-lg-7 {{ count($allStoreProductsAgg ?? []) > 0 ? '' : 'd-none' }}" id="chartCol">
                     <div style="height: 320px; position: relative;">
                         <canvas id="storeBestSellerChart"></canvas>
                     </div>
                 </div>
 
                 {{-- Leaderboard Table --}}
-                <div class="col-12" id="tableCol">
+                <div class="{{ count($allStoreProductsAgg ?? []) > 0 ? 'col-lg-5' : 'col-12' }}" id="tableCol">
                     <div class="table-responsive">
                         <table class="table-operational">
                             <thead>
@@ -793,8 +793,8 @@ document.addEventListener('DOMContentLoaded', function() {
             storeLeaderboardBody.innerHTML = tableHtml;
         }
 
-        // Conditional Bar Chart: ONLY rendered if >= 3 sold variants exist
-        if (activeSoldItems.length >= 3 && ctxStoreBest) {
+        // Conditional Bar Chart: Dirender jika ada varian terjual (minimal 1 varian)
+        if (activeSoldItems.length >= 1 && ctxStoreBest) {
             if (chartCol) chartCol.classList.remove('d-none');
             if (tableCol) {
                 tableCol.classList.remove('col-12');
@@ -859,13 +859,14 @@ document.addEventListener('DOMContentLoaded', function() {
                             ticks: {
                                 color: isDark ? '#94A3B8' : '#64748B',
                                 font: { size: 10 },
+                                precision: 0,
                                 callback: function(val) {
                                     if (activeMetric === 'revenue') {
                                         if (val >= 1000000) return (val / 1000000).toFixed(1) + ' jt';
                                         if (val >= 1000) return (val / 1000).toFixed(0) + ' rb';
                                         return val;
                                     }
-                                    return val;
+                                    return Number.isInteger(val) ? val : null;
                                 }
                             }
                         }
@@ -873,7 +874,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         } else {
-            // Less than 3 variants sold: Hide chart space completely
+            // Belum ada varian terjual: Sembunyikan grafik dan lebarkan tabel
             if (chartCol) chartCol.classList.add('d-none');
             if (tableCol) {
                 tableCol.classList.remove('col-lg-5');
