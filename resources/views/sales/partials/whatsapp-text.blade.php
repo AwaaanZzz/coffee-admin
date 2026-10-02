@@ -67,7 +67,9 @@
         if (!empty($bankHolder)) {
             $bankLine .= ", a.n. " . $bankHolder;
         }
-        $bankLine .= ".";
+        if (!str_ends_with($bankLine, '.')) {
+            $bankLine .= ".";
+        }
         $lines[] = $bankLine;
         $lines[] = "";
     }
