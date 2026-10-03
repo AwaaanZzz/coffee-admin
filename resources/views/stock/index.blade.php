@@ -323,7 +323,7 @@
                             <div class="col-sm-6">
                                 <label class="form-label-modern fw-bold mb-1 d-flex align-items-center justify-content-between" style="font-size: 0.78rem;">
                                     <span class="d-flex align-items-center gap-1">
-                                        <i data-lucide="scan-barcode" style="width: 13px; height: 13px; color: #1E3A5F;"></i>
+                                        <i data-lucide="scan-barcode" style="width: 13px; height: 13px; color: var(--navy);"></i>
                                         Barcode <span class="text-danger">*</span>
                                     </span>
                                     <button type="button" class="btn btn-link p-0 text-decoration-none text-primary" id="qeBtnGenBarcode" style="font-size: 0.7rem;">
@@ -427,40 +427,51 @@
         lucide.createIcons();
 
         // Render semua barcode di tabel stock dengan auto-fit viewBox agar tidak overflow
-        document.querySelectorAll('.barcode-table-svg').forEach(function(svg) {
-            const code = (svg.dataset.code || '').trim();
-            if (code) {
-                const isEan13 = /^\d{13}$/.test(code);
-                const format = isEan13 ? "EAN13" : "CODE128";
-                try {
-                    JsBarcode(svg, code, {
-                        format: format,
-                        lineColor: "#1E3A5F",
-                        width: isEan13 ? 1.3 : 1.2,
-                        height: 26,
-                        displayValue: false,
-                        background: "transparent",
-                        margin: 0
-                    });
+        function renderTableBarcodes() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-bs-theme') === 'dark';
+            const barColor = isDark ? "#FFFFFF" : "#1E3A5F";
 
-                    // Set viewBox and clean width/height attributes so SVG scales inside its 125px container
-                    const w = svg.getAttribute('width');
-                    const h = svg.getAttribute('height');
-                    if (w && h) {
-                        svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-                        svg.removeAttribute('width');
-                        svg.removeAttribute('height');
-                    }
-                    svg.style.width = '100%';
-                    svg.style.height = '26px';
-                } catch(e) {
+            document.querySelectorAll('.barcode-table-svg').forEach(function(svg) {
+                const code = (svg.dataset.code || '').trim();
+                if (code) {
+                    const isEan13 = /^\d{13}$/.test(code);
+                    const format = isEan13 ? "EAN13" : "CODE128";
                     try {
-                        JsBarcode(svg, code, { format: "CODE128", lineColor: "#1E3A5F", width: 1.2, height: 26, displayValue: false, margin: 0 });
-                    } catch(err2) {
-                        console.error("Barcode table error for " + code, err2);
+                        JsBarcode(svg, code, {
+                            format: format,
+                            lineColor: barColor,
+                            width: isEan13 ? 1.3 : 1.2,
+                            height: 26,
+                            displayValue: false,
+                            background: "transparent",
+                            margin: 0
+                        });
+
+                        // Set viewBox and clean width/height attributes so SVG scales inside its 125px container
+                        const w = svg.getAttribute('width');
+                        const h = svg.getAttribute('height');
+                        if (w && h) {
+                            svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+                            svg.removeAttribute('width');
+                            svg.removeAttribute('height');
+                        }
+                        svg.style.width = '100%';
+                        svg.style.height = '26px';
+                    } catch(e) {
+                        try {
+                            JsBarcode(svg, code, { format: "CODE128", lineColor: barColor, width: 1.2, height: 26, displayValue: false, margin: 0 });
+                        } catch(err2) {
+                            console.error("Barcode table error for " + code, err2);
+                        }
                     }
                 }
-            }
+            });
+        }
+
+        renderTableBarcodes();
+
+        window.addEventListener('themeChanged', function() {
+            renderTableBarcodes();
         });
 
         // Modal handler

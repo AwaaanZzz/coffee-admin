@@ -75,7 +75,9 @@
     }
     
     $lines[] = "Terima kasih.";
-    $lines[] = config('business.name') . ", " . config('business.phone');
+    $lines[] = config('business.name');
+    $lines[] = config('business.address');
+    $lines[] = "Telepon/WA: " . config('business.phone');
     
     echo trim(implode("\n", $lines));
 @endphp

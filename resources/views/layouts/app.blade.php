@@ -19,6 +19,14 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}?v={{ time() }}">
+
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.documentElement.setAttribute('data-bs-theme', savedTheme);
+        })();
+    </script>
     
     @yield('styles')
 </head>
@@ -378,22 +386,30 @@
     // Check saved theme
     const currentTheme = localStorage.getItem('theme') || 'light';
     htmlElement.setAttribute('data-theme', currentTheme);
+    htmlElement.setAttribute('data-bs-theme', currentTheme);
     updateThemeIcon(currentTheme);
 
-    themeToggleBtn.addEventListener('click', () => {
-        const newTheme = htmlElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        htmlElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateThemeIcon(newTheme);
-    });
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const newTheme = htmlElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            htmlElement.setAttribute('data-theme', newTheme);
+            htmlElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+            window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: newTheme } }));
+        });
+    }
 
     function updateThemeIcon(theme) {
+        if (!themeIcon) return;
         if(theme === 'dark') {
             themeIcon.setAttribute('data-lucide', 'sun');
         } else {
             themeIcon.setAttribute('data-lucide', 'moon');
         }
-        lucide.createIcons();
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     }
 
     // =======================================================

@@ -14,7 +14,7 @@ return [
 
     'name' => env('BUSINESS_NAME', 'Kopi Hiku Himu'),
     'tagline' => env('BUSINESS_TAGLINE', 'Roastery & Distribusi Kopi'),
-    'address' => env('BUSINESS_ADDRESS', 'Jl. Letkol Subadri, Ngangkrik, Triharjo, Sleman, D.I. Yogyakarta'),
+    'address' => env('BUSINESS_ADDRESS', 'Brongkol, RT 04 / RW 04, Sidomulyo, Godean, Sleman, Daerah Istimewa Yogyakarta, Indonesia'),
     'phone' => env('BUSINESS_PHONE', '0812-1287-8844'),
     'email' => env('BUSINESS_EMAIL', 'tokokopihikuhimu@gmail.com'),
     'website' => env('BUSINESS_WEBSITE', 'kopihikuhimu.id'),

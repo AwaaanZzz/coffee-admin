@@ -333,7 +333,18 @@
         <a href="{{ route('sales.invoice', $sale->id) . ($isBatch ? '?mode=batch' : '') }}" class="btn-action">
             <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i> Faktur A4
         </a>
-        <div style="display: flex; gap: 6px;">
+        <div style="display: flex; gap: 6px; align-items: center;">
+            @if(isset($storeSameDaySalesCount) && $storeSameDaySalesCount > 1)
+                @if($isBatch)
+                    <a href="{{ route('sales.thermal', $sale->id) }}" class="btn-action" title="Tampilkan hanya transaksi produk ini">
+                        <i data-lucide="file-text" style="width: 14px; height: 14px;"></i> Struk tunggal
+                    </a>
+                @else
+                    <a href="{{ route('sales.thermal', [$sale->id, 'mode' => 'batch']) }}" class="btn-action" style="background: #1E3A5F; color: #ffffff; border-color: #1E3A5F;" title="Gabungkan semua {{ $storeSameDaySalesCount }} transaksi toko hari ini dalam 1 struk">
+                        <i data-lucide="layers" style="width: 14px; height: 14px;"></i> Gabung hari ini ({{ $storeSameDaySalesCount }})
+                    </a>
+                @endif
+            @endif
             <button type="button" class="btn-action" onclick="togglePaperSize()" id="paperSizeBtn">
                 <i data-lucide="maximize-2" style="width: 14px; height: 14px;"></i> Format: 58mm
             </button>

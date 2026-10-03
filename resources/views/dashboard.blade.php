@@ -681,7 +681,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function checkIsDark() {
-        return document.documentElement.getAttribute('data-theme') === 'dark';
+        return document.documentElement.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-bs-theme') === 'dark';
     }
 
     if (typeof Chart !== 'undefined') {
@@ -771,7 +771,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <tr>
                         <td class="text-muted font-tabular" style="font-size: 0.8rem;">${idx + 1}</td>
                         <td>
-                            <div class="fw-semibold text-dark">${item.name}</div>
+                            <div class="fw-semibold text-main">${item.name}</div>
                             <div class="text-muted" style="font-size: 0.74rem;">${catStr}</div>
                         </td>
                         <td class="text-end font-tabular">${Number(qty).toLocaleString('id-ID')}</td>
@@ -932,12 +932,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Dark mode toggle listener
-    const themeToggleBtn = document.getElementById('themeToggle');
+    const themeToggleBtn = document.getElementById('themeToggleBtn') || document.getElementById('themeToggle');
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', function() {
-            setTimeout(updateStoreBestSellerView, 150);
+            setTimeout(updateStoreBestSellerView, 120);
         });
     }
+    window.addEventListener('themeChanged', function() {
+        setTimeout(updateStoreBestSellerView, 120);
+    });
 
     // Initial render
     updateStoreBestSellerView();

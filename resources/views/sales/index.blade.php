@@ -59,19 +59,38 @@
                     </thead>
                     <tbody>
                         @forelse ($sales as $sale)
+                            @php
+                                $key = $sale->store_id . '_' . $sale->tanggal->format('Y-m-d');
+                                $sameDayTotal = $sameDayCounts[$key] ?? 1;
+                            @endphp
                             <tr>
                                 <td class="text-muted" style="font-variant-numeric: tabular-nums;">{{ $sale->tanggal->format('d/m/Y') }}</td>
-                                <td class="fw-semibold text-main">{{ $sale->store->name }}</td>
+                                <td class="fw-semibold text-main">
+                                    {{ $sale->store->name }}
+                                    @if($sameDayTotal > 1)
+                                        <span class="badge bg-light text-primary border ms-1" style="font-size: 0.72rem; font-weight: 500;" title="Ada {{ $sameDayTotal }} produk terjual untuk toko ini pada tanggal ini">
+                                            {{ $sameDayTotal }} produk
+                                        </span>
+                                    @endif
+                                </td>
                                 <td>{{ $sale->coffeeType->name }}</td>
                                 <td class="text-end fw-semibold" style="font-variant-numeric: tabular-nums;">{{ number_format($sale->jumlah, 0, ',', '.') }}</td>
                                 <td class="text-end text-muted" style="font-variant-numeric: tabular-nums;">Rp {{ number_format($sale->harga, 0, ',', '.') }}</td>
                                 <td class="text-end fw-bold" style="font-variant-numeric: tabular-nums; color: var(--text-main);">Rp {{ number_format($sale->total, 0, ',', '.') }}</td>
                                 <td class="text-end">
                                     <div class="d-inline-flex align-items-center gap-1.5">
-                                        <a href="{{ route('sales.thermal', $sale) }}" target="_blank" class="btn btn-table-action" title="Cetak struk thermal (58/80mm)">
+                                        @if($sameDayTotal > 1)
+                                            <a href="{{ route('sales.thermal', [$sale, 'mode' => 'batch']) }}" target="_blank" class="btn btn-table-action text-primary" title="Cetak struk thermal gabungan ({{ $sameDayTotal }} produk)">
+                                                <i data-lucide="layers"></i>
+                                            </a>
+                                            <a href="{{ route('sales.invoice', [$sale, 'mode' => 'batch']) }}" target="_blank" class="btn btn-table-action text-primary" title="Cetak faktur A4 gabungan ({{ $sameDayTotal }} produk)">
+                                                <i data-lucide="files"></i>
+                                            </a>
+                                        @endif
+                                        <a href="{{ route('sales.thermal', $sale) }}" target="_blank" class="btn btn-table-action" title="Cetak struk thermal varian ini (58/80mm)">
                                             <i data-lucide="receipt"></i>
                                         </a>
-                                        <a href="{{ route('sales.invoice', $sale) }}" target="_blank" class="btn btn-table-action" title="Faktur A4 & nota WhatsApp">
+                                        <a href="{{ route('sales.invoice', $sale) }}" target="_blank" class="btn btn-table-action" title="Faktur A4 & nota WhatsApp varian ini">
                                             <i data-lucide="printer"></i>
                                         </a>
                                         <form action="{{ route('sales.destroy', $sale) }}" method="POST" onsubmit="return confirm('Hapus data penjualan ini? Stok akan dikembalikan.')" class="d-inline">

@@ -18,9 +18,9 @@ if (!function_exists('formatTglIndo')) {
 <div class="doc-kop">
     <img src="{{ asset('images/logo-kopi-hiku-himu.png') }}" alt="Logo Kopi Hiku Himu" class="doc-kop-logo">
     <div class="doc-kop-details">
-        <h1 class="doc-kop-brand">KOPI HIKU HIMU</h1>
-        <div class="doc-kop-desc">Roastery dan Distribusi Kopi Toko Mitra</div>
-        <div class="doc-kop-address">Jl. Letkol Subadri, Ngangkrik, Triharjo, Sleman, D.I. Yogyakarta</div>
-        <div class="doc-kop-address">Telepon/WhatsApp: 0889-5744-289</div>
+        <h1 class="doc-kop-brand">{{ config('business.name', 'KOPI HIKU HIMU') }}</h1>
+        <div class="doc-kop-desc">{{ config('business.tagline', 'Roastery dan Distribusi Kopi Toko Mitra') }}</div>
+        <div class="doc-kop-address">{{ config('business.address') }}</div>
+        <div class="doc-kop-address">Telepon/WhatsApp: {{ config('business.phone', '0812-1287-8844') }}</div>
     </div>
 </div>

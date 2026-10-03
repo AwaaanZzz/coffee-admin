@@ -18,10 +18,24 @@ class SaleController extends Controller
             $query->where('store_id', $request->store_id);
         }
 
-        $sales = $query->orderByDesc('tanggal')->paginate(20)->withQueryString();
+        $sales = $query->orderByDesc('tanggal')->orderByDesc('id')->paginate(20)->withQueryString();
         $stores = Store::orderBy('name')->get();
 
-        return view('sales.index', compact('sales', 'stores'));
+        $sameDayCounts = [];
+        if ($sales->isNotEmpty()) {
+            $storeIds = $sales->pluck('store_id')->unique();
+            $dates = $sales->pluck('tanggal')->map(fn($d) => $d->format('Y-m-d'))->unique();
+
+            $sameDayCounts = Sale::whereIn('store_id', $storeIds)
+                ->whereIn(Sale::raw('DATE(tanggal)'), $dates)
+                ->selectRaw('store_id, DATE(tanggal) as tgl, COUNT(*) as total')
+                ->groupBy('store_id', Sale::raw('DATE(tanggal)'))
+                ->get()
+                ->mapWithKeys(fn($item) => [$item->store_id . '_' . $item->tgl => $item->total])
+                ->all();
+        }
+
+        return view('sales.index', compact('sales', 'stores', 'sameDayCounts'));
     }
 
     public function create()
@@ -191,10 +205,10 @@ class SaleController extends Controller
         $jam = now()->format('H:i');
         $kasir = auth()->check() ? auth()->user()->name : 'Admin';
 
-        $msg = "*KOPI HIKU HIMU*\n";
-        $msg .= "_Artisan Roastery & Coffee Supply_\n";
-        $msg .= "Jl. Roastery No. 8, Sleman, D.I. Yogyakarta\n";
-        $msg .= "HP / WA: 0812-3456-7890\n\n";
+        $msg = "*" . strtoupper(config('business.name', 'KOPI HIKU HIMU')) . "*\n";
+        $msg .= "_" . config('business.tagline', 'Roastery & Distribusi Kopi') . "_\n";
+        $msg .= config('business.address') . "\n";
+        $msg .= "HP / WA: " . config('business.phone', '0812-1287-8844') . "\n\n";
 
         $msg .= "=======================\n";
         $msg .= "*NOTA ELEKTRONIK*\n";

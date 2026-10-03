@@ -378,21 +378,21 @@
 
         ws.mergeCells(`${kopCol}3:${lastColLetter}3`);
         const rSub = ws.getCell(`${kopCol}3`);
-        rSub.value = 'Roastery & Distribusi Kopi Mitra';
+        rSub.value = @json(config('business.tagline', 'Roastery & Distribusi Kopi'));
         rSub.font = { name: 'Segoe UI', size: 9.5, color: { argb: 'FF2C1E14' } };
         rSub.alignment = { vertical: 'middle', horizontal: 'left' };
         ws.getRow(3).height = 16;
 
         ws.mergeCells(`${kopCol}4:${lastColLetter}4`);
         const rAddr = ws.getCell(`${kopCol}4`);
-        rAddr.value = 'Jl. Letkol Subadri Ngangkrik, Triharjo, Sleman, D.I. Yogyakarta';
+        rAddr.value = @json(config('business.address'));
         rAddr.font = { name: 'Segoe UI', size: 8.5, color: { argb: 'FF64748B' } };
         rAddr.alignment = { vertical: 'middle', horizontal: 'left' };
         ws.getRow(4).height = 15;
 
         ws.mergeCells(`${kopCol}5:${lastColLetter}5`);
         const rContact = ws.getCell(`${kopCol}5`);
-        rContact.value = 'Telepon: 0889-5744-289';
+        rContact.value = 'Telepon: ' + @json(config('business.phone', '0812-1287-8844'));
         rContact.font = { name: 'Segoe UI', size: 8.5, color: { argb: 'FF64748B' } };
         rContact.alignment = { vertical: 'middle', horizontal: 'left' };
         ws.getRow(5).height = 15;
@@ -774,10 +774,10 @@
         }
 
         const wsData = [];
-        wsData.push(['Kopi Hiku Himu']);
-        wsData.push(['Roastery & Distribusi Kopi Mitra']);
-        wsData.push(['Jl. Letkol Subadri Ngangkrik, Triharjo, Sleman, D.I. Yogyakarta']);
-        wsData.push(['Telepon: 0889-5744-289']);
+        wsData.push([@json(config('business.name', 'Kopi Hiku Himu'))]);
+        wsData.push([@json(config('business.tagline', 'Roastery & Distribusi Kopi Mitra'))]);
+        wsData.push([@json(config('business.address'))]);
+        wsData.push(['Telepon: ' + @json(config('business.phone', '0812-1287-8844'))]);
         wsData.push([]);
 
         let docTitle = 'Laporan';
