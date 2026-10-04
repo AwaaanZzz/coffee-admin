@@ -31,9 +31,16 @@ Route::middleware('guest')->group(function () {
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
+// Root route (Login for guest, Dashboard for auth)
+Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+    return app(AuthController::class)->showLogin();
+});
+
 // Protected routes
 Route::middleware('auth')->group(function () {
-    Route::get('/', fn() => redirect()->route('dashboard'));
     
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
