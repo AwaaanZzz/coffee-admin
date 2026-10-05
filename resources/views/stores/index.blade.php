@@ -12,11 +12,19 @@
 @endsection
 
 @section('content')
+    @php
+        $storesWithStock = $stores->filter(function($s) {
+            return $s->stockBatches->where('status', '!=', 'tarik')->count() > 0;
+        })->count();
+        $totalStores = $stores->total() ?? $stores->count();
+        $storesNoStock = $totalStores - $storesWithStock;
+    @endphp
+
     {{-- Page Header --}}
-    <div class="page-header">
+    <div class="page-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
         <div>
-            <h3 class="page-title">Daftar Toko Mitra</h3>
-            <p class="page-subtitle">Kelola kemitraan toko, titik koordinat peta distribusi, dan monitoring stok.</p>
+            <h3 class="page-title mb-1">Daftar Toko Mitra</h3>
+            <p class="page-subtitle text-muted mb-0">Kelola direktori kemitraan toko, titik koordinat peta distribusi, dan monitoring stok.</p>
         </div>
         <div class="page-actions d-flex align-items-center gap-2">
             <a href="{{ route('stores.create') }}" class="btn btn-accent d-flex align-items-center gap-1.5">
@@ -26,81 +34,65 @@
         </div>
     </div>
 
-    {{-- View Mode Switcher & Stats Bar --}}
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-        <div class="d-flex align-items-center gap-2">
-            <button type="button" class="btn btn-sm btn-outline-modern active d-flex align-items-center gap-2" id="tabBtnTable" onclick="switchStoreView('table')">
-                <i data-lucide="list" style="width:15px;height:15px;"></i>
-                <span>Daftar Tabel Toko</span>
-            </button>
-            <button type="button" class="btn btn-sm btn-outline-modern d-flex align-items-center gap-2" id="tabBtnMap" onclick="switchStoreView('map')">
-                <i data-lucide="map" style="width:15px;height:15px;"></i>
-                <span>Peta Persebaran Mitra</span>
-            </button>
-        </div>
-        <div class="d-flex align-items-center gap-3 text-muted small">
-            @php
-                $storesWithStock = $stores->filter(function($s) {
-                    return $s->stockBatches->where('status', '!=', 'tarik')->count() > 0;
-                })->count();
-            @endphp
-            <div class="d-flex align-items-center gap-1.5">
-                <i data-lucide="store" style="width:14px;height:14px;color:var(--text-muted);"></i>
-                <span>Total <strong>{{ $stores->total() ?? $stores->count() }}</strong> Toko</span>
-            </div>
-            <span class="d-none d-md-inline text-muted opacity-50">•</span>
-            <div class="d-none d-md-flex align-items-center gap-1.5">
-                <span class="badge-store-stock badge-has-stock py-0.5 px-2" style="font-size:0.7rem;">
-                    {{ $storesWithStock }} Punya Stok
-                </span>
-            </div>
-        </div>
-    </div>
+    {{-- Main Container Card --}}
+    <div class="card-modern shadow-none border">
+        {{-- Unified Card Header: Search, Filter Tabs, and View Switcher --}}
+        <div class="card-header-modern p-3 bg-white border-bottom d-flex flex-wrap align-items-center justify-content-between gap-3" style="border-top-left-radius: var(--radius); border-top-right-radius: var(--radius);">
+            {{-- Left Side: Live Search & Filter Pills --}}
+            <div class="d-flex flex-wrap align-items-center gap-2 flex-grow-1">
+                <div class="position-relative" style="min-width: 240px; max-width: 320px;">
+                    <i data-lucide="search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: var(--text-muted); pointer-events: none;"></i>
+                    <input type="text" id="storeLiveSearch" class="form-control form-control-sm ps-4" placeholder="Cari nama toko, alamat, PJ..." autocomplete="off" style="border-radius: 6px;">
+                    <button type="button" id="btnResetSearch" class="btn btn-link text-muted p-0 d-none" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); text-decoration: none;" title="Bersihkan">
+                        <i data-lucide="x" style="width: 13px; height: 13px;"></i>
+                    </button>
+                </div>
 
-    {{-- Pane 1: Table View --}}
-    <div id="storeTablePane" style="display: block;">
-        <div class="card-modern shadow-none border">
-            {{-- Card Header: Live Search & Quick Filter Toolbar --}}
-            <div class="card-header-modern border-bottom p-3 bg-white" style="border-top-left-radius: var(--radius); border-top-right-radius: var(--radius);">
-                <div class="row g-2 align-items-center">
-                    <div class="col-lg-6 col-md-7">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text bg-light border-end-0 text-muted">
-                                <i data-lucide="search" style="width:14px;height:14px;"></i>
-                            </span>
-                            <input type="text" id="storeLiveSearch" class="form-control border-start-0 ps-1" placeholder="Cari nama toko, alamat, atau penanggung jawab..." autocomplete="off">
-                            <button type="button" id="btnResetSearch" class="btn btn-outline-secondary d-none" title="Bersihkan pencarian">
-                                <i data-lucide="x" style="width:13px;height:13px;"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-5 d-flex justify-content-md-end align-items-center gap-1.5">
-                        <button type="button" class="btn btn-sm btn-outline-modern filter-store-btn active" onclick="filterStoreStock('all', this)">
-                            Semua
-                        </button>
-                        <button type="button" class="btn btn-sm btn-outline-modern filter-store-btn" onclick="filterStoreStock('has_stock', this)">
-                            Punya Stok
-                        </button>
-                        <button type="button" class="btn btn-sm btn-outline-modern filter-store-btn" onclick="filterStoreStock('no_stock', this)">
-                            Stok Kosong
-                        </button>
-                    </div>
+                <div class="d-flex align-items-center gap-1.5 flex-wrap">
+                    <button type="button" class="filter-store-btn active" onclick="filterStoreStock('all', this)">
+                        <span>Semua</span>
+                        <span class="badge bg-secondary text-white rounded-pill px-1.5" style="font-size: 0.65rem;">{{ $totalStores }}</span>
+                    </button>
+                    <button type="button" class="filter-store-btn" onclick="filterStoreStock('has_stock', this)">
+                        <span>Punya Stok</span>
+                        <span class="badge bg-success text-white rounded-pill px-1.5" style="font-size: 0.65rem;">{{ $storesWithStock }}</span>
+                    </button>
+                    <button type="button" class="filter-store-btn" onclick="filterStoreStock('no_stock', this)">
+                        <span>Stok Kosong</span>
+                        <span class="badge bg-light text-dark rounded-pill px-1.5 border" style="font-size: 0.65rem;">{{ $storesNoStock }}</span>
+                    </button>
                 </div>
             </div>
 
-            {{-- Table Body --}}
+            {{-- Right Side: View Switcher (Tabel vs Peta) --}}
+            <div class="d-flex align-items-center gap-2">
+                <div class="view-switch-group">
+                    <button type="button" class="view-switch-btn active" id="tabBtnTable" onclick="switchStoreView('table')">
+                        <i data-lucide="list" style="width: 14px; height: 14px;"></i>
+                        <span>Tabel</span>
+                    </button>
+                    <button type="button" class="view-switch-btn" id="tabBtnMap" onclick="switchStoreView('map')">
+                        <i data-lucide="map" style="width: 14px; height: 14px;"></i>
+                        <span>Peta Mitra</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        {{-- Pane 1: Table --}}
+        <div id="storeTablePane" style="display: block;">
             <div class="card-body-modern p-0">
                 <div class="table-responsive">
                     <table class="table-modern w-100 m-0 align-middle" id="storeMasterTable">
                         <thead>
                             <tr>
                                 <th style="width: 48px; text-align: center; padding-left: 14px;">#</th>
-                                <th style="min-width: 220px;">Toko Mitra</th>
-                                <th style="min-width: 220px;">Alamat & Peta</th>
-                                <th style="min-width: 140px;">Penanggung Jawab</th>
-                                <th style="min-width: 120px;">Tgl. Kerja Sama</th>
-                                <th style="min-width: 140px;">Status Stok</th>
-                                <th class="text-end" style="width: 110px; padding-right: 18px;">Aksi</th>
+                                <th style="width: 27%;">Toko Mitra</th>
+                                <th style="width: 27%;">Alamat & Peta</th>
+                                <th style="width: 16%;">Penanggung Jawab</th>
+                                <th style="width: 13%;">Tgl. Kerja Sama</th>
+                                <th style="width: 14%;">Status Stok</th>
+                                <th class="text-end" style="width: 100px; padding-right: 18px;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -110,7 +102,7 @@
                                     $hasStock = $activeBatchCount > 0;
                                 @endphp
                                 <tr class="store-row" data-store-id="{{ $store->id }}" data-has-stock="{{ $hasStock ? '1' : '0' }}" style="cursor: pointer;" onclick="toggleStock({{ $store->id }})">
-                                    {{-- Expand Chevron & Index --}}
+                                    {{-- # & Chevron --}}
                                     <td class="text-center" style="padding-left: 14px;">
                                         <div class="d-flex align-items-center justify-content-center gap-1">
                                             <i data-lucide="chevron-right" class="stock-chevron text-muted" id="chevron-{{ $store->id }}" style="width:15px;height:15px;transition:transform 0.2s;" title="Klik untuk rincian stok"></i>
@@ -118,7 +110,7 @@
                                         </div>
                                     </td>
 
-                                    {{-- Store Name --}}
+                                    {{-- Store Name & ID --}}
                                     <td>
                                         <div class="d-flex flex-column">
                                             <a href="{{ route('stores.show', $store) }}" class="fw-bold text-dark text-decoration-none hover-accent mb-0.5" style="font-size:0.875rem;" onclick="event.stopPropagation();">
@@ -128,7 +120,7 @@
                                         </div>
                                     </td>
 
-                                    {{-- Address & Maps --}}
+                                    {{-- Address & Maps Link --}}
                                     <td>
                                         <div class="d-flex align-items-center flex-wrap gap-1.5">
                                             @if($store->alamat)
@@ -158,7 +150,7 @@
                                         @endif
                                     </td>
 
-                                    {{-- Date of Cooperation --}}
+                                    {{-- Cooperation Date --}}
                                     <td class="tabular-nums text-secondary small">
                                         {{ $store->tgl_kerjasama->format('d M Y') }}
                                     </td>
@@ -178,18 +170,15 @@
                                         @endif
                                     </td>
 
-                                    {{-- Actions (Clean & Compact Toolbar) --}}
+                                    {{-- Action Buttons --}}
                                     <td class="text-end" style="padding-right: 18px;" onclick="event.stopPropagation();">
                                         <div class="d-flex justify-content-end align-items-center gap-1.5">
-                                            {{-- Detail Link --}}
                                             <a href="{{ route('stores.show', $store) }}" class="btn-action-icon" title="Detail Toko & Peta">
                                                 <i data-lucide="eye"></i>
                                             </a>
-                                            {{-- Edit Link --}}
                                             <a href="{{ route('stores.edit', $store) }}" class="btn-action-icon" title="Edit Toko">
                                                 <i data-lucide="pencil"></i>
                                             </a>
-                                            {{-- Dropdown for Secondary Actions --}}
                                             <div class="dropdown">
                                                 <button type="button" class="btn-action-icon" data-bs-toggle="dropdown" aria-expanded="false" title="Menu Opsi Lainnya">
                                                     <i data-lucide="more-horizontal"></i>
@@ -237,19 +226,16 @@
                                     <td colspan="7" class="p-0 border-0">
                                         <div class="stock-accordion-container">
                                             <div class="stock-accordion-header">
-                                                <div class="d-flex align-items-center gap-2.5">
+                                                <div class="d-flex align-items-center gap-2">
                                                     <div class="accordion-icon-box">
                                                         <i data-lucide="package"></i>
                                                     </div>
                                                     <div>
-                                                        <div class="accordion-store-title">Rincian Stok Batch — {{ $store->name }}</div>
-                                                        <div class="text-muted small" style="font-size:0.75rem;">
-                                                            Tersedia <strong>{{ $store->stockBatches->count() }} batch</strong> tercatat di toko mitra ini
-                                                        </div>
+                                                        <span class="accordion-store-title">Rincian Stok Batch ({{ $store->stockBatches->count() }} Batch) — {{ $store->name }}</span>
                                                     </div>
                                                 </div>
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <a href="{{ route('stock.index', ['store_id' => $store->id]) }}" class="btn btn-sm btn-outline-modern d-flex align-items-center gap-1.5" style="font-size:0.75rem; padding: 5px 12px;">
+                                                    <a href="{{ route('stock.index', ['store_id' => $store->id]) }}" class="btn btn-sm btn-outline-modern d-flex align-items-center gap-1.5" style="font-size:0.75rem; padding: 4px 10px;">
                                                         <span>Kelola di Modul Stok</span>
                                                         <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
                                                     </a>
@@ -257,26 +243,26 @@
                                             </div>
 
                                             @if($store->stockBatches->count() > 0)
-                                                <div class="table-responsive bg-white rounded border" style="box-shadow: 0 1px 3px rgba(0,0,0,0.02); overflow: hidden;">
+                                                <div class="table-responsive bg-white rounded border" style="overflow: hidden;">
                                                     <table class="table-modern w-100 m-0" style="font-size:0.8125rem;">
                                                         <thead>
                                                             <tr>
-                                                                <th style="padding-left: 14px;">Kode Produksi</th>
-                                                                <th>Jenis Kopi</th>
-                                                                <th>Tgl. Masuk</th>
-                                                                <th>Tgl. Kedaluwarsa</th>
-                                                                <th class="text-end">Awal</th>
-                                                                <th class="text-end">Laku</th>
-                                                                <th class="text-end">Sisa</th>
-                                                                <th class="text-end">Total Nilai</th>
-                                                                <th class="text-center" style="padding-right: 14px;">Status</th>
+                                                                <th style="width: 15%; padding-left: 14px;">Kode Produksi</th>
+                                                                <th style="width: 18%;">Jenis Kopi</th>
+                                                                <th style="width: 12%;">Tgl. Masuk</th>
+                                                                <th style="width: 15%;">Tgl. Kedaluwarsa</th>
+                                                                <th class="text-end" style="width: 8%;">Awal</th>
+                                                                <th class="text-end" style="width: 8%;">Laku</th>
+                                                                <th class="text-end" style="width: 8%;">Sisa</th>
+                                                                <th class="text-end" style="width: 12%;">Total Nilai</th>
+                                                                <th class="text-center" style="width: 10%; padding-right: 14px;">Status</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             @foreach($store->stockBatches->sortByDesc('tgl_stock') as $batch)
                                                                 @php
-                                                                    $isExp = $batch->tgl_exp && $batch->tgl_exp->isPast();
-                                                                    $isExpSoon = $batch->tgl_exp && !$isExp && $batch->tgl_exp->diffInDays(now()) <= 7;
+                                                                    $isExp = $batch->is_expired;
+                                                                    $isExpSoon = $batch->is_expiring_soon;
                                                                 @endphp
                                                                 <tr style="{{ $isExp ? 'background: rgba(220, 38, 38, 0.04);' : ($isExpSoon ? 'background: rgba(217, 119, 6, 0.04);' : '') }}">
                                                                     <td style="padding-left: 14px;">
@@ -331,11 +317,10 @@
                                                     </table>
                                                 </div>
                                             @else
-                                                <div class="empty-stock-box p-4 text-center rounded bg-white border">
-                                                    <i data-lucide="package-open" style="width:28px;height:28px;color:var(--text-muted);opacity:0.6;margin-bottom:6px;"></i>
+                                                <div class="empty-stock-box p-3 text-center rounded bg-white border">
                                                     <p class="text-muted small mb-2">Belum ada batch stok aktif yang tercatat untuk toko mitra ini.</p>
                                                     <a href="{{ route('stock.create', ['store_id' => $store->id]) }}" class="btn btn-sm btn-outline-modern" style="font-size:0.75rem;">
-                                                        <i data-lucide="plus" style="width:12px;height:12px;"></i> Tambah Batch Stok Sekarang
+                                                        <i data-lucide="plus" style="width:12px;height:12px;"></i> Tambah Batch Stok
                                                     </a>
                                                 </div>
                                             @endif
@@ -373,14 +358,12 @@
                 @endif
             </div>
         </div>
-    </div>
 
-    {{-- Pane 2: Store Network Map --}}
-    <div id="storeMapPane" style="display: none;">
-        <div class="card-modern border">
+        {{-- Pane 2: Store Network Map --}}
+        <div id="storeMapPane" style="display: none;">
             <div class="card-header-modern d-flex flex-wrap justify-content-between align-items-center gap-2 p-3 bg-white border-bottom">
                 <div>
-                    <h5 class="card-title-modern m-0">Peta Jaringan & Persebaran Seluruh Toko Mitra</h5>
+                    <h5 class="card-title-modern m-0">Peta Jaringan & Persebaran Toko Mitra</h5>
                     <p class="text-muted small m-0 mt-1">Pemetaan geografis lokasi toko mitra kerja sama Kopi Hiku Himu.</p>
                 </div>
                 <div class="d-flex align-items-center gap-2">
@@ -562,13 +545,13 @@
             if (view === 'table') {
                 tablePane.style.display = 'block';
                 mapPane.style.display = 'none';
-                btnTable.className = 'btn btn-sm btn-outline-modern active d-flex align-items-center gap-2';
-                btnMap.className = 'btn btn-sm btn-outline-modern d-flex align-items-center gap-2';
+                btnTable.classList.add('active');
+                btnMap.classList.remove('active');
             } else {
                 tablePane.style.display = 'none';
                 mapPane.style.display = 'block';
-                btnTable.className = 'btn btn-sm btn-outline-modern d-flex align-items-center gap-2';
-                btnMap.className = 'btn btn-sm btn-outline-modern active d-flex align-items-center gap-2';
+                btnTable.classList.remove('active');
+                btnMap.classList.add('active');
                 
                 initNetworkMap();
                 setTimeout(() => {

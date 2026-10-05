@@ -2012,6 +2012,73 @@ select.form-control-modern, .form-select {
 }
 
 /* ---------- 18. Store Directory & Accordion Modern UI ---------- */
+.view-switch-group {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-subtle);
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.view-switch-btn {
+  padding: 5px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.view-switch-btn:hover {
+  color: var(--text-primary);
+}
+.view-switch-btn.active {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+[data-theme="dark"] .view-switch-btn.active {
+  background: var(--bg-secondary);
+  color: #FFFFFF;
+}
+
+.filter-store-btn {
+  white-space: nowrap !important;
+  font-size: 0.78rem !important;
+  padding: 5px 12px !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--border) !important;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  transition: all var(--transition);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.3 !important;
+}
+.filter-store-btn:hover {
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+}
+.filter-store-btn.active {
+  background: var(--navy) !important;
+  color: #FFFFFF !important;
+  border-color: var(--navy) !important;
+}
+[data-theme="dark"] .filter-store-btn.active {
+  background: var(--accent) !important;
+  color: #FFFFFF !important;
+  border-color: var(--accent) !important;
+}
+
 .badge-maps-link {
   display: inline-flex;
   align-items: center;
@@ -2025,6 +2092,7 @@ select.form-control-modern, .form-select {
   border: 1px solid #BFDBFE;
   text-decoration: none;
   transition: all var(--transition);
+  white-space: nowrap;
 }
 .badge-maps-link:hover {
   background: #DBEAFE;
@@ -2045,6 +2113,7 @@ select.form-control-modern, .form-select {
   font-weight: 600;
   border-radius: 6px;
   line-height: 1.2;
+  white-space: nowrap;
 }
 .badge-store-stock.badge-has-stock {
   background: #ECFDF5;
@@ -2094,11 +2163,10 @@ select.form-control-modern, .form-select {
 
 /* Stock Accordion Container */
 .stock-accordion-container {
-  background: #F8FAFC;
-  border-top: 1px solid #E2E8F0;
-  border-bottom: 2px solid #E2E8F0;
-  border-left: 3px solid var(--accent);
-  padding: 16px 20px;
+  background: #FAF7F2;
+  border-top: 1px solid var(--border);
+  border-bottom: 2px solid var(--border);
+  padding: 14px 20px;
   margin: 0;
 }
 [data-theme="dark"] .stock-accordion-container {
@@ -2117,23 +2185,23 @@ select.form-control-modern, .form-select {
 }
 
 .accordion-icon-box {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 6px;
-  background: rgba(200, 138, 78, 0.12);
+  background: rgba(200, 138, 78, 0.15);
   color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .accordion-icon-box svg {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
 }
 
 .accordion-store-title {
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   color: var(--text-primary);
 }
 
