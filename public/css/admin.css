@@ -763,6 +763,8 @@ a {
   transition: margin-left var(--transition);
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow-x: hidden;
 }
 
 .sidebar.collapsed ~ .main-content {
@@ -1096,15 +1098,23 @@ a {
 }
 
 .table-modern thead th {
-  background: var(--bg-subtle);
-  padding: 9px 12px;
-  font-weight: 600;
-  font-size: 0.75rem;
-  text-transform: none; /* Sentence case */
-  color: var(--text-secondary);
-  border-bottom: 1px solid var(--border);
+  background: #F8FAFC;
+  padding: 11px 14px;
+  font-weight: 700;
+  font-size: 0.73rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #475569;
+  border-bottom: 1px solid #E2E8F0;
   white-space: nowrap;
   text-align: left;
+}
+
+[data-theme="dark"] .table-modern thead th,
+[data-bs-theme="dark"] .table-modern thead th {
+  background: #172033;
+  color: #94A3B8;
+  border-bottom-color: #334155;
 }
 
 .table-modern tbody td {
@@ -1999,4 +2009,167 @@ select.form-control-modern, .form-select {
   .stat-card {
     padding: 12px;
   }
+}
+
+/* ---------- 18. Store Directory & Accordion Modern UI ---------- */
+.badge-maps-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 4px;
+  background: #EFF6FF;
+  color: #2563EB;
+  border: 1px solid #BFDBFE;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.badge-maps-link:hover {
+  background: #DBEAFE;
+  color: #1D4ED8;
+}
+[data-theme="dark"] .badge-maps-link {
+  background: rgba(37, 99, 235, 0.15);
+  color: #93C5FD;
+  border-color: rgba(37, 99, 235, 0.3);
+}
+
+.badge-store-stock {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 6px;
+  line-height: 1.2;
+}
+.badge-store-stock.badge-has-stock {
+  background: #ECFDF5;
+  color: #059669;
+  border: 1px solid #A7F3D0;
+}
+.badge-store-stock.badge-no-stock {
+  background: #F1F5F9;
+  color: #64748B;
+  border: 1px solid #E2E8F0;
+}
+[data-theme="dark"] .badge-store-stock.badge-has-stock {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6EE7B7;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+[data-theme="dark"] .badge-store-stock.badge-no-stock {
+  background: #1E293B;
+  color: #94A3B8;
+  border-color: #334155;
+}
+
+.btn-action-icon {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  transition: all var(--transition);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+}
+.btn-action-icon:hover {
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+  border-color: var(--accent);
+}
+.btn-action-icon svg, .btn-action-icon i {
+  width: 15px;
+  height: 15px;
+}
+
+/* Stock Accordion Container */
+.stock-accordion-container {
+  background: #F8FAFC;
+  border-top: 1px solid #E2E8F0;
+  border-bottom: 2px solid #E2E8F0;
+  border-left: 3px solid var(--accent);
+  padding: 16px 20px;
+  margin: 0;
+}
+[data-theme="dark"] .stock-accordion-container {
+  background: #0B132B;
+  border-top-color: #1E293B;
+  border-bottom-color: #1E293B;
+}
+
+.stock-accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.accordion-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(200, 138, 78, 0.12);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.accordion-icon-box svg {
+  width: 16px;
+  height: 16px;
+}
+
+.accordion-store-title {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.badge-mini {
+  display: inline-block;
+  padding: 1px 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge-mini-robusta {
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+.badge-mini-arabika {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+}
+[data-theme="dark"] .badge-mini-robusta {
+  background: rgba(245, 158, 11, 0.18);
+  color: #FCD34D;
+  border-color: rgba(245, 158, 11, 0.3);
+}
+[data-theme="dark"] .badge-mini-arabika {
+  background: rgba(59, 130, 246, 0.18);
+  color: #93C5FD;
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.store-row:hover td {
+  background-color: rgba(200, 138, 78, 0.03) !important;
+}
+.store-row.is-open td {
+  background-color: rgba(200, 138, 78, 0.05) !important;
 }

@@ -7,9 +7,20 @@ use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $stores = Store::with(['stockBatches.coffeeType', 'coffeePrices'])->orderBy('name')->paginate(20);
+        $query = Store::with(['stockBatches.coffeeType', 'coffeePrices']);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('alamat', 'like', "%{$search}%")
+                  ->orWhere('penanggung_jawab', 'like', "%{$search}%");
+            });
+        }
+
+        $stores = $query->orderBy('name')->paginate(20)->withQueryString();
         $allStoresForMap = Store::with(['stockBatches'])->orderBy('name')->get();
         
         $storesMapData = $allStoresForMap->map(function($s) {
