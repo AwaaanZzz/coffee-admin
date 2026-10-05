@@ -2079,29 +2079,44 @@ select.form-control-modern, .form-select {
   border-color: var(--accent) !important;
 }
 
-.badge-maps-link {
+.store-address-link {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  padding: 2px 7px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  border-radius: 4px;
-  background: #EFF6FF;
-  color: #2563EB;
-  border: 1px solid #BFDBFE;
+  gap: 5px;
+  color: var(--text-primary);
   text-decoration: none;
+  font-size: 0.8125rem;
+  padding: 3px 6px;
+  border-radius: 4px;
   transition: all var(--transition);
+  max-width: 100%;
+}
+.store-address-link:hover {
+  background-color: rgba(200, 138, 78, 0.1);
+  color: var(--accent);
+}
+.store-address-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
-.badge-maps-link:hover {
-  background: #DBEAFE;
-  color: #1D4ED8;
+.store-map-icon {
+  width: 13px;
+  height: 13px;
+  color: var(--accent);
+  flex-shrink: 0;
 }
-[data-theme="dark"] .badge-maps-link {
-  background: rgba(37, 99, 235, 0.15);
-  color: #93C5FD;
-  border-color: rgba(37, 99, 235, 0.3);
+.store-ext-icon {
+  width: 11px;
+  height: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: opacity var(--transition), color var(--transition);
+}
+.store-address-link:hover .store-ext-icon {
+  color: var(--accent);
+  opacity: 1;
 }
 
 .badge-store-stock {

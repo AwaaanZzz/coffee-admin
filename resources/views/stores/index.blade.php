@@ -110,32 +110,31 @@
                                         </div>
                                     </td>
 
-                                    {{-- Store Name & ID --}}
+                                    {{-- Store Name --}}
                                     <td>
-                                        <div class="d-flex flex-column">
-                                            <a href="{{ route('stores.show', $store) }}" class="fw-bold text-dark text-decoration-none hover-accent mb-0.5" style="font-size:0.875rem;" onclick="event.stopPropagation();">
-                                                {{ $store->name }}
-                                            </a>
-                                            <span class="text-muted small" style="font-size:0.72rem;">ID Mitra #{{ $store->id }}</span>
-                                        </div>
+                                        <a href="{{ route('stores.show', $store) }}" class="fw-bold text-dark text-decoration-none hover-accent" style="font-size:0.875rem;" onclick="event.stopPropagation();">
+                                            {{ $store->name }}
+                                        </a>
                                     </td>
 
                                     {{-- Address & Maps Link --}}
                                     <td>
-                                        <div class="d-flex align-items-center flex-wrap gap-1.5">
-                                            @if($store->alamat)
-                                                <span class="text-secondary small">{{ $store->alamat }}</span>
-                                            @else
-                                                <span class="text-muted small fst-italic">Belum diisi</span>
-                                            @endif
-
+                                        @if($store->alamat)
                                             @if($store->has_coordinates)
-                                                <a href="{{ $store->google_maps_url }}" target="_blank" class="badge-maps-link" title="Buka di Google Maps" onclick="event.stopPropagation();">
-                                                    <i data-lucide="navigation" style="width:10px;height:10px;"></i>
-                                                    <span>Maps</span>
+                                                <a href="{{ $store->google_maps_url }}" target="_blank" class="store-address-link" title="Buka lokasi di Google Maps" onclick="event.stopPropagation();">
+                                                    <i data-lucide="map-pin" class="store-map-icon"></i>
+                                                    <span class="store-address-text">{{ $store->alamat }}</span>
+                                                    <i data-lucide="external-link" class="store-ext-icon"></i>
                                                 </a>
+                                            @else
+                                                <div class="d-flex align-items-center gap-1.5 text-secondary small">
+                                                    <i data-lucide="map-pin" style="width:13px;height:13px;color:var(--text-muted);opacity:0.6;"></i>
+                                                    <span>{{ $store->alamat }}</span>
+                                                </div>
                                             @endif
-                                        </div>
+                                        @else
+                                            <span class="text-muted small fst-italic">Belum diisi</span>
+                                        @endif
                                     </td>
 
                                     {{-- Person in Charge --}}
